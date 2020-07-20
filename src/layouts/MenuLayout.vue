@@ -3,7 +3,6 @@
     <q-header
       reveal
       elevated
-      class="glossy"
     >
       <q-toolbar>
         <q-toolbar-title>
@@ -21,6 +20,24 @@
           @click="right = !right"
         />
       </q-toolbar>
+
+      <q-tabs
+        align="left"
+        :breakpoint="768"
+      >
+        <q-route-tab
+          :to="{name: 'East'}"
+          label="East"
+        />
+        <q-route-tab
+          :to="{name: 'West'}"
+          label="West"
+        />
+        <q-route-tab
+          :to="{name: 'Drinks'}"
+          label="Drinks"
+        />
+      </q-tabs>
     </q-header>
 
     <q-drawer
