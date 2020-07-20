@@ -3,7 +3,7 @@
     <q-header
       reveal
       elevated
-      class="glossy"
+      class="glossy bg-brown-6"
     >
       <q-toolbar>
         <q-toolbar-title>
@@ -90,3 +90,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+
+</style>
