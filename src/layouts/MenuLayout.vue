@@ -22,8 +22,8 @@
       </q-toolbar>
 
       <q-tabs
-        align="left"
-        :breakpoint="768"
+        align="center"
+        :breakpoint="1024"
       >
         <q-route-tab
           :to="{name: 'East'}"

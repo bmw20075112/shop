@@ -1,16 +1,19 @@
 <template>
-  <q-layout view="hHh lpR fff">
+  <q-layout
+    view="hHh lpR fff"
+    container
+    style="height:100vh"
+  >
     <q-header
       reveal
-      elevated
-      class="glossy bg-brown-6"
+      class="bg-brown-5"
     >
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
           </q-avatar>
-          Title
+          PandaEat
         </q-toolbar-title>
 
         <q-btn
@@ -90,7 +93,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-
-</style>
