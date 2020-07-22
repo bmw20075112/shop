@@ -11,7 +11,17 @@
           </q-avatar>
           Title
         </q-toolbar-title>
-
+        <q-btn
+          flat
+          icon="shopping_cart"
+        >
+          <q-badge
+            color="orange"
+            text-color="black"
+            :label="$store.getters.cartItems.length"
+            floating
+          />
+        </q-btn>
         <q-btn
           flat
           :icon="menuIcon"

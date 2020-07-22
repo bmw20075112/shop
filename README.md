@@ -1,6 +1,9 @@
 # Quasar App (shop)
 
-A Quasar Framework app
+## 預定開發
+1. 語言自動偵測
+2. 配色
+3. 購物車 Vuex
 
 ## Install the dependencies
 ```bash

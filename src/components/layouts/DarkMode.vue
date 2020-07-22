@@ -1,7 +1,7 @@
 <template>
   <q-toggle
     v-model="dark"
-    :label="darkLabel"
+    :label="$t('dark')"
     :icon="$q.dark.isActive? 'nights_stay' : 'wb_sunny'"
   />
 </template>
@@ -11,15 +11,6 @@ export default {
   data () {
     return {
       dark: this.$q.dark.isActive
-    }
-  },
-  computed: {
-    darkLabel () {
-      if (this.$q.dark.isActive) {
-        return this.$t('dark');
-      } else {
-        return this.$t('light');
-      }
     }
   },
 

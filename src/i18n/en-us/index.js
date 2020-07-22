@@ -4,9 +4,9 @@
 export default {
   failed: 'Action failed',
   success: 'Action was successful',
+  cancel: 'Cancel',
   logout: 'Logout',
   dark: 'Dark Mode',
-  light: 'Light Mode',
   accounts: 'Accounts',
   user: 'User',
   settings: 'Settings'

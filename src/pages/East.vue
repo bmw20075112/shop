@@ -15,21 +15,18 @@
             <div class="text-h6">
               Product Name
             </div>
-            <div class="text-subtitle1 text-primary">
-              $75
-            </div>
             <div class="">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit
+            </div>
+
+            <div class="text-subtitle2 text-red">
+              $75
             </div>
           </q-card-section>
         </q-card>
       </div>
     </div>
-    <q-btn
-      icon="check"
-      label="OK"
-      @click="openBuy=true"
-    />
+
     <q-dialog v-model="openBuy">
       <q-card class="my-card">
         <q-img src="https://cdn.quasar.dev/img/chicken-salad.jpg" />
@@ -72,35 +69,55 @@
         <q-separator />
 
         <q-card-actions align="right">
-          <q-btn
-            flat
-            color="primary"
-            round
-            icon="remove"
-            @click="number-=1"
-            :disable="number<1"
-          />
-          <q-input
-            v-model.number="number"
-            type="number"
-            label="Number"
-            :rules="[val=>Number.isInteger(val) || 'Number must be interger',
-                     val=>val>0 || 'Number must bigger than 0' ]"
-          />
-          <q-btn
-            flat
-            color="primary"
-            round
-            icon="add"
-            @click="number+=1"
-          />
-          <q-btn
-            v-close-popup
-            flat
-            color="primary"
-            round
-            icon="event"
-          />
+          <q-form
+            @submit="onSubmit"
+            class="q-gutter-md"
+          >
+            <q-input
+              v-model.number="number"
+              type="number"
+              label="Number"
+              ref="number"
+              class="q-mb-xl"
+              :rules="[val=>Number.isInteger(val) || 'Input must be positive interger',
+                       val=>val>0 || 'Input must be positive interger' ]"
+            >
+              <template v-slot:prepend>
+                <q-btn
+                  flat
+                  color="primary"
+                  round
+                  icon="remove"
+                  @click="count(-1)"
+                  :disable="number<1"
+                />
+              </template>
+              <template v-slot:append>
+                <q-btn
+                  flat
+                  color="primary"
+                  round
+                  icon="add"
+                  @click="count(1)"
+                />
+              </template>
+            </q-input>
+            <q-btn
+              icon="shopping_cart"
+              type="submit"
+              color="primary"
+              class="absolute"
+              style="right:0; top:60%"
+            />
+            <q-btn
+              type="button"
+              :label="$t('cancel')"
+              color="primary"
+              class="absolute"
+              style="right:75px; top:60%"
+              v-close-popup
+            />
+          </q-form>
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -113,7 +130,33 @@ export default {
     return {
       openBuy: false,
       stars: 4,
-      number: 1
+      number: 1,
+      eastMenu: [
+
+      ]
+    }
+  },
+  methods: {
+    count (num) {
+      this.number = Number(this.number) + num;
+    },
+
+    onSubmit () {
+      this.$refs.number.validate();
+      if (this.$refs.number.hasError) {
+        this.formHasError = true;
+      } else {
+        const random = Math.floor(Math.random() * 10 + 1);
+        const randomName = 'dog' + random;
+        this.$store.dispatch('cartAction', { type: 'add', value: { name: randomName, number: this.number } });
+        this.openBuy = false;
+        this.number = 1;
+        this.$q.notify({
+          icon: 'done',
+          color: 'positive',
+          message: 'Add to Cart'
+        })
+      }
     }
   }
 }

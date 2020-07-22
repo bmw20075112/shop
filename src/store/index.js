@@ -19,6 +19,37 @@ export default function (/* { ssrContext } */) {
     modules: {
       // example
     },
+    state: {
+      cartItems: []
+    },
+
+    getters: {
+      cartItems (state) {
+        return state.cartItems;
+      }
+    },
+
+    mutations: {
+      cartMutate (state, payload) {
+        const index = state.cartItems.findIndex(cartItem => cartItem.name === payload.value.name);
+        if (payload.type === 'add') {
+          if (index !== -1) {
+            state.cartItems[index].number = state.cartItems + payload.value.number;
+          } else {
+            state.cartItems.push(payload.value);
+          }
+        } else if (payload.type === 'remove') {
+          state.cartItems.splice(index, 1);
+        }
+        console.log(state.cartItems);
+      }
+    },
+
+    actions: {
+      cartAction ({ commit }, payload) {
+        commit('cartMutate', payload);
+      }
+    },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
