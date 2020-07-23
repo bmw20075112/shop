@@ -55,6 +55,7 @@ module.exports = {
     'arrow-parens': 'off',
     'one-var': 'off',
     'semi':'off',
+    'prefer-const': 'off',
 
     'import/first': 'off',
     'import/named': 'error',

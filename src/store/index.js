@@ -20,7 +20,8 @@ export default function (/* { ssrContext } */) {
       // example
     },
     state: {
-      cartItems: []
+      cartItems: [],
+      order: 0
     },
 
     getters: {
@@ -30,18 +31,23 @@ export default function (/* { ssrContext } */) {
     },
 
     mutations: {
+      orderMutate (state) {
+        state.order++;
+      },
       cartMutate (state, payload) {
-        const index = state.cartItems.findIndex(cartItem => cartItem.name === payload.value.name);
         if (payload.type === 'add') {
-          if (index !== -1) {
-            state.cartItems[index].number = state.cartItems + payload.value.number;
-          } else {
-            state.cartItems.push(payload.value);
-          }
+          this.commit('orderMutate');
+          state.cartItems.push({ ...payload.value, order: state.order });
+          console.log(state.cartItems);
         } else if (payload.type === 'remove') {
-          state.cartItems.splice(index, 1);
+          for (let i of payload.value) {
+            let index;
+            index = state.cartItems.findIndex(cartItem => cartItem.order === i);
+            console.log(index);
+            state.cartItems.splice(index, 1);
+          }
         }
-        console.log(state.cartItems);
+        // console.log('from store:', state.cartItems);
       }
     },
 

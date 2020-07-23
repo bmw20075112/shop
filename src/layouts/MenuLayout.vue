@@ -6,14 +6,26 @@
     >
       <q-toolbar>
         <q-toolbar-title>
-          <q-avatar>
+          <q-avatar class="cursor-pointer">
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
           </q-avatar>
           Title
         </q-toolbar-title>
         <q-btn
           flat
+          icon="account_box"
+          :label="$q.screen.gt.sm? $t('user') : '' "
+          class="q-py-sm"
+        >
+          <q-menu>
+            <Menu />
+          </q-menu>
+        </q-btn>
+
+        <q-btn
+          flat
           icon="shopping_cart"
+          @click="right = !right"
         >
           <q-badge
             color="orange"
@@ -22,13 +34,6 @@
             floating
           />
         </q-btn>
-        <q-btn
-          flat
-          :icon="menuIcon"
-          :label="$q.screen.gt.sm? $t('user') : '' "
-          class="q-py-sm"
-          @click="right = !right"
-        />
       </q-toolbar>
 
       <q-tabs
@@ -53,11 +58,81 @@
     <q-drawer
       v-model="right"
       side="right"
-      bordered
+      elevated
       :breakpoint="768"
       overlay
+      :width="320"
     >
-      <Menu />
+      <q-btn
+        color="primary"
+        icon="close"
+        class="fixed-top-right lt-md"
+        dense
+        @click="right=false"
+      />
+      <q-list
+        bordered
+        class="q-pl-sm"
+      >
+        <q-item-label header>
+          訂購紀錄
+        </q-item-label>
+
+        <q-item
+          tag="label"
+          v-ripple
+          v-for="cartItem in cartItems"
+          :key="cartItem.id"
+        >
+          <q-item-section thumbnail>
+            <img
+              src="https://cdn.quasar.dev/img/chicken-salad.jpg"
+              alt=""
+            >
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>
+              {{ cartItem.name }}
+            </q-item-label>
+            <q-item-label caption>
+              $70
+            </q-item-label>
+            <q-item-label
+              caption
+              class="text-red"
+            >
+              {{ cartItem.number }}
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <q-checkbox
+              :val="cartItem.order"
+              dense
+              v-model="selected"
+            />
+          </q-item-section>
+          <P>{{ cartItem.order }}</P>
+        </q-item>
+        <q-item />
+        <div class="fixed-bottom">
+          <q-btn-group>
+            <q-btn
+              label="delete"
+              icon="delete"
+              color="primary"
+              :disable="selected.length<1"
+              @click="deleteItem"
+            />
+            <q-btn
+              label="Checkout"
+              icon="shopping_cart"
+              color="primary"
+              :disable="selected.length<1"
+            />
+          </q-btn-group>
+        </div>
+      </q-list>
       <!-- drawer content -->
     </q-drawer>
 
@@ -88,17 +163,21 @@ export default {
   },
   data () {
     return {
-      right: false
+      right: false,
+      selected: []
+    }
+  },
+
+  methods: {
+    deleteItem () {
+      console.log('form menu:', this.selected);
+      this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
     }
   },
 
   computed: {
-    menuIcon () {
-      if (this.$q.screen.gt.sm) {
-        return 'account_box';
-      } else {
-        return 'menu';
-      }
+    cartItems () {
+      return this.$store.getters.cartItems;
     }
   },
 

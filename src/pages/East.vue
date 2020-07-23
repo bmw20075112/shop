@@ -8,7 +8,7 @@
       >
         <q-card
           class="my-card"
-          @click="openBuy=true"
+          @click="openBuy=true; number=1;"
         >
           <img src="https://res.cloudinary.com/barney4760/image/upload/v1595177151/Home/home-1-small_iwzy88.jpg">
           <q-card-section>
