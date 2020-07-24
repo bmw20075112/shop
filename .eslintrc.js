@@ -56,7 +56,8 @@ module.exports = {
     'one-var': 'off',
     'semi':'off',
     'prefer-const': 'off',
-
+    'vue/html-quotes': 'off',
+     
     'import/first': 'off',
     'import/named': 'error',
     'import/namespace': 'error',

@@ -1,8 +1,8 @@
 <template>
   <q-layout view="hHh lpR fff">
     <q-header
-      reveal
-      elevated
+      :elevated="$q.dark.isActive?false:true"
+      :bordered="$q.dark.isActive?true:false"
     >
       <q-toolbar>
         <q-toolbar-title>
@@ -58,65 +58,118 @@
     <q-drawer
       v-model="right"
       side="right"
-      elevated
       :breakpoint="768"
-      overlay
       :width="320"
+      bordered
+      elevated
     >
-      <q-btn
-        color="primary"
-        icon="close"
-        class="fixed-top-right lt-md"
-        dense
-        @click="right=false"
-      />
-      <q-list
-        bordered
-        class="q-pl-sm"
+      <div
+        class="column"
+        style="height:100%"
       >
-        <q-item-label header>
-          訂購紀錄
-        </q-item-label>
-
-        <q-item
-          tag="label"
-          v-ripple
-          v-for="cartItem in cartItems"
-          :key="cartItem.id"
+        <div
+          style="height:37px"
+          :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-grey-6'"
+        />
+        <div
+          class="row items-center fixed-top z-top"
         >
-          <q-item-section thumbnail>
-            <img
-              src="https://cdn.quasar.dev/img/chicken-salad.jpg"
-              alt=""
-            >
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>
-              {{ cartItem.name }}
-            </q-item-label>
-            <q-item-label caption>
-              $70
-            </q-item-label>
-            <q-item-label
-              caption
-              class="text-red"
-            >
-              {{ cartItem.number }}
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side>
-            <q-checkbox
-              :val="cartItem.order"
-              dense
-              v-model="selected"
+          <div class="col-2">
+            <q-btn
+              color="primary"
+              icon="close"
+              unelevated
+              @click="right=false"
             />
-          </q-item-section>
-          <P>{{ cartItem.order }}</P>
-        </q-item>
-        <q-item />
-        <div class="fixed-bottom">
-          <q-btn-group>
+          </div>
+
+          <div
+            class="col-7 q-pl-md"
+            style="font-size:18px"
+          >
+            訂單
+          </div>
+
+          <div class="col-3">
+            <q-btn
+              color="primary"
+              flat
+              :icon="allSelect?'check_box':'check_box_outline_blank'"
+              :disable="cartItems.length===0"
+              class="q-ml-lg"
+              @click="allSelect = !allSelect"
+            />
+          </div>
+        </div>
+
+        <q-scroll-area
+          class="col"
+          visible
+        >
+          <div>
+            <q-list
+              bordered
+              class="q-pl-sm order-list"
+              v-for="cartItem in cartItems"
+              :key="cartItem.id"
+            >
+              <q-item
+                tag="label"
+                v-ripple
+              >
+                <q-item-section thumbnail>
+                  <img
+                    :src="cartItem.url"
+                    alt="order_thumbnail"
+                  >
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>
+                    {{ cartItem.name }}
+                  </q-item-label>
+
+                  <q-item-label caption>
+                    ${{ cartItem.price }}
+                  </q-item-label>
+
+                  <q-item-label
+                    caption
+                    class="text-red"
+                  >
+                    {{ cartItem.number }}
+                  </q-item-label>
+                </q-item-section>
+
+                <q-item-section side>
+                  <q-checkbox
+                    :val="cartItem.order"
+                    dense
+                    v-model="selected"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+        </q-scroll-area>
+
+        <div
+          class="z-top fixed-bottom q-pa-sm text-white"
+          :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-grey-6'"
+          style="bottom:35px"
+        >
+          <div
+            class="text-subtitle2"
+          >
+            Total Count: {{ selected.length }}
+            <br>
+            Total Money: 1000$
+          </div>
+
+          <q-btn-group
+            spread
+            class="bg-primary fixed-bottom"
+          >
             <q-btn
               label="delete"
               icon="delete"
@@ -132,12 +185,15 @@
             />
           </q-btn-group>
         </div>
-      </q-list>
+      </div>
+
       <!-- drawer content -->
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <div class="row justify-center">
+        <router-view />
+      </div>
     </q-page-container>
 
     <q-footer
@@ -164,20 +220,40 @@ export default {
   data () {
     return {
       right: false,
-      selected: []
+      selected: [],
+      allSelect: false
     }
   },
 
   methods: {
     deleteItem () {
-      console.log('form menu:', this.selected);
-      this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to delete?',
+        ok: {
+          color: 'red'
+        },
+        cancel: {
+          color: 'grey'
+        }
+      }).onOk(() => {
+        this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
+        this.selected = [];
+      })
     }
   },
 
   computed: {
     cartItems () {
       return this.$store.getters.cartItems;
+    },
+
+    totalMoney () {
+      let res = [];
+      this.cartItems.forEach(el => {
+        res.push(el)
+      })
+      return null;
     }
   },
 
@@ -193,6 +269,24 @@ export default {
     } else {
       this.$i18n.locale = 'zh-tw';
     }
+  },
+
+  watch: {
+    allSelect (val) {
+      if (!val) {
+        this.selected = [];
+      } else {
+        for (let i of this.cartItems) {
+          this.selected.push(i.order);
+        }
+      }
+    }
   }
 }
 </script>
+
+<style lang="scss">
+.order-list:last-child{
+  margin-bottom: 96px;
+}
+</style>

@@ -1,12 +1,16 @@
 # Quasar App (shop)
 
 ## bug
-1. 購物車刪除選項無法控制數量
+
 
 ## 預定開發
 1. 語言自動偵測
 2. 配色
 3. 購物車 Vuex
+4. 總金額計算
+
+## 已解決Bug
+1. 購物車刪除選項無法控制數量
 
 ## Install the dependencies
 ```bash

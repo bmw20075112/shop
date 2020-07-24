@@ -38,16 +38,13 @@ export default function (/* { ssrContext } */) {
         if (payload.type === 'add') {
           this.commit('orderMutate');
           state.cartItems.push({ ...payload.value, order: state.order });
-          console.log(state.cartItems);
         } else if (payload.type === 'remove') {
+          let index;
           for (let i of payload.value) {
-            let index;
             index = state.cartItems.findIndex(cartItem => cartItem.order === i);
-            console.log(index);
             state.cartItems.splice(index, 1);
           }
         }
-        // console.log('from store:', state.cartItems);
       }
     },
 

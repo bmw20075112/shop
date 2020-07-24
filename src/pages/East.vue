@@ -1,35 +1,49 @@
 <template>
-  <div class="q-pa-md">
+  <div
+    class="q-pa-md"
+    style="width:1200px"
+  >
     <div class="row q-col-gutter-md">
       <div
         class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
-        v-for="n in 12"
-        :key="`none-${n}`"
+        v-for="(food, index) in eastMenu"
+        :key="food.id"
       >
         <q-card
           class="my-card"
-          @click="openBuy=true; number=1;"
+          @click="openCard(index)"
         >
-          <img src="https://res.cloudinary.com/barney4760/image/upload/v1595177151/Home/home-1-small_iwzy88.jpg">
+          <q-img
+            :src="food.url"
+            :ratio="16/9"
+            spinner-color="primary"
+            spinner-size="32px"
+          />
           <q-card-section>
             <div class="text-h6">
-              Product Name
+              {{ $t(`${food.name}`) }}
             </div>
-            <div class="">
+
+            <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit
             </div>
 
             <div class="text-subtitle2 text-red">
-              $75
+              ${{ food.price }}
             </div>
           </q-card-section>
         </q-card>
       </div>
     </div>
 
-    <q-dialog v-model="openBuy">
+    <q-dialog
+      v-model="openBuy"
+    >
       <q-card class="my-card">
-        <q-img src="https://cdn.quasar.dev/img/chicken-salad.jpg" />
+        <img
+          :src="selectedPic.url"
+          alt=""
+        >
 
         <q-card-section>
           <q-btn
@@ -42,8 +56,9 @@
 
           <div class="row no-wrap items-center">
             <div class="col text-h6 ellipsis">
-              Cafe Basilico
+              {{ $t(`${selectedPic.name}`) }}
             </div>
+
             <div class="col-auto text-grey text-caption q-pt-md row no-wrap items-center">
               <q-icon name="place" />
               250 ft
@@ -58,11 +73,11 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <div class="text-subtitle1">
-            $・Italian, Cafe
+          <div class="text-subtitle1 text-red">
+            ${{ selectedPic.price }}
           </div>
           <div class="text-caption text-grey">
-            Small plates, salads & sandwiches in an intimate setting.
+            East Food with delicious taste
           </div>
         </q-card-section>
 
@@ -131,24 +146,41 @@ export default {
       openBuy: false,
       stars: 4,
       number: 1,
+      selectedPic: { name: 'fake', price: 0 },
       eastMenu: [
-
+        { id: 'a1', name: 'ramen', price: 150, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600815/east/ramen_auy470.jpg' },
+        { id: 'a2', name: 'sushi', price: 100, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600818/east/sushi_wuhbof.jpg' },
+        { id: 'a3', name: 'luRouFan', price: 30, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600822/east/luRolRice_zpqscj.jpg' },
+        { id: 'a4', name: 'xiaoLongBao', price: 120, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600818/east/xiaoLongBao_mcuqfp.jpg' },
+        { id: 'a5', name: 'friedRice', price: 80, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600817/east/friedRice_elp7ti.jpg' },
+        { id: 'a6', name: 'dumplings', price: 70, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600814/east/dumplings_almtvj.jpg' },
+        { id: 'a7', name: 'zongZi', price: 40, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600825/east/zongZi_uzoa7f.jpg' },
+        { id: 'a8', name: 'satay', price: 80, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600819/east/Satay_omrhw9.jpg' },
+        { id: 'a9', name: 'curry', price: 90, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600815/east/curry_d1itna.jpg' },
+        { id: 'a10', name: 'oysterOmelet', price: 50, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600815/east/OysterOmelet_l9b9dx.jpg' },
+        { id: 'a11', name: 'baWan', price: 40, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600816/east/bawan_vnxyir.jpg' },
+        { id: 'a12', name: 'lakSa', price: 75, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600820/east/Laksa_b3hgw9.jpg' }
       ]
     }
   },
+
   methods: {
     count (num) {
       this.number = Number(this.number) + num;
     },
 
-    onSubmit () {
+    onSubmit (id) {
       this.$refs.number.validate();
       if (this.$refs.number.hasError) {
         this.formHasError = true;
       } else {
-        const random = Math.floor(Math.random() * 10 + 1);
-        const randomName = 'dog' + random;
-        this.$store.dispatch('cartAction', { type: 'add', value: { name: randomName, number: this.number } });
+        this.$store.dispatch('cartAction', {
+          type: 'add',
+          value: {
+            ...this.selectedPic,
+            number: this.number
+          }
+        });
         this.openBuy = false;
         this.number = 1;
         this.$q.notify({
@@ -157,6 +189,12 @@ export default {
           message: 'Add to Cart'
         })
       }
+    },
+
+    openCard (index) {
+      this.openBuy = true;
+      this.number = 1;
+      this.selectedPic = this.eastMenu[index];
     }
   }
 }
