@@ -106,51 +106,49 @@
           class="col"
           visible
         >
-          <div>
-            <q-list
-              bordered
-              class="q-pl-sm order-list"
-              v-for="cartItem in cartItems"
-              :key="cartItem.id"
+          <q-list
+            bordered
+            class="q-pl-sm order-list"
+            v-for="cartItem in cartItems"
+            :key="cartItem.id"
+          >
+            <q-item
+              tag="label"
+              v-ripple
             >
-              <q-item
-                tag="label"
-                v-ripple
-              >
-                <q-item-section thumbnail>
-                  <img
-                    :src="cartItem.url"
-                    alt="order_thumbnail"
-                  >
-                </q-item-section>
+              <q-item-section thumbnail>
+                <img
+                  :src="cartItem.url"
+                  alt="order_thumbnail"
+                >
+              </q-item-section>
 
-                <q-item-section>
-                  <q-item-label>
-                    {{ cartItem.name }}
-                  </q-item-label>
+              <q-item-section>
+                <q-item-label>
+                  {{ cartItem.name }}
+                </q-item-label>
 
-                  <q-item-label caption>
-                    ${{ cartItem.price }}
-                  </q-item-label>
+                <q-item-label caption>
+                  ${{ cartItem.price }}
+                </q-item-label>
 
-                  <q-item-label
-                    caption
-                    class="text-red"
-                  >
-                    {{ cartItem.number }}
-                  </q-item-label>
-                </q-item-section>
+                <q-item-label
+                  caption
+                  class="text-red"
+                >
+                  {{ cartItem.number }}
+                </q-item-label>
+              </q-item-section>
 
-                <q-item-section side>
-                  <q-checkbox
-                    :val="cartItem.order"
-                    dense
-                    v-model="selected"
-                  />
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div>
+              <q-item-section side>
+                <q-checkbox
+                  :val="cartItem.order"
+                  dense
+                  v-model="selected"
+                />
+              </q-item-section>
+            </q-item>
+          </q-list>
         </q-scroll-area>
 
         <div
@@ -163,7 +161,7 @@
           >
             Total Count: {{ selected.length }}
             <br>
-            Total Money: 1000$
+            Total Money: ${{ totalMoney }}
           </div>
 
           <q-btn-group
@@ -182,6 +180,8 @@
               icon="shopping_cart"
               color="primary"
               :disable="selected.length<1"
+              :to="{name:'Checkout'}"
+              @click="checkout"
             />
           </q-btn-group>
         </div>
@@ -240,6 +240,10 @@ export default {
         this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
         this.selected = [];
       })
+    },
+
+    checkout () {
+      console.log('go');
     }
   },
 
@@ -249,11 +253,17 @@ export default {
     },
 
     totalMoney () {
-      let res = [];
-      this.cartItems.forEach(el => {
-        res.push(el)
-      })
-      return null;
+      if (this.selected.length === 0) {
+        return 0;
+      } else {
+        let res = 0;
+        let index;
+        for (let i of this.selected) {
+          index = this.cartItems.findIndex(cartItem => cartItem.order === i);
+          res += this.cartItems[index].price * this.cartItems[index].number;
+        }
+        return res;
+      }
     }
   },
 

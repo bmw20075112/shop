@@ -10,11 +10,19 @@ const routes = [
 
   {
     path: '/menu',
-    component: () => import('layouts/menuLayout.vue'),
+    component: () => import('layouts/MenuLayout.vue'),
     children: [
       { path: 'east', name: 'East', component: () => import('pages/East.vue') },
       { path: 'west', name: 'West', component: () => import('pages/West.vue') },
       { path: 'drinks', name: 'Drinks', component: () => import('pages/Drinks.vue') }
+    ]
+  },
+
+  {
+    path: '/checkout',
+    component: () => import('layouts/Checkout.vue'),
+    children: [
+      { path: '', name: 'Checkout', component: () => import('pages/Checkout.vue') }
     ]
   },
 

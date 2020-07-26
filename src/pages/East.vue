@@ -1,7 +1,6 @@
 <template>
   <div
     class="q-pa-md"
-    style="width:1200px"
   >
     <div class="row q-col-gutter-md">
       <div
