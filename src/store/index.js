@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import menu from './menu'
 
 // import example from './module-example'
 
@@ -17,6 +18,7 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
+      menu
       // example
     },
     state: {
@@ -37,6 +39,7 @@ export default function (/* { ssrContext } */) {
       cartMutate (state, payload) {
         if (payload.type === 'add') {
           this.commit('orderMutate');
+          console.log(this.$router);
           state.cartItems.push({ ...payload.value, order: state.order });
         } else if (payload.type === 'remove') {
           let index;
