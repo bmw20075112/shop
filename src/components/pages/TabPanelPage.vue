@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="q-pa-md"
-  >
+  <div>
     <div class="row q-col-gutter-md">
       <div
         class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
@@ -9,7 +7,8 @@
         :key="food.id"
       >
         <q-card
-          class="my-card"
+          class="cursor-pointer"
+          :class="$q.dark.isActive?'bg-blue-grey-10':''"
           @click="openCard(index)"
         >
           <q-img
@@ -19,15 +18,15 @@
             spinner-size="32px"
           />
           <q-card-section>
-            <div class="text-h6">
+            <div class="text-h6 text-orange q-pb-xs font-weight-black">
               {{ $t(`${food.name}`) }}
             </div>
 
-            <div>
+            <div class="q-pb-sm">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit
             </div>
 
-            <div class="text-subtitle2 text-red">
+            <div class="text-subtitle2 text-orange">
               ${{ food.price }}
             </div>
           </q-card-section>
@@ -38,7 +37,10 @@
     <q-dialog
       v-model="openBuy"
     >
-      <q-card class="my-card">
+      <q-card
+        class="my-card"
+        :class="$q.dark.isActive?'bg-blue-grey-10':''"
+      >
         <img
           :src="selectedPic.url"
           alt=""

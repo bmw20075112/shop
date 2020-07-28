@@ -4,11 +4,10 @@
       v-model="step"
       ref="stepper"
       color="primary"
-      vertical
+      :contracted='$q.screen.lt.md'
       animated
       style="max-width:960px;"
     >
-      <h1>HIEEEE</h1>
       <q-step
         :name="1"
         title="Create an ad group"
@@ -25,32 +24,41 @@
         icon="navigation"
         :done="step > 2"
       >
+        <div class="text-body1 text-bold q-pb-xs">
+          收件者資料
+        </div>
         <q-form
-          class="q-gutter-md column"
+          class="q-gutter-md"
+          @submit.prevent.stop="submit"
         >
           <q-input
             v-model="name"
+            ref="name"
             type="text"
-            label="Name"
+            label="Name*"
             autofocus
             lazy-rules
+            placeholder='王小明'
             :rules="[ val => val && val.length > 0 || 'Please type your name']"
           />
 
           <q-input
             v-model="phone"
+            ref="phone"
             type="tel"
-            label="Phone"
+            label="Phone*"
             maxlength="10"
             lazy-rules
-            placeholder="Placeholder"
-            :rules="[val=>/^[09]{2}\d{8}/.test(val) || 'Please type in format']"
+            placeholder="0912345678"
+            :rules="[val=>/^[09]{2}\d{8}/.test(val) || 'Start with 09']"
           />
 
           <q-input
             v-model="address"
+            ref="address"
             type="text"
-            label="Address"
+            label="Address*"
+            :rules="[val => val && val.length > 0 || 'Please type your address']"
           />
           <q-input
             v-model="email"
@@ -111,6 +119,23 @@ export default {
       phone: '',
       address: '',
       email: ''
+    }
+  },
+
+  computed: {
+    selected () {
+      return this.$store.state.selected;
+    }
+  },
+
+  methods: {
+    submit () {
+      this.$refs.name.validate();
+      this.$refs.phone.validate();
+      this.$refs.address.validate();
+      if (this.$refs.name.hasError || this.$refs.phone.hasError || this.$refs.address.hasError) {
+        this.formHasError = true;
+      }
     }
   }
 }

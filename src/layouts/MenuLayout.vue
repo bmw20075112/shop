@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR ffr">
+  <q-layout :view="$q.screen.width<=768?'hHh lpR fFr':'hHh lpR ffr'">
     <q-header
       :elevated="$q.dark.isActive?false:true"
       :bordered="$q.dark.isActive?true:false"
@@ -9,7 +9,7 @@
           <q-avatar class="cursor-pointer">
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
           </q-avatar>
-          Title
+          PandaEat
         </q-toolbar-title>
         <q-btn
           flat
@@ -37,7 +37,8 @@
       </q-toolbar>
 
       <q-tabs
-        align="center"
+        :align="$q.screen.lt.lg?'center':'left'"
+        class="gt-sm"
         :breakpoint="1024"
         v-model="tab"
       >
@@ -59,9 +60,7 @@
     <q-drawer
       v-model="right"
       side="right"
-      :breakpoint="768"
       :width="320"
-      bordered
       elevated
     >
       <div
@@ -155,7 +154,7 @@
         <div
           class="z-top fixed-bottom q-pa-sm text-white"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-grey-6'"
-          style="bottom:35px"
+          style="bottom:50px"
         >
           <div
             class="text-subtitle2"
@@ -173,6 +172,7 @@
               label="delete"
               icon="delete"
               color="primary"
+              style="height:50px"
               :disable="selected.length<1"
               @click="deleteItem"
             />
@@ -198,9 +198,9 @@
     </q-page-container>
 
     <q-footer
-      class="bg-grey-8 text-white"
+      elevated
     >
-      <q-toolbar>
+      <q-toolbar class="bg-grey text-white gt-sm">
         <q-toolbar-title>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
@@ -208,6 +208,27 @@
           Title
         </q-toolbar-title>
       </q-toolbar>
+
+      <q-tabs
+        align="center"
+        class="lt-md"
+        :breakpoint="1024"
+        v-model="tab"
+        switch-indicator
+      >
+        <q-tab
+          name="east"
+          label="East"
+        />
+        <q-tab
+          name="west"
+          label="West"
+        />
+        <q-tab
+          name="drinks"
+          label="Drinks"
+        />
+      </q-tabs>
     </q-footer>
   </q-layout>
 </template>
@@ -244,7 +265,7 @@ export default {
     },
 
     checkout () {
-      console.log('go');
+      this.$store.dispatch('selectedAction', this.selected);
     }
   },
 

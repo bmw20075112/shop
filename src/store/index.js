@@ -24,6 +24,7 @@ export default function (/* { ssrContext } */) {
     state: {
       cartItems: [],
       order: 0,
+      selected: [],
       tab: 'east'
     },
 
@@ -50,6 +51,10 @@ export default function (/* { ssrContext } */) {
         }
       },
 
+      seletedMutate (state, payload) {
+        state.selected = payload;
+      },
+
       tabMutate (state, payload) {
         state.tab = payload;
       }
@@ -58,6 +63,10 @@ export default function (/* { ssrContext } */) {
     actions: {
       cartAction ({ commit }, payload) {
         commit('cartMutate', payload);
+      },
+
+      selectedAction ({ commit }, payload) {
+        commit('seletedMutate', payload);
       }
     },
 
