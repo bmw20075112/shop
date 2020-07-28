@@ -23,7 +23,8 @@ export default function (/* { ssrContext } */) {
     },
     state: {
       cartItems: [],
-      order: 0
+      order: 0,
+      tab: 'east'
     },
 
     getters: {
@@ -39,7 +40,6 @@ export default function (/* { ssrContext } */) {
       cartMutate (state, payload) {
         if (payload.type === 'add') {
           this.commit('orderMutate');
-          console.log(this.$router);
           state.cartItems.push({ ...payload.value, order: state.order });
         } else if (payload.type === 'remove') {
           let index;
@@ -48,6 +48,10 @@ export default function (/* { ssrContext } */) {
             state.cartItems.splice(index, 1);
           }
         }
+      },
+
+      tabMutate (state, payload) {
+        state.tab = payload;
       }
     },
 

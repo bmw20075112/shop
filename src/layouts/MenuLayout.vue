@@ -39,17 +39,18 @@
       <q-tabs
         align="center"
         :breakpoint="1024"
+        v-model="tab"
       >
-        <q-route-tab
-          :to="{name: 'East'}"
+        <q-tab
+          name="east"
           label="East"
         />
-        <q-route-tab
-          :to="{name: 'West'}"
+        <q-tab
+          name="west"
           label="West"
         />
-        <q-route-tab
-          :to="{name: 'Drinks'}"
+        <q-tab
+          name="drinks"
           label="Drinks"
         />
       </q-tabs>
@@ -125,7 +126,7 @@
 
               <q-item-section>
                 <q-item-label>
-                  {{ cartItem.name }}
+                  {{ $t(`${cartItem.name}`) }}
                 </q-item-label>
 
                 <q-item-label caption>
@@ -250,6 +251,16 @@ export default {
   computed: {
     cartItems () {
       return this.$store.getters.cartItems;
+    },
+
+    tab: {
+      get () {
+        return this.$store.state.tab;
+      },
+
+      set (value) {
+        this.$store.commit('tabMutate', value)
+      }
     },
 
     totalMoney () {

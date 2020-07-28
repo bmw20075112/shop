@@ -12,9 +12,7 @@ const routes = [
     path: '/menu',
     component: () => import('layouts/MenuLayout.vue'),
     children: [
-      { path: 'east', name: 'East', component: () => import('pages/East.vue') },
-      { path: 'west', name: 'West', component: () => import('pages/West.vue') },
-      { path: 'drinks', name: 'Drinks', component: () => import('pages/Drinks.vue') }
+      { path: '', name: 'Menu', component: () => import('pages/MenuPage.vue') }
     ]
   },
 

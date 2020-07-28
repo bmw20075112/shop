@@ -7,10 +7,12 @@
 1. 語言自動偵測
 2. 配色
 3. 付款表單
-4. TAB PANELS整合
 
 ## 已解決Bug
 1. 購物車刪除選項無法控制數量
+
+## 已完成功能
+1. TAB PANELS整合
 
 ## Install the dependencies
 ```bash

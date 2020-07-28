@@ -151,14 +151,18 @@ export default {
 
   computed: {
     menuNow () {
-      if (this.$route.name === 'East') {
+      if (this.tab === 'east') {
         return this.$store.state.menu.eastMenu;
-      } else if (this.$route.name === 'West') {
+      } else if (this.tab === 'west') {
         return this.$store.state.menu.westMenu;
-      } else if (this.$route.name === 'Drinks') {
+      } else if (this.tab === 'drinks') {
         return this.$store.state.menu.drinksMenu;
       }
       return null;
+    },
+
+    tab () {
+      return this.$store.state.tab;
     }
   },
 
