@@ -159,7 +159,7 @@
           <div
             class="text-subtitle2"
           >
-            Total Count: {{ selected.length }}
+            Total Select: {{ selected.length }}
             <br>
             Total Money: ${{ totalMoney }}
           </div>

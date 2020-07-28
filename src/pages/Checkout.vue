@@ -24,12 +24,12 @@
         icon="navigation"
         :done="step > 2"
       >
-        <div class="text-body1 text-bold q-pb-xs">
+        <!-- <div class="text-body1 text-bold q-pb-xs">
           收件者資料
-        </div>
+        </div> -->
         <q-form
           class="q-gutter-md"
-          @submit.prevent.stop="submit"
+          ref="form"
         >
           <q-input
             v-model="name"
@@ -38,6 +38,7 @@
             label="Name*"
             autofocus
             lazy-rules
+            outlined
             placeholder='王小明'
             :rules="[ val => val && val.length > 0 || 'Please type your name']"
           />
@@ -47,10 +48,12 @@
             ref="phone"
             type="tel"
             label="Phone*"
-            maxlength="10"
+            maxlength="12"
+            mask="####-###-###"
             lazy-rules
-            placeholder="0912345678"
-            :rules="[val=>/^[09]{2}\d{8}/.test(val) || 'Start with 09']"
+            outlined
+            placeholder="0912-345-678"
+            :rules="[val=>/^[09]{2}\d{2}-\d{3}-\d{3}/.test(val) || 'Start with 09']"
           />
 
           <q-input
@@ -58,12 +61,15 @@
             ref="address"
             type="text"
             label="Address*"
+            outlined
+            lazy-rules
             :rules="[val => val && val.length > 0 || 'Please type your address']"
           />
           <q-input
             v-model="email"
             type="email"
             label="Email"
+            outlined
           />
         </q-form>
       </q-step>
@@ -75,7 +81,46 @@
         icon="create_new_folder"
         :done="step > 3"
       >
-        An ad group contains one or more ads which target a shared set of keywords.
+        <q-form
+          ref="card"
+          class="q-gutter-md"
+        >
+          <q-input
+            v-model="cardNumber"
+            autocomplete="cc-number"
+            ref="ccNumber"
+            label="Card Number*"
+            maxlength=20
+            mask="####-####-####-####"
+            lazy-rules
+            outlined
+            placeholder="0123-4567-8901-2345"
+            :rules="[val=>/^\d{4}-\d{4}-\d{4}-\d{4}/.test(val) || 'Type in correct form']"
+          />
+
+          <q-input
+            v-model="nameOnCard"
+            autocomplete="cc-name"
+            type="text"
+            ref="ccName"
+            label="Name on card*"
+            lazy-rules
+            outlined
+            placeholder="王小明"
+            :rules="[val => val && val.length > 0 || 'Please type your name']"
+          />
+
+          <q-input
+            v-model="expiryDate"
+            autocomplete="cc-exp"
+            ref="expiryDate"
+            type="datetime-local"
+            lazy-rules
+            outlined
+            placeholder="王小明"
+            :rules="[val => val && val.length > 0 || 'Please type your name']"
+          />
+        </q-form>
       </q-step>
 
       <q-step
@@ -91,7 +136,7 @@
       <template v-slot:navigation>
         <q-stepper-navigation>
           <q-btn
-            @click="$refs.stepper.next()"
+            @click="next"
             color="primary"
             :label="step === 4 ? 'Finish' : 'Continue'"
           />
@@ -118,7 +163,11 @@ export default {
       name: '',
       phone: '',
       address: '',
-      email: ''
+      email: '',
+      deliverPass: false,
+      cardNumber: null,
+      nameOnCard: '',
+      expiryDate: ''
     }
   },
 
@@ -130,11 +179,19 @@ export default {
 
   methods: {
     submit () {
-      this.$refs.name.validate();
-      this.$refs.phone.validate();
-      this.$refs.address.validate();
       if (this.$refs.name.hasError || this.$refs.phone.hasError || this.$refs.address.hasError) {
         this.formHasError = true;
+      } else {
+        this.$refs.stepper.next();
+      }
+    },
+
+    next () {
+      if (this.step === 2) {
+        this.$refs.form.validate();
+        this.submit();
+      } else {
+        this.$refs.stepper.next();
       }
     }
   }
