@@ -28,7 +28,7 @@
           收件者資料
         </div> -->
         <q-form
-          class="q-gutter-md"
+          class="q-gutter-sm"
           ref="form"
         >
           <q-input
@@ -78,12 +78,43 @@
         :name="3"
         title="Create an ad group"
         caption="Optional"
-        icon="create_new_folder"
+        icon="credit_card"
         :done="step > 3"
       >
+        <div class="row justify-between items-center q-pb-md">
+          <div class="text-h5 text-bold">
+            Payment
+          </div>
+          <div
+            class="row no-padding no-margin"
+            :class="$q.screen.lt.sm?'q-gutter-x-xs':'q-gutter-x-md'"
+          >
+            <q-img
+              src="~assets/visa.png"
+              spinner-color="primary"
+              spinner-size="32px"
+              :width="iconWidth"
+            />
+
+            <q-img
+              src="~assets/mastercard.png"
+              spinner-color="primary"
+              spinner-size="32px"
+              :width="iconWidth"
+            />
+
+            <q-img
+              src="~assets/jcb.png"
+              spinner-color="primary"
+              spinner-size="32px"
+              :width="iconWidth"
+            />
+          </div>
+        </div>
+
         <q-form
           ref="card"
-          class="q-gutter-md"
+          class="column q-gutter-y-sm"
         >
           <q-input
             v-model="cardNumber"
@@ -94,6 +125,7 @@
             mask="####-####-####-####"
             lazy-rules
             outlined
+            autofocus
             placeholder="0123-4567-8901-2345"
             :rules="[val=>/^\d{4}-\d{4}-\d{4}-\d{4}/.test(val) || 'Type in correct form']"
           />
@@ -109,17 +141,51 @@
             placeholder="王小明"
             :rules="[val => val && val.length > 0 || 'Please type your name']"
           />
+          <div class="row q-pb-sm q-col-gutter-sm">
+            <q-select
+              class="col-2"
+              v-model="monthSelect"
+              :options="months"
+              label="Expiry Month"
+              outlined
+            />
 
-          <q-input
-            v-model="expiryDate"
-            autocomplete="cc-exp"
-            ref="expiryDate"
-            type="datetime-local"
-            lazy-rules
-            outlined
-            placeholder="王小明"
-            :rules="[val => val && val.length > 0 || 'Please type your name']"
-          />
+            <q-select
+              class="col-2"
+              v-model="yearSelect"
+              :options="years"
+              label="Expiry Year"
+              outlined
+            />
+            <!-- <q-input
+              v-model="expiryDate"
+              autocomplete="cc-exp"
+              type="month"
+              stack-label
+              ref="expiryDate"
+              lazy-rules
+              outlined
+              label="Expiry Date"
+              class="col-6"
+              mask="##/##"
+              placeholder="05/23"
+              :rules="[val => val && val.length === 5 || 'Please type Expiry Date']"
+            /> -->
+
+            <!-- <q-input
+              v-model="cvv"
+              ref="cvv"
+              type="tel"
+              label="Security Code"
+              lazy-rules
+              outlined
+              class="col-5"
+              placeholder="123"
+              maxlength="3"
+              :rules="[val => val && val.length === 3 || 'Please type CCV code']"
+            />
+          </div> -->
+          </div>
         </q-form>
       </q-step>
 
@@ -167,13 +233,26 @@ export default {
       deliverPass: false,
       cardNumber: null,
       nameOnCard: '',
-      expiryDate: ''
+      expiryDate: '',
+      months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+      monthSelect: '',
+      years: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'],
+      yearSelect: '',
+      cvv: null
     }
   },
 
   computed: {
     selected () {
       return this.$store.state.selected;
+    },
+
+    iconWidth () {
+      if (this.$q.screen.lt.md) {
+        return '32px';
+      } else {
+        return '48px';
+      }
     }
   },
 
@@ -197,3 +276,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+
+</style>
