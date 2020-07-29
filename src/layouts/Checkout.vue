@@ -30,6 +30,33 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer>
+      <q-toolbar class="bg-primary text-white">
+        <q-btn
+          flat
+          round
+          dense
+          icon="assignment_ind"
+        />
+        <q-toolbar-title>
+          Toolbar
+        </q-toolbar-title>
+        <q-btn
+          flat
+          round
+          dense
+          icon="apps"
+          class="q-mr-xs"
+        />
+        <q-btn
+          flat
+          round
+          dense
+          icon="more_vert"
+        />
+      </q-toolbar>
+    </q-footer>
   </q-layout>
 </template>
 

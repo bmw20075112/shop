@@ -1,19 +1,23 @@
 <template>
-  <div class="q-pa-md">
+  <div
+    class="q-pa-md"
+    :class="$q.screen.lt.sm? '': 'absolute-center'"
+  >
     <q-stepper
       v-model="step"
       ref="stepper"
       color="primary"
-      :contracted='$q.screen.lt.md'
       animated
-      style="max-width:960px;"
+      vertical
+      transition-next="slide-left"
+      transition-prev="slide-right"
     >
       <q-step
         :name="1"
-        title="Create an ad group"
-        caption="Optional"
-        icon="create_new_folder"
+        title="Confirm your order"
+        icon="shopping_cart"
         :done="step > 1"
+        :style="minWidth"
       >
         An ad group contains one or more ads which target a shared set of keywords.
       </q-step>
@@ -23,20 +27,20 @@
         title="Deliver Info"
         icon="navigation"
         :done="step > 2"
+        :style="minWidth"
       >
         <!-- <div class="text-body1 text-bold q-pb-xs">
           收件者資料
         </div> -->
         <q-form
           class="q-gutter-sm"
-          ref="form"
+          ref="deliver"
         >
           <q-input
             v-model="name"
             ref="name"
             type="text"
             label="Name*"
-            autofocus
             lazy-rules
             outlined
             placeholder='王小明'
@@ -53,7 +57,7 @@
             lazy-rules
             outlined
             placeholder="0912-345-678"
-            :rules="[val=>/^[09]{2}\d{2}-\d{3}-\d{3}/.test(val) || 'Start with 09']"
+            :rules="[val=>/^09\d{2}-\d{3}-\d{3}/.test(`${val}`) || 'Start with 09']"
           />
 
           <q-input
@@ -65,6 +69,7 @@
             lazy-rules
             :rules="[val => val && val.length > 0 || 'Please type your address']"
           />
+
           <q-input
             v-model="email"
             type="email"
@@ -76,19 +81,13 @@
 
       <q-step
         :name="3"
-        title="Create an ad group"
-        caption="Optional"
+        title="Payment"
         icon="credit_card"
         :done="step > 3"
+        :style="minWidth"
       >
-        <div class="row justify-between items-center q-pb-md">
-          <div class="text-h5 text-bold">
-            Payment
-          </div>
-          <div
-            class="row no-padding no-margin"
-            :class="$q.screen.lt.sm?'q-gutter-x-xs':'q-gutter-x-md'"
-          >
+        <div class="row justify-end items-center q-pb-md">
+          <div class="row q-gutter-x-md no-padding no-margin">
             <q-img
               src="~assets/visa.png"
               spinner-color="primary"
@@ -113,8 +112,8 @@
         </div>
 
         <q-form
-          ref="card"
-          class="column q-gutter-y-sm"
+          ref="payment"
+          class="column q-gutter-y-md"
         >
           <q-input
             v-model="cardNumber"
@@ -125,9 +124,9 @@
             mask="####-####-####-####"
             lazy-rules
             outlined
-            autofocus
+            hide-bottom-space
             placeholder="0123-4567-8901-2345"
-            :rules="[val=>/^\d{4}-\d{4}-\d{4}-\d{4}/.test(val) || 'Type in correct form']"
+            :rules="[val=>/^\d{4}-\d{4}-\d{4}-\d{4}/.test(val)]"
           />
 
           <q-input
@@ -138,65 +137,49 @@
             label="Name on card*"
             lazy-rules
             outlined
+            hide-bottom-space
             placeholder="王小明"
-            :rules="[val => val && val.length > 0 || 'Please type your name']"
+            :rules="[val => val && val.length > 0]"
           />
-          <div class="row q-pb-sm q-col-gutter-sm">
+
+          <div class="row q-pb-sm q-col-gutter-x-sm q-col-gutter-y-lg q-py-md">
             <q-select
-              class="col-2"
+              label="Expiry Month*"
+              ref="expiryMonth"
+              class="col-12 col-md-4 col-sm-6"
               v-model="monthSelect"
               :options="months"
-              label="Expiry Month"
+              :rules="[val => val.length > 0]"
               outlined
+              hide-bottom-space
             />
 
             <q-select
-              class="col-2"
+              label="Expiry Year*"
+              ref="expiryYear"
+              class="col-12 col-md-4 col-sm-6"
               v-model="yearSelect"
               :options="years"
-              label="Expiry Year"
+              :rules="[val => val.length > 0]"
               outlined
+              hide-bottom-space
             />
-            <!-- <q-input
-              v-model="expiryDate"
-              autocomplete="cc-exp"
-              type="month"
-              stack-label
-              ref="expiryDate"
-              lazy-rules
-              outlined
-              label="Expiry Date"
-              class="col-6"
-              mask="##/##"
-              placeholder="05/23"
-              :rules="[val => val && val.length === 5 || 'Please type Expiry Date']"
-            /> -->
 
-            <!-- <q-input
+            <q-input
               v-model="cvv"
-              ref="cvv"
               type="tel"
-              label="Security Code"
-              lazy-rules
-              outlined
-              class="col-5"
+              ref="ccv"
+              label="CCV*"
               placeholder="123"
               maxlength="3"
-              :rules="[val => val && val.length === 3 || 'Please type CCV code']"
+              class="col-12 col-md-4 col-sm-12"
+              lazy-rules
+              outlined
+              hide-bottom-space
+              :rules="[val => typeof(val)!==undefined && /\d{3}/.test(`${val}`)]"
             />
-          </div> -->
           </div>
         </q-form>
-      </q-step>
-
-      <q-step
-        :name="4"
-        title="Create an ad"
-        icon="add_comment"
-      >
-        Try out different ad text to see what brings in the most customers, and learn how to
-        enhance your ads using features like ad extensions. If you run into any problems with
-        your ads, find out how to tell if they're running and how to resolve approval issues.
       </q-step>
 
       <template v-slot:navigation>
@@ -204,8 +187,15 @@
           <q-btn
             @click="next"
             color="primary"
-            :label="step === 4 ? 'Finish' : 'Continue'"
-          />
+            :loading="loading"
+            :percentage="percentage"
+            :label="step === 3 ? 'Pay' : 'Continue'"
+          >
+            <template v-slot:loading>
+              <q-spinner-gears class="on-center" />
+            </template>
+          </q-btn>
+
           <q-btn
             v-if="step > 1"
             flat
@@ -233,12 +223,14 @@ export default {
       deliverPass: false,
       cardNumber: null,
       nameOnCard: '',
-      expiryDate: '',
       months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
       monthSelect: '',
       years: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'],
       yearSelect: '',
-      cvv: null
+      cvv: null,
+      loading: false,
+      percentage: 0,
+      minWidth: 'min-width:75vw;'
     }
   },
 
@@ -257,7 +249,7 @@ export default {
   },
 
   methods: {
-    submit () {
+    deliverSubmit () {
       if (this.$refs.name.hasError || this.$refs.phone.hasError || this.$refs.address.hasError) {
         this.formHasError = true;
       } else {
@@ -265,14 +257,37 @@ export default {
       }
     },
 
+    paymentSubmit () {
+      if (this.$refs.ccName.hasError || this.$refs.ccNumber.hasError || this.$refs.expiryMonth.hasError ||
+          this.$refs.expiryYear.hasError || this.$refs.ccv.hasError) {
+        this.formHasError = true;
+      } else {
+        this.loading = true;
+        this.percentage = 0;
+        this.interval = setInterval(() => {
+          this.percentage += Math.floor(Math.random() * 10) + 10;
+          if (this.percentage >= 100) {
+            clearInterval(this.interval);
+            this.loading = false;
+          }
+        }, 500)
+      }
+    },
+
     next () {
       if (this.step === 2) {
-        this.$refs.form.validate();
-        this.submit();
+        this.$refs.deliver.validate();
+        this.deliverSubmit();
+      } else if (this.step === 3) {
+        this.$refs.payment.validate();
+        this.paymentSubmit();
       } else {
         this.$refs.stepper.next();
       }
     }
+  },
+  beforeDestroy () {
+    clearInterval(this.interval);
   }
 }
 </script>
