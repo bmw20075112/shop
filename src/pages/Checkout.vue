@@ -1,25 +1,27 @@
 <template>
-  <div
-    class="q-pa-md"
-    :class="$q.screen.lt.sm? '': 'absolute-center'"
-  >
+  <q-page class="flex flex-center q-pa-md">
     <q-stepper
       v-model="step"
       ref="stepper"
       color="primary"
       animated
-      vertical
+      :vertical='$q.screen.lt.md?true:false'
       transition-next="slide-left"
       transition-prev="slide-right"
     >
       <q-step
         :name="1"
-        title="Confirm your order"
+        title="Warning"
         icon="shopping_cart"
         :done="step > 1"
-        :style="minWidth"
+        :style="formLayout"
       >
-        An ad group contains one or more ads which target a shared set of keywords.
+        <div class="text-negative column items-center">
+          <h6>This website is only for Practicing.</h6>
+          <div class="text-body1">
+            Please do not key in any real world personal information.
+          </div>
+        </div>
       </q-step>
 
       <q-step
@@ -27,7 +29,7 @@
         title="Deliver Info"
         icon="navigation"
         :done="step > 2"
-        :style="minWidth"
+        :style="formLayout"
       >
         <!-- <div class="text-body1 text-bold q-pb-xs">
           收件者資料
@@ -41,9 +43,10 @@
             ref="name"
             type="text"
             label="Name*"
+            placeholder='王小明'
             lazy-rules
             outlined
-            placeholder='王小明'
+            maxlength="30"
             :rules="[ val => val && val.length > 0 || 'Please type your name']"
           />
 
@@ -84,7 +87,7 @@
         title="Payment"
         icon="credit_card"
         :done="step > 3"
-        :style="minWidth"
+        :style="formLayout"
       >
         <div class="row justify-end items-center q-pb-md">
           <div class="row q-gutter-x-md no-padding no-margin">
@@ -135,10 +138,11 @@
             type="text"
             ref="ccName"
             label="Name on card*"
+            placeholder="王小明"
             lazy-rules
             outlined
             hide-bottom-space
-            placeholder="王小明"
+            maxlength="30"
             :rules="[val => val && val.length > 0]"
           />
 
@@ -183,7 +187,16 @@
       </q-step>
 
       <template v-slot:navigation>
-        <q-stepper-navigation>
+        <q-stepper-navigation class="float-right">
+          <q-btn
+
+            flat
+            color="primary"
+            @click="back"
+            label="Back"
+            class="q-ml-sm"
+          />
+
           <q-btn
             @click="next"
             color="primary"
@@ -195,23 +208,14 @@
               <q-spinner-gears class="on-center" />
             </template>
           </q-btn>
-
-          <q-btn
-            v-if="step > 1"
-            flat
-            color="primary"
-            @click="$refs.stepper.previous()"
-            label="Back"
-            class="q-ml-sm"
-          />
         </q-stepper-navigation>
       </template>
     </q-stepper>
-  </div>
+  </q-page>
 </template>
 
 <script>
-
+import Store from '../store/index'
 export default {
   data () {
     return {
@@ -229,8 +233,7 @@ export default {
       yearSelect: '',
       cvv: null,
       loading: false,
-      percentage: 0,
-      minWidth: 'min-width:75vw;'
+      percentage: 0
     }
   },
 
@@ -245,10 +248,26 @@ export default {
       } else {
         return '48px';
       }
+    },
+
+    formLayout () {
+      if (this.$q.screen.gt.sm) {
+        return 'min-height:20vh; min-width:60vw';
+      } else {
+        return 'min-width:75vw';
+      }
     }
   },
 
   methods: {
+    back () {
+      if (this.step === 1) {
+        this.$router.go(-1);
+      } else {
+        this.$refs.stepper.previous()
+      }
+    },
+
     deliverSubmit () {
       if (this.$refs.name.hasError || this.$refs.phone.hasError || this.$refs.address.hasError) {
         this.formHasError = true;
@@ -265,10 +284,25 @@ export default {
         this.loading = true;
         this.percentage = 0;
         this.interval = setInterval(() => {
-          this.percentage += Math.floor(Math.random() * 10) + 10;
+          this.percentage += Math.floor(Math.random() * 20) + 10;
           if (this.percentage >= 100) {
             clearInterval(this.interval);
             this.loading = false;
+            this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
+            this.$store.dispatch('selectedAction', []);
+            this.$q.dialog({
+              title: 'Thanks for purchasing',
+              message: 'Your order have been submitted.'
+            }).onOk(() => {
+              // clearTimeout(timer);
+              this.$router.push('/');
+            }).onDismiss(() => {
+              // clearTimeout(timer);
+              this.$router.push('/');
+            })
+            // const timer = setTimeout(() => {
+            //   dialog.hide()
+            // }, 3000)
           }
         }, 500)
       }
@@ -286,6 +320,15 @@ export default {
       }
     }
   },
+
+  beforeRouteEnter (to, from, next) {
+    if (Store().getters.selected.length > 0) {
+      next();
+    } else {
+      next({ name: 'Menu' });
+    }
+  },
+
   beforeDestroy () {
     clearInterval(this.interval);
   }

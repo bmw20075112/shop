@@ -1,4 +1,3 @@
-
 const routes = [
   {
     path: '/',
@@ -20,7 +19,11 @@ const routes = [
     path: '/checkout',
     component: () => import('layouts/Checkout.vue'),
     children: [
-      { path: '', name: 'Checkout', component: () => import('pages/Checkout.vue') }
+      {
+        path: '',
+        name: 'Checkout',
+        component: () => import('pages/Checkout.vue')
+      }
     ]
   },
 

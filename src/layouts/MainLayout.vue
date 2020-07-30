@@ -1,12 +1,10 @@
 <template>
   <q-layout
     view="hHh lpR fff"
-    container
-    style="height:100vh"
   >
     <q-header
       reveal
-      class="bg-brown-5"
+      elevated
     >
       <q-toolbar>
         <q-toolbar-title>
@@ -18,39 +16,52 @@
 
         <q-btn
           flat
-          :icon="menuIcon"
+          label="menu"
+          class="q-py-sm"
+          :to="{name: 'Menu'}"
+        />
+
+        <q-btn
+          flat
+          icon="account_box"
           :label="$q.screen.gt.sm? $t('user') : '' "
           class="q-py-sm"
-          @click="right = !right"
-        />
+        >
+          <q-menu>
+            <Menu />
+          </q-menu>
+        </q-btn>
       </q-toolbar>
     </q-header>
-
-    <q-drawer
-      v-model="right"
-      side="right"
-      bordered
-      :breakpoint="768"
-      overlay
-    >
-      <Menu />
-      <!-- drawer content -->
-    </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
 
-    <q-footer
-      class="bg-grey-8 text-white"
-    >
-      <q-toolbar>
+    <q-footer>
+      <q-toolbar class="bg-primary text-white">
+        <q-btn
+          flat
+          round
+          dense
+          icon="assignment_ind"
+        />
         <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
-          </q-avatar>
-          Title
+          Toolbar
         </q-toolbar-title>
+        <q-btn
+          flat
+          round
+          dense
+          icon="apps"
+          class="q-mr-xs"
+        />
+        <q-btn
+          flat
+          round
+          dense
+          icon="more_vert"
+        />
       </q-toolbar>
     </q-footer>
   </q-layout>
@@ -65,16 +76,6 @@ export default {
   data () {
     return {
       right: false
-    }
-  },
-
-  computed: {
-    menuIcon () {
-      if (this.$q.screen.gt.sm) {
-        return 'account_box';
-      } else {
-        return 'menu';
-      }
     }
   },
 

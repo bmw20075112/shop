@@ -5,7 +5,7 @@
       :bordered="$q.dark.isActive?true:false"
     >
       <q-toolbar>
-        <q-toolbar-title>
+        <q-toolbar-title @click="$router.push('/')">
           <q-avatar class="cursor-pointer">
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
           </q-avatar>
@@ -110,7 +110,7 @@
             bordered
             class="q-pl-sm order-list"
             v-for="cartItem in cartItems"
-            :key="cartItem.id"
+            :key="cartItem.order"
           >
             <q-item
               tag="label"
@@ -134,9 +134,9 @@
 
                 <q-item-label
                   caption
-                  class="text-red"
+                  class="text-bold"
                 >
-                  {{ cartItem.number }}
+                  Number: <span class="text-red q-pl-xs">{{ cartItem.number }}</span>
                 </q-item-label>
               </q-item-section>
 
@@ -156,12 +156,14 @@
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-grey-6'"
           style="bottom:50px"
         >
-          <div
-            class="text-subtitle2"
-          >
-            Total Select: {{ selected.length }}
-            <br>
-            Total Money: ${{ totalMoney }}
+          <div class="float-right">
+            <div class="text-subtitle1">
+              Total Select: <span class="text-red text-bold q-pl-xl">{{ selected.length }}</span>
+            </div>
+
+            <div class="text-subtitle1">
+              Total Cost: <span class="text-red text-bold q-pl-xl">${{ totalMoney }}</span>
+            </div>
           </div>
 
           <q-btn-group
@@ -318,6 +320,7 @@ export default {
       if (!val) {
         this.selected = [];
       } else {
+        this.selected = [];
         for (let i of this.cartItems) {
           this.selected.push(i.order);
         }
@@ -329,6 +332,6 @@ export default {
 
 <style lang="scss">
 .order-list:last-child{
-  margin-bottom: 96px;
+  margin-bottom: 125px;
 }
 </style>

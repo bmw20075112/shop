@@ -31,6 +31,10 @@ export default function (/* { ssrContext } */) {
     getters: {
       cartItems (state) {
         return state.cartItems;
+      },
+
+      selected (state) {
+        return state.selected;
       }
     },
 
