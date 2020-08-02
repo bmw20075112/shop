@@ -32,39 +32,18 @@
     </q-page-container>
 
     <q-footer>
-      <q-toolbar class="bg-primary text-white">
-        <q-btn
-          flat
-          round
-          dense
-          icon="assignment_ind"
-        />
-        <q-toolbar-title>
-          Toolbar
-        </q-toolbar-title>
-        <q-btn
-          flat
-          round
-          dense
-          icon="apps"
-          class="q-mr-xs"
-        />
-        <q-btn
-          flat
-          round
-          dense
-          icon="more_vert"
-        />
-      </q-toolbar>
+      <Footer />
     </q-footer>
   </q-layout>
 </template>
 
 <script>
 import Menu from '../components/layouts/Menu.vue';
+import Footer from '../components/layouts/Footer.vue'
 export default {
   components: {
-    Menu
+    Menu,
+    Footer
   },
   data () {
     return {

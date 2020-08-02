@@ -11,22 +11,25 @@
     >
       <q-step
         :name="1"
-        title="Warning"
+        :title="$t('warning')"
         icon="shopping_cart"
         :done="step > 1"
         :style="formLayout"
       >
         <div class="text-negative column items-center">
-          <h6>This website is only for Practicing.</h6>
-          <div class="text-body1">
-            Please do not key in any real world personal information.
+          <div class="text-h5 no-margin q-pt-xl text-bold">
+            {{ $t('warningTitle') }}
+          </div>
+
+          <div class="text-body1 q-pt-md">
+            {{ $t('warningSub') }}
           </div>
         </div>
       </q-step>
 
       <q-step
         :name="2"
-        title="Deliver Info"
+        :title="$t('deliverInfo')"
         icon="navigation"
         :done="step > 2"
         :style="formLayout"
@@ -42,41 +45,41 @@
             v-model="name"
             ref="name"
             type="text"
-            label="Name*"
+            :label="$t('name')"
             placeholder='王小明'
             lazy-rules
             outlined
             maxlength="30"
-            :rules="[ val => val && val.length > 0 || 'Please type your name']"
+            :rules="[ val => val && val.length > 0 || this.$t('nameAlert')]"
           />
 
           <q-input
             v-model="phone"
             ref="phone"
             type="tel"
-            label="Phone*"
+            :label="$t('phone')"
             maxlength="12"
             mask="####-###-###"
             lazy-rules
             outlined
             placeholder="0912-345-678"
-            :rules="[val=>/^09\d{2}-\d{3}-\d{3}/.test(`${val}`) || 'Start with 09']"
+            :rules="[val=>/^09\d{2}-\d{3}-\d{3}/.test(`${val}`) || this.$t('phoneAlert')]"
           />
 
           <q-input
             v-model="address"
             ref="address"
             type="text"
-            label="Address*"
+            :label="$t('address')"
             outlined
             lazy-rules
-            :rules="[val => val && val.length > 0 || 'Please type your address']"
+            :rules="[val => val && val.length > 0 || this.$t('addressAlert')]"
           />
 
           <q-input
             v-model="email"
             type="email"
-            label="Email"
+            :label="$t('email')"
             outlined
           />
         </q-form>
@@ -84,7 +87,7 @@
 
       <q-step
         :name="3"
-        title="Payment"
+        :title="$t('payment')"
         icon="credit_card"
         :done="step > 3"
         :style="formLayout"
@@ -122,7 +125,7 @@
             v-model="cardNumber"
             autocomplete="cc-number"
             ref="ccNumber"
-            label="Card Number*"
+            :label="$t('cardNumber')"
             maxlength=20
             mask="####-####-####-####"
             lazy-rules
@@ -137,7 +140,7 @@
             autocomplete="cc-name"
             type="text"
             ref="ccName"
-            label="Name on card*"
+            :label="$t('cardName')"
             placeholder="王小明"
             lazy-rules
             outlined
@@ -148,7 +151,7 @@
 
           <div class="row q-pb-sm q-col-gutter-x-sm q-col-gutter-y-lg q-py-md">
             <q-select
-              label="Expiry Month*"
+              :label="$t('expiryMonth')"
               ref="expiryMonth"
               class="col-12 col-md-4 col-sm-6"
               v-model="monthSelect"
@@ -159,7 +162,7 @@
             />
 
             <q-select
-              label="Expiry Year*"
+              :label="$t('expiryYear')"
               ref="expiryYear"
               class="col-12 col-md-4 col-sm-6"
               v-model="yearSelect"
@@ -173,7 +176,7 @@
               v-model="cvv"
               type="tel"
               ref="ccv"
-              label="CCV*"
+              :label="$t('ccv')"
               placeholder="123"
               maxlength="3"
               class="col-12 col-md-4 col-sm-12"
@@ -189,11 +192,10 @@
       <template v-slot:navigation>
         <q-stepper-navigation class="float-right">
           <q-btn
-
             flat
             color="primary"
             @click="back"
-            label="Back"
+            :label="$t('back')"
             class="q-ml-sm"
           />
 
@@ -202,7 +204,7 @@
             color="primary"
             :loading="loading"
             :percentage="percentage"
-            :label="step === 3 ? 'Pay' : 'Continue'"
+            :label="step === 3 ? $t('pay') : $t('continue')"
           >
             <template v-slot:loading>
               <q-spinner-gears class="on-center" />
@@ -215,7 +217,6 @@
 </template>
 
 <script>
-import Store from '../store/index'
 export default {
   data () {
     return {
@@ -252,9 +253,9 @@ export default {
 
     formLayout () {
       if (this.$q.screen.gt.sm) {
-        return 'min-height:20vh; min-width:60vw';
+        return 'min-height:40vh; min-width:65vw';
       } else {
-        return 'min-width:75vw';
+        return 'min-width:90vw';
       }
     }
   },
@@ -291,18 +292,11 @@ export default {
             this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
             this.$store.dispatch('selectedAction', []);
             this.$q.dialog({
-              title: 'Thanks for purchasing',
-              message: 'Your order have been submitted.'
+              title: this.$t('successTitle'),
+              message: this.$t('successMessage')
             }).onOk(() => {
-              // clearTimeout(timer);
-              this.$router.push('/');
-            }).onDismiss(() => {
-              // clearTimeout(timer);
               this.$router.push('/');
             })
-            // const timer = setTimeout(() => {
-            //   dialog.hide()
-            // }, 3000)
           }
         }, 500)
       }
@@ -321,20 +315,8 @@ export default {
     }
   },
 
-  beforeRouteEnter (to, from, next) {
-    if (Store().getters.selected.length > 0) {
-      next();
-    } else {
-      next({ name: 'Menu' });
-    }
-  },
-
   beforeDestroy () {
     clearInterval(this.interval);
   }
 }
 </script>
-
-<style lang="scss">
-
-</style>

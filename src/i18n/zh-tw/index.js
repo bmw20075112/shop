@@ -1,12 +1,52 @@
 export default {
-  failed: '失敗',
-  success: '成功',
+  lorem: '三來開先色研人字輪備他招說始出了可是簡安包價級行香法。',
   cancel: '取消',
   logout: '登出',
   dark: '暗黑模式',
   user: '用戶設定',
   accounts: '帳戶餘額',
   settings: '設定',
+
+  // TabPanelPage
+  addToCart: '已經放入購物車',
+  foodCaption: '美味營養的餐點',
+  number: '數量',
+  hide: '隱藏',
+
+  // menuLayout
+  totalSelect: '總選取件數',
+  totalCost: '總計金額',
+  delete: '刪除訂單',
+  checkout: '結帳',
+
+  // Menu Page
+  east: '東方美食',
+  west: '西式饗宴',
+  drinks: '多元飲品',
+
+  // Checkout
+  warning: '注意事項',
+  warningTitle: '本網站只做前端練習用途',
+  warningSub: '請勿輸入任何真實個人敏感資訊',
+  deliverInfo: '寄送資訊',
+  payment: '付款',
+  name: '姓名*',
+  phone: '手機號碼*',
+  address: '住址*',
+  email: '電子信箱',
+  nameAlert: '姓名為必填項目',
+  phoneAlert: '手機前2碼須為09',
+  addressAlert: '住址為必填項目',
+  cardNumber: '卡片號碼*',
+  cardName: '持卡人姓名*',
+  expiryMonth: '到期月份*',
+  expiryYear: '到期年份*',
+  ccv: '安全碼',
+  back: '上一頁',
+  pay: '付款',
+  continue: '下一頁',
+  successTitle: '感謝您的訂購',
+  successMessage: '您的訂單已送出',
 
   // east
   ramen: '拉麵',

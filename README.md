@@ -1,14 +1,16 @@
 # Quasar App (shop)
 
 ## bug
-1. Vue Route Gate 無法結合Vuex(進入Checkout前)
 
 ## 預定開發
 1. 語言自動偵測
 2. 配色
+3. MOBILE 下滑顯示回頂端的按鈕
+4. 首頁
 
 ## 已解決Bug
 1. 購物車刪除選項無法控制數量
+2. Vue Route Gate 無法結合Vuex(進入Checkout前)
 
 ## 已完成功能
 1. TAB PANELS整合

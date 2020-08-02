@@ -23,7 +23,7 @@
             </div>
 
             <div class="q-pb-sm">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit
+              {{ $t('lorem') }}
             </div>
 
             <div class="text-subtitle2 text-orange">
@@ -78,7 +78,7 @@
             ${{ selectedPic.price }}
           </div>
           <div class="text-caption text-grey">
-            Food with delicious taste
+            {{ $t('foodCaption') }}
           </div>
         </q-card-section>
 
@@ -92,7 +92,7 @@
             <q-input
               v-model.number="number"
               type="number"
-              label="Number"
+              :label="$t('number')"
               ref="number"
               class="q-mb-xl"
               :rules="[val=>Number.isInteger(val) || 'Input must be positive interger',
@@ -188,9 +188,12 @@ export default {
         this.openBuy = false;
         this.number = 1;
         this.$q.notify({
-          icon: 'done',
-          color: 'positive',
-          message: 'Add to Cart'
+          message: `${this.$t(`${this.selectedPic.name}`)}` + ` ${this.$t('addToCart')}`,
+          avatar: this.selectedPic.url,
+          actions: [
+            { label: this.$t('hide'), color: 'red' },
+            { label: this.$t('checkout'), color: 'primary', handler: () => this.$store.commit('drawerMutate', true) }
+          ]
         })
       }
     },

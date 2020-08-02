@@ -1,7 +1,7 @@
 <template>
   <q-toggle
     v-model="lang"
-    :label="langLabel"
+    label="English"
     icon="translate"
     true-value="en-us"
     false-value="zh-tw"
@@ -16,22 +16,14 @@ export default {
     }
   },
 
-  computed: {
-    langLabel () {
-      if (this.lang === 'zh-tw') {
-        this.$q.cookies.remove('isTranslate');
-        return '中文';
-      } else if (this.lang === 'en-us') {
-        this.$q.cookies.set('isTranslate', true);
-        return 'English';
-      }
-      return null;
-    }
-  },
-
   watch: {
     lang (lang) {
       this.$i18n.locale = lang;
+      if (lang === 'zh-tw') {
+        this.$q.cookies.remove('isTranslate');
+      } else if (lang === 'en-us') {
+        this.$q.cookies.set('isTranslate', true);
+      }
     }
   }
 }

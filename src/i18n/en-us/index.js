@@ -2,14 +2,55 @@
 // so you can safely delete all default props below
 
 export default {
-  failed: 'Action failed',
-  success: 'Action was successful',
+  lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
   cancel: 'Cancel',
   logout: 'Logout',
   dark: 'Dark Mode',
   accounts: 'Accounts',
   user: 'User',
   settings: 'Settings',
+
+  // TabPanelPage
+  addToCart: 'is in the Cart',
+  foodCaption: 'Food with delicious taste',
+  number: 'Number',
+  hide: 'Hide',
+
+  // Menu Layout
+  totalSelect: 'Total Select',
+  totalCost: 'Total Cost',
+  delete: 'Delete',
+  checkout: 'Checkout',
+
+  // Menu Page
+  east: 'East',
+  west: 'West',
+  drinks: 'Drinks',
+
+  // Checkout
+  warning: 'Warning',
+  warningTitle: 'This website is only for Practicing.',
+  warningSub: 'Do not key in any sensitive real personal information.',
+  deliverInfo: 'Deliver Info',
+  payment: 'Payment',
+  name: 'Name*',
+  phone: 'Phone*',
+  address: 'Address*',
+  email: 'Email',
+  nameAlert: 'Please type your name',
+  phoneAlert: 'Start with 09',
+  addressAlert: 'Please type your address',
+  cardNumber: 'Card Number*',
+  cardName: 'Name on Card*',
+  expiryMonth: 'Expiry Month*',
+  expiryYear: 'Expiry Year*',
+  ccv: 'CCV',
+  back: 'Back',
+  pay: 'Pay',
+  continue: 'Continue',
+  successTitle: 'Thanks for purchasing',
+  successMessage: 'Your order have been submitted.',
+
   // east
   ramen: 'Ramen',
   sushi: 'Sushi',

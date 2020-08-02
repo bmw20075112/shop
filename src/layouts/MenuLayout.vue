@@ -5,11 +5,17 @@
       :bordered="$q.dark.isActive?true:false"
     >
       <q-toolbar>
-        <q-toolbar-title @click="$router.push('/')">
-          <q-avatar class="cursor-pointer">
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+        <q-toolbar-title>
+          <q-avatar @click="$router.push('/')">
+            <img
+              src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"
+              class="cursor-pointer"
+            >
           </q-avatar>
-          PandaEat
+          <span
+            class="cursor-pointer q-pl-sm"
+            @click="$router.push('/')"
+          >PandaEat</span>
         </q-toolbar-title>
         <q-btn
           flat
@@ -25,7 +31,7 @@
         <q-btn
           flat
           icon="shopping_cart"
-          @click="right = !right"
+          @click="drawer = !drawer"
         >
           <q-badge
             color="orange"
@@ -44,21 +50,21 @@
       >
         <q-tab
           name="east"
-          label="East"
+          :label="$t('east')"
         />
         <q-tab
           name="west"
-          label="West"
+          :label="$t('west')"
         />
         <q-tab
           name="drinks"
-          label="Drinks"
+          :label="$t('drinks')"
         />
       </q-tabs>
     </q-header>
 
     <q-drawer
-      v-model="right"
+      v-model="drawer"
       side="right"
       :width="320"
       elevated
@@ -79,7 +85,7 @@
               color="primary"
               icon="close"
               unelevated
-              @click="right=false"
+              @click="drawer=false"
             />
           </div>
 
@@ -136,7 +142,7 @@
                   caption
                   class="text-bold"
                 >
-                  Number: <span class="text-red q-pl-xs">{{ cartItem.number }}</span>
+                  {{ $t('number') }}: <span class="text-red q-ml-sm">{{ cartItem.number }}</span>
                 </q-item-label>
               </q-item-section>
 
@@ -158,11 +164,11 @@
         >
           <div class="float-right">
             <div class="text-subtitle1">
-              Total Select: <span class="text-red text-bold q-pl-xl">{{ selected.length }}</span>
+              {{ $t('totalSelect') }}: <span class="text-red text-bold q-pl-xl float-right">{{ selected.length }}</span>
             </div>
 
             <div class="text-subtitle1">
-              Total Cost: <span class="text-red text-bold q-pl-xl">${{ totalMoney }}</span>
+              {{ $t('totalCost') }}: <span class="text-red text-bold q-pl-xl float-right">${{ totalMoney }}</span>
             </div>
           </div>
 
@@ -171,7 +177,7 @@
             class="bg-primary fixed-bottom"
           >
             <q-btn
-              label="delete"
+              :label="$t('delete')"
               icon="delete"
               color="primary"
               style="height:50px"
@@ -179,7 +185,7 @@
               @click="deleteItem"
             />
             <q-btn
-              label="Checkout"
+              :label="$t('checkout')"
               icon="shopping_cart"
               color="primary"
               :disable="selected.length<1"
@@ -195,7 +201,15 @@
 
     <q-page-container>
       <div class="row justify-center">
+        <div ref="top" />
         <router-view />
+        <q-btn
+          class='fixed lt-md'
+          style="right:5px; bottom:55px"
+          color="orange"
+          icon="keyboard_arrow_up"
+          @click="scrollToElement()"
+        />
       </div>
     </q-page-container>
 
@@ -203,12 +217,7 @@
       elevated
     >
       <q-toolbar class="bg-grey text-white gt-sm">
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
-          </q-avatar>
-          Title
-        </q-toolbar-title>
+        <Footer />
       </q-toolbar>
 
       <q-tabs
@@ -220,15 +229,15 @@
       >
         <q-tab
           name="east"
-          label="East"
+          :label="$t('east')"
         />
         <q-tab
           name="west"
-          label="West"
+          :label="$t('west')"
         />
         <q-tab
           name="drinks"
-          label="Drinks"
+          :label="$t('drinks')"
         />
       </q-tabs>
     </q-footer>
@@ -237,14 +246,15 @@
 
 <script>
 import Menu from '../components/layouts/Menu.vue';
+import Footer from '../components/layouts/Footer.vue'
+
 export default {
   components: {
-    Menu
+    Menu,
+    Footer
   },
   data () {
     return {
-      right: false,
-      selected: [],
       allSelect: false
     }
   },
@@ -262,18 +272,32 @@ export default {
         }
       }).onOk(() => {
         this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
-        this.selected = [];
+        this.$store.dispatch('selectedAction', []);
       })
     },
 
     checkout () {
       this.$store.dispatch('selectedAction', this.selected);
+    },
+
+    scrollToElement () {
+      this.$refs.top.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   },
 
   computed: {
     cartItems () {
       return this.$store.getters.cartItems;
+    },
+
+    drawer: {
+      get () {
+        return this.$store.state.drawer;
+      },
+
+      set (value) {
+        this.$store.commit('drawerMutate', value);
+      }
     },
 
     tab: {
@@ -283,6 +307,16 @@ export default {
 
       set (value) {
         this.$store.commit('tabMutate', value)
+      }
+    },
+
+    selected: {
+      get () {
+        return this.$store.state.selected;
+      },
+
+      set (value) {
+        this.$store.dispatch('selectedAction', value);
       }
     },
 
@@ -318,12 +352,22 @@ export default {
   watch: {
     allSelect (val) {
       if (!val) {
-        this.selected = [];
+        this.$store.dispatch('selectedAction', []);
       } else {
-        this.selected = [];
+        this.$store.dispatch('selectedAction', []);
+        let temp = [];
         for (let i of this.cartItems) {
-          this.selected.push(i.order);
+          temp.push(i.order);
         }
+        this.$store.dispatch('selectedAction', temp);
+      }
+    },
+
+    selected (val) {
+      if (val.length === 0) {
+        this.allSelect = false;
+      } else if (val.length === this.cartItems.length) {
+        this.allSelect = true;
       }
     }
   }

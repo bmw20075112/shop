@@ -25,7 +25,8 @@ export default function (/* { ssrContext } */) {
       cartItems: [],
       order: 0,
       selected: [],
-      tab: 'east'
+      tab: 'east',
+      drawer: false
     },
 
     getters: {
@@ -61,6 +62,10 @@ export default function (/* { ssrContext } */) {
 
       tabMutate (state, payload) {
         state.tab = payload;
+      },
+
+      drawerMutate (state, payload) {
+        state.drawer = payload;
       }
     },
 

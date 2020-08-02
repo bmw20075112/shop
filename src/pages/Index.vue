@@ -1,28 +1,91 @@
 <template>
-  <q-page>
+  <div class="q-pa-md flex">
     <div
-      class="relative-position"
+      class="row"
+      v-for="item in menu"
+      :key="item.id"
     >
-      <q-img
-        srcset="
-        https://res.cloudinary.com/barney4760/image/upload/v1595177151/Home/home-1-medium_k8wtlh.jpg 1280w,
-        https://res.cloudinary.com/barney4760/image/upload/v1595177151/Home/home-1-large_sto7gj.jpg 1920w"
-        src="https://res.cloudinary.com/barney4760/image/upload/v1595177151/Home/home-1-medium_k8wtlh.jpg"
-        spinner-color="primary"
-        spinner-size="82px"
-        position="50% 40%"
-        style="height:100vh"
-      />
-      <div class="home-text">
-        Eat At Home
-      </div>
+      <q-card class="my-card">
+        <q-img
+          src="https://cdn.quasar.dev/img/mountains.jpg"
+          :ratio="16/9"
+          spinner-color="primary"
+          spinner-size="82px"
+        />
+        <q-card-section>
+          <div class="text-h6">
+            Our Changing Planet
+          </div>
+          <div class="text-subtitle2">
+            by John Doe
+          </div>
+        </q-card-section>
+        <q-card-section>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit
+        </q-card-section>
+      </q-card>
     </div>
-  </q-page>
+    <!-- <q-carousel
+        arrows
+        animated
+        v-model="slide"
+        height="300px"
+      >
+        <q-carousel-slide
+          name="first"
+          img-src="https://cdn.quasar.dev/img/mountains.jpg"
+        >
+          <div class="absolute-bottom custom-caption">
+            <div class="text-h2">
+              First stop
+            </div>
+            <div class="text-subtitle1">
+              Mountains
+            </div>
+          </div>
+        </q-carousel-slide>
+        <q-carousel-slide
+          name="second"
+          img-src="https://cdn.quasar.dev/img/parallax1.jpg"
+        >
+          <div class="absolute-bottom custom-caption">
+            <div class="text-h2">
+              Second stop
+            </div>
+            <div class="text-subtitle1">
+              Famous City
+            </div>
+          </div>
+        </q-carousel-slide>
+        <q-carousel-slide
+          name="third"
+          img-src="https://cdn.quasar.dev/img/parallax2.jpg"
+        >
+          <div class="absolute-bottom custom-caption">
+            <div class="text-h2">
+              Third stop
+            </div>
+            <div class="text-subtitle1">
+              Famous Bridge
+            </div>
+          </div>
+        </q-carousel-slide>
+      </q-carousel> -->
+  </div>
 </template>
 
 <script>
 export default {
-
+  data () {
+    return {
+      slide: 'first',
+      menu: [
+        { id: 'east', url: '', title: '' },
+        { id: 'west', url: '', title: '' },
+        { id: 'drinks', url: '', title: '' }
+      ]
+    }
+  }
 }
 </script>
 
@@ -31,16 +94,10 @@ export default {
   animation: fadeInDown 1s forwards;
 }
 
-.home-text{
+.custom-caption{
+  text-align: center;
+  padding: 12px;
   color: white;
-  text-shadow: 3px 3px 10px black;
-  font-size: 5vw;
-  padding: 16px;
-  line-height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+  background-color: rgba(0, 0, 0, .3);
 }
-
 </style>
