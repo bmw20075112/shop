@@ -144,7 +144,6 @@
 export default {
   data () {
     return {
-      openBuy: false,
       stars: 4,
       number: 1,
       selectedPic: { name: 'fake', price: 0 }
@@ -161,6 +160,16 @@ export default {
         return this.$store.state.menu.drinksMenu;
       }
       return null;
+    },
+
+    openBuy: {
+      get () {
+        return this.$store.state.openBuy;
+      },
+
+      set (value) {
+        this.$store.commit('openBuyMutate', value);
+      }
     },
 
     tab () {
@@ -185,21 +194,22 @@ export default {
             number: this.number
           }
         });
-        this.openBuy = false;
+        this.$store.commit('openBuyMutate', false);
         this.number = 1;
         this.$q.notify({
           message: `${this.$t(`${this.selectedPic.name}`)}` + ` ${this.$t('addToCart')}`,
           avatar: this.selectedPic.url,
+          color: 'primary',
           actions: [
-            { label: this.$t('hide'), color: 'red' },
-            { label: this.$t('checkout'), color: 'primary', handler: () => this.$store.commit('drawerMutate', true) }
+            { label: this.$t('hide'), color: 'orange' },
+            { label: this.$t('checkout'), color: 'white', handler: () => this.$store.commit('drawerMutate', true) }
           ]
         })
       }
     },
 
     openCard (index) {
-      this.openBuy = true;
+      this.$store.commit('openBuyMutate', true);
       this.number = 1;
       this.selectedPic = this.menuNow[index];
     }

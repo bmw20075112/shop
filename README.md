@@ -5,8 +5,7 @@
 ## 預定開發
 1. 語言自動偵測
 2. 配色
-3. MOBILE 下滑顯示回頂端的按鈕
-4. 首頁
+3. 首頁
 
 ## 已解決Bug
 1. 購物車刪除選項無法控制數量
@@ -16,6 +15,8 @@
 1. TAB PANELS整合
 2. 表單驗證
 3. 付款表單
+4. MOBILE 下滑顯示回頂端的按鈕
+5. translate
 
 ## Install the dependencies
 ```bash

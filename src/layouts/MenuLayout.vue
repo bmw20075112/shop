@@ -20,7 +20,7 @@
         <q-btn
           flat
           icon="account_box"
-          :label="$q.screen.gt.sm? $t('user') : '' "
+          :label="$q.screen.lt.md? '' : $t('user') "
           class="q-py-sm"
         >
           <q-menu>
@@ -202,14 +202,22 @@
     <q-page-container>
       <div class="row justify-center">
         <div ref="top" />
-        <router-view />
-        <q-btn
-          class='fixed lt-md'
-          style="right:5px; bottom:55px"
-          color="orange"
-          icon="keyboard_arrow_up"
-          @click="scrollToElement()"
+        <q-scroll-observer
+          v-if='$q.screen.lt.md'
+          @scroll="onScroll"
+          debounce="800"
         />
+        <router-view />
+        <transition name="fade">
+          <q-btn
+            class='fixed lt-md'
+            style="right:5px; bottom:55px"
+            color="orange"
+            icon="keyboard_arrow_up"
+            v-show='isShow'
+            @click="scrollToElement()"
+          />
+        </transition>
       </div>
     </q-page-container>
 
@@ -255,7 +263,8 @@ export default {
   },
   data () {
     return {
-      allSelect: false
+      allSelect: false,
+      isShow: false
     }
   },
 
@@ -280,6 +289,22 @@ export default {
       this.$store.dispatch('selectedAction', this.selected);
     },
 
+    onScroll (val) {
+      if (this.openBuy === true) {
+        if (val.inflexionPosition > 500) {
+          this.isShow = true;
+        } else {
+          this.isShow = false;
+        }
+      } else {
+        if (val.position > 500) {
+          this.isShow = true;
+        } else {
+          this.isShow = false;
+        }
+      }
+    },
+
     scrollToElement () {
       this.$refs.top.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
@@ -298,6 +323,10 @@ export default {
       set (value) {
         this.$store.commit('drawerMutate', value);
       }
+    },
+
+    openBuy () {
+      return this.$store.state.openBuy;
     },
 
     tab: {
@@ -352,7 +381,9 @@ export default {
   watch: {
     allSelect (val) {
       if (!val) {
-        this.$store.dispatch('selectedAction', []);
+        if (this.selected.length === this.cartItems.length) {
+          this.$store.dispatch('selectedAction', []);
+        }
       } else {
         this.$store.dispatch('selectedAction', []);
         let temp = [];
@@ -368,6 +399,8 @@ export default {
         this.allSelect = false;
       } else if (val.length === this.cartItems.length) {
         this.allSelect = true;
+      } else {
+        this.allSelect = false;
       }
     }
   }
@@ -377,5 +410,13 @@ export default {
 <style lang="scss">
 .order-list:last-child{
   margin-bottom: 125px;
+}
+
+.fade-enter-active{
+  animation: fadeInUp 1s forwards;
+}
+
+.fade-leave-active{
+  animation: fadeOutUp 1s forwards;
 }
 </style>

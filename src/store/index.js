@@ -23,6 +23,7 @@ export default function (/* { ssrContext } */) {
     },
     state: {
       cartItems: [],
+      openBuy: false,
       order: 0,
       selected: [],
       tab: 'east',
@@ -54,6 +55,10 @@ export default function (/* { ssrContext } */) {
             state.cartItems.splice(index, 1);
           }
         }
+      },
+
+      openBuyMutate (state, payload) {
+        state.openBuy = payload;
       },
 
       seletedMutate (state, payload) {

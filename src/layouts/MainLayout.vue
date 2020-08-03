@@ -24,7 +24,7 @@
         <q-btn
           flat
           icon="account_box"
-          :label="$q.screen.gt.sm? $t('user') : '' "
+          :label="$q.screen.lt.md? '' : $t('user') "
           class="q-py-sm"
         >
           <q-menu>
