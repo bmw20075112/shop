@@ -30,7 +30,7 @@ export default ({ router, store }) => {
       if (store.getters.selected.length > 0) {
         next();
       } else {
-        next({ name: 'Home' });
+        next('/');
       }
     } else {
       next();

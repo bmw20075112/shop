@@ -223,14 +223,15 @@
 
     <q-footer
       elevated
+      class="bg-grey"
     >
-      <q-toolbar class="bg-grey text-white gt-sm">
+      <q-toolbar class="gt-sm">
         <Footer />
       </q-toolbar>
 
       <q-tabs
         align="center"
-        class="lt-md"
+        class="lt-md bg-primary"
         :breakpoint="1024"
         v-model="tab"
         switch-indicator
