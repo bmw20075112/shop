@@ -146,6 +146,7 @@ export default {
     return {
       stars: 4,
       number: 1,
+      openBuy: false,
       selectedPic: { name: 'fake', price: 0 }
     }
   },
@@ -160,16 +161,6 @@ export default {
         return this.$store.state.menu.drinksMenu;
       }
       return null;
-    },
-
-    openBuy: {
-      get () {
-        return this.$store.state.openBuy;
-      },
-
-      set (value) {
-        this.$store.commit('openBuyMutate', value);
-      }
     },
 
     tab () {
@@ -194,7 +185,7 @@ export default {
             number: this.number
           }
         });
-        this.$store.commit('openBuyMutate', false);
+        this.openBuy = false;
         this.number = 1;
         this.$q.notify({
           message: `${this.$t(`${this.selectedPic.name}`)}` + ` ${this.$t('addToCart')}`,
@@ -209,7 +200,7 @@ export default {
     },
 
     openCard (index) {
-      this.$store.commit('openBuyMutate', true);
+      this.openBuy = true;
       this.number = 1;
       this.selectedPic = this.menuNow[index];
     }

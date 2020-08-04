@@ -19,6 +19,19 @@ export default {
   delete: '刪除訂單',
   checkout: '結帳',
 
+  // Menu Filter
+  filter: '篩選菜單',
+  japan: '日式傳統美食',
+  taiwan: '台式經典小吃',
+  southEastAsia: '東南亞風味',
+  mainDish: '主餐類',
+  fastFood: '快餐類',
+  dessert: '點心類',
+  else: '其他',
+  tea: '茶類',
+  juice: '果汁類',
+  alcohol: '酒精類',
+
   // Menu Page
   east: '東方美食',
   west: '西式饗宴',

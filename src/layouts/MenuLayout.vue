@@ -1,6 +1,7 @@
 <template>
   <q-layout :view="$q.screen.width<=768?'hHh lpR fFr':'hHh lpR ffr'">
     <q-header
+      :reveal='$q.screen.lt.sm'
       :elevated="$q.dark.isActive?false:true"
       :bordered="$q.dark.isActive?true:false"
     >
@@ -61,6 +62,15 @@
           :label="$t('drinks')"
         />
       </q-tabs>
+
+      <q-select
+        v-model="menuFilter"
+        :options="filterOptions"
+        :label="$t('filter')"
+        label-color="amber"
+        class="lt-sm customTextColor"
+        outlined
+      />
     </q-header>
 
     <q-drawer
@@ -201,28 +211,13 @@
 
     <q-page-container>
       <div class="row justify-center">
-        <div ref="top" />
-        <q-scroll-observer
-          v-if='$q.screen.lt.md'
-          @scroll="onScroll"
-          debounce="800"
-        />
         <router-view />
-        <transition name="fade">
-          <q-btn
-            class='fixed lt-md'
-            style="right:5px; bottom:55px"
-            color="orange"
-            icon="keyboard_arrow_up"
-            v-show='isShow'
-            @click="scrollToElement()"
-          />
-        </transition>
       </div>
     </q-page-container>
 
     <q-footer
       elevated
+      :reveal='$q.screen.lt.sm'
       class="bg-grey"
     >
       <q-toolbar class="gt-sm">
@@ -262,10 +257,10 @@ export default {
     Menu,
     Footer
   },
+
   data () {
     return {
-      allSelect: false,
-      isShow: false
+      allSelect: false
     }
   },
 
@@ -288,26 +283,6 @@ export default {
 
     checkout () {
       this.$store.dispatch('selectedAction', this.selected);
-    },
-
-    onScroll (val) {
-      if (this.openBuy === true) {
-        if (val.inflexionPosition > 500) {
-          this.isShow = true;
-        } else {
-          this.isShow = false;
-        }
-      } else {
-        if (val.position > 500) {
-          this.isShow = true;
-        } else {
-          this.isShow = false;
-        }
-      }
-    },
-
-    scrollToElement () {
-      this.$refs.top.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   },
 
@@ -326,8 +301,48 @@ export default {
       }
     },
 
-    openBuy () {
-      return this.$store.state.openBuy;
+    filterOptions () {
+      if (this.tab === 'east') {
+        return this.options[0];
+      } else if (this.tab === 'east') {
+        return this.options[1];
+      } else {
+        return this.options[2];
+      }
+    },
+
+    menuFilter: {
+      get () {
+        return this.$store.state.menuFilter;
+      },
+
+      set (val) {
+        this.$store.commit('menuFilterMutate', val);
+      }
+    },
+
+    options () {
+      return [
+        [
+          { label: this.$t('japan'), value: 'japan' },
+          { label: this.$t('taiwan'), value: 'taiwan' },
+          { label: this.$t('southEastAsia'), value: 'south-east-asia' }
+        ],
+
+        [
+          { label: this.$t('mainDish'), value: 'main-dish' },
+          { label: this.$t('fastFood'), value: 'fast-food' },
+          { label: this.$t('dessert'), value: 'dessert' },
+          { label: this.$t('else'), value: 'else' }
+        ],
+
+        [
+          { label: this.$t('tea'), value: 'tea' },
+          { label: this.$t('juice'), value: 'juice' },
+          { label: this.$t('alcohol'), value: 'alcohol' },
+          { label: this.$t('else'), value: 'else' }
+        ]
+      ]
     },
 
     tab: {
@@ -409,15 +424,12 @@ export default {
 </script>
 
 <style lang="scss">
+.customTextColor{
+  .q-field__native{
+    color: white;
+  }
+}
 .order-list:last-child{
   margin-bottom: 125px;
-}
-
-.fade-enter-active{
-  animation: fadeInUp 1s forwards;
-}
-
-.fade-leave-active{
-  animation: fadeOutUp 1s forwards;
 }
 </style>

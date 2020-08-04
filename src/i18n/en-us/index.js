@@ -22,6 +22,19 @@ export default {
   delete: 'Delete',
   checkout: 'Checkout',
 
+  // Menu Filter
+  filter: 'Filter',
+  japan: 'Japanese Food',
+  taiwan: 'Taiwanese Food',
+  southEastAsia: 'SouthEast Asia Food',
+  mainDish: 'Main Dish',
+  fastFood: 'Fast Food',
+  dessert: 'Dessert',
+  else: 'else',
+  tea: 'Tea',
+  juice: 'Juice',
+  alcohol: 'Alcohol',
+
   // Menu Page
   east: 'East',
   west: 'West',
