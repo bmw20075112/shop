@@ -30,10 +30,10 @@ export default {
   mainDish: 'Main Dish',
   fastFood: 'Fast Food',
   dessert: 'Dessert',
-  else: 'else',
   tea: 'Tea',
   juice: 'Juice',
   alcohol: 'Alcohol',
+  others: 'Others',
 
   // Menu Page
   east: 'East',

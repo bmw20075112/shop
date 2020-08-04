@@ -153,14 +153,7 @@ export default {
 
   computed: {
     menuNow () {
-      if (this.tab === 'east') {
-        return this.$store.state.menu.eastMenu;
-      } else if (this.tab === 'west') {
-        return this.$store.state.menu.westMenu;
-      } else if (this.tab === 'drinks') {
-        return this.$store.state.menu.drinksMenu;
-      }
-      return null;
+      return this.$store.getters.menuNow;
     },
 
     tab () {

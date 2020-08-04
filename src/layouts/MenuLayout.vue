@@ -53,10 +53,12 @@
           name="east"
           :label="$t('east')"
         />
+
         <q-tab
           name="west"
           :label="$t('west')"
         />
+
         <q-tab
           name="drinks"
           :label="$t('drinks')"
@@ -70,7 +72,15 @@
         label-color="amber"
         class="lt-sm customTextColor"
         outlined
-      />
+      >
+        <template v-slot:append>
+          <q-icon
+            name="close"
+            @click.stop="menuFilter = ''"
+            class="cursor-pointer"
+          />
+        </template>
+      </q-select>
     </q-header>
 
     <q-drawer
@@ -230,6 +240,7 @@
         :breakpoint="1024"
         v-model="tab"
         switch-indicator
+        @click="$store.commit('menuFilterMutate', '')"
       >
         <q-tab
           name="east"
@@ -304,7 +315,7 @@ export default {
     filterOptions () {
       if (this.tab === 'east') {
         return this.options[0];
-      } else if (this.tab === 'east') {
+      } else if (this.tab === 'west') {
         return this.options[1];
       } else {
         return this.options[2];
@@ -313,7 +324,7 @@ export default {
 
     menuFilter: {
       get () {
-        return this.$store.state.menuFilter;
+        return this.$t(this.$store.state.menuFilter.value);
       },
 
       set (val) {
@@ -326,21 +337,21 @@ export default {
         [
           { label: this.$t('japan'), value: 'japan' },
           { label: this.$t('taiwan'), value: 'taiwan' },
-          { label: this.$t('southEastAsia'), value: 'south-east-asia' }
+          { label: this.$t('southEastAsia'), value: 'southEastAsia' }
         ],
 
         [
-          { label: this.$t('mainDish'), value: 'main-dish' },
-          { label: this.$t('fastFood'), value: 'fast-food' },
+          { label: this.$t('mainDish'), value: 'mainDish' },
+          { label: this.$t('fastFood'), value: 'fastFood' },
           { label: this.$t('dessert'), value: 'dessert' },
-          { label: this.$t('else'), value: 'else' }
+          { label: this.$t('others'), value: 'others' }
         ],
 
         [
           { label: this.$t('tea'), value: 'tea' },
           { label: this.$t('juice'), value: 'juice' },
           { label: this.$t('alcohol'), value: 'alcohol' },
-          { label: this.$t('else'), value: 'else' }
+          { label: this.$t('others'), value: 'others' }
         ]
       ]
     },
