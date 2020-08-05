@@ -1,7 +1,7 @@
 # Quasar App (shop)
 
 ## bug
-
+1. q-interesection 和 GRID系統衝突而無作用
 
 ## 預定開發
 1. 語言自動偵測
@@ -12,6 +12,7 @@
 1. 購物車刪除選項無法控制數量
 2. Vue Route Gate 無法結合Vuex(進入Checkout前)
 3. Q-SELECT 搭配 i18n，綁定值沒有跟著翻譯
+4. Filter菜單後，螢幕寬度>sm時要Reset filter
 
 ## 已完成功能
 1. TAB PANELS整合

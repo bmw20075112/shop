@@ -3,16 +3,16 @@ export default {
     eastMenu: [
       { id: 'e1', name: 'ramen', price: 150, type: 'japan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600815/east/ramen_auy470.jpg' },
       { id: 'e2', name: 'sushi', price: 100, type: 'japan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600818/east/sushi_wuhbof.jpg' },
-      { id: 'e3', name: 'luRouFan', price: 30, type: 'taiwan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600822/east/luRolRice_zpqscj.jpg' },
+      { id: 'e3', name: 'luRouFan', price: 30, type: 'taiwan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1596619694/east/luRouFan_ca1hn4.jpg' },
       { id: 'e4', name: 'xiaoLongBao', price: 120, type: 'taiwan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600818/east/xiaoLongBao_mcuqfp.jpg' },
       { id: 'e5', name: 'friedRice', price: 80, type: 'taiwan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600817/east/friedRice_elp7ti.jpg' },
       { id: 'e6', name: 'dumplings', price: 70, type: 'taiwan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600814/east/dumplings_almtvj.jpg' },
-      { id: 'e7', name: 'zongZi', price: 40, type: 'taiwan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600825/east/zongZi_uzoa7f.jpg' },
-      { id: 'e8', name: 'oysterOmelet', type: 'taiwan', price: 50, url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600815/east/OysterOmelet_l9b9dx.jpg' },
-      { id: 'e9', name: 'baWan', price: 40, type: 'taiwan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600816/east/bawan_vnxyir.jpg' },
-      { id: 'e10', name: 'satay', price: 80, type: 'southEastAsia', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600819/east/Satay_omrhw9.jpg' },
+      { id: 'e7', name: 'riceDumpling', price: 40, type: 'taiwan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1596619251/east/riceDumpling_rerp44.jpg' },
+      { id: 'e8', name: 'oysterOmelet', type: 'taiwan', price: 50, url: 'https://res.cloudinary.com/barney4760/image/upload/v1596618960/east/oysterOmelet_o5lbat.jpg' },
+      { id: 'e9', name: 'baWan', price: 40, type: 'taiwan', url: 'https://res.cloudinary.com/barney4760/image/upload/v1596620212/east/bawan_xhcayr.jpg' },
+      { id: 'e10', name: 'satay', price: 80, type: 'southEastAsia', url: 'https://res.cloudinary.com/barney4760/image/upload/v1596619939/east/satay.jpg' },
       { id: 'e11', name: 'curry', price: 90, type: 'southEastAsia', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600815/east/curry_d1itna.jpg' },
-      { id: 'e12', name: 'lakSa', price: 75, type: 'southEastAsia', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600820/east/Laksa_b3hgw9.jpg' }
+      { id: 'e12', name: 'lakSa', price: 75, type: 'southEastAsia', url: 'https://res.cloudinary.com/barney4760/image/upload/v1596619814/east/laksa_mgv0oo.jpg' }
     ],
 
     westMenu: [

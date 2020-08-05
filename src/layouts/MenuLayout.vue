@@ -18,6 +18,7 @@
             @click="$router.push('/')"
           >PandaEat</span>
         </q-toolbar-title>
+
         <q-btn
           flat
           icon="account_box"
@@ -69,15 +70,26 @@
         v-model="menuFilter"
         :options="filterOptions"
         :label="$t('filter')"
+        bg-color="primary"
         label-color="amber"
         class="lt-sm customTextColor"
-        outlined
+        color="primary"
+        filled
+        dense
       >
+        <template v-slot:prepend>
+          <q-icon
+            name="filter_alt"
+            color="white"
+          />
+        </template>
+
         <template v-slot:append>
           <q-icon
             name="close"
             @click.stop="menuFilter = ''"
             class="cursor-pointer"
+            color="white"
           />
         </template>
       </q-select>
@@ -388,6 +400,10 @@ export default {
         }
         return res;
       }
+    },
+
+    windowWith () {
+      return this.$q.screen.lt.sm;
     }
   },
 
@@ -428,6 +444,12 @@ export default {
         this.allSelect = true;
       } else {
         this.allSelect = false;
+      }
+    },
+
+    windowWith (val) {
+      if (!val) {
+        this.$store.commit('menuFilterMutate', '');
       }
     }
   }

@@ -68,7 +68,7 @@ export default {
   xiaoLongBao: '小籠包',
   friedRice: '炒飯',
   dumplings: '水餃',
-  zongZi: '粽子',
+  riceDumpling: '粽子',
   satay: '沙嗲',
   curry: '咖哩',
   oysterOmelet: '蚵仔煎',

@@ -71,7 +71,7 @@ export default {
   xiaoLongBao: 'Xia-Long-Bao',
   friedRice: 'Fried Rice',
   dumplings: 'Dumplings',
-  zongZi: 'Zong-zi',
+  riceDumpling: 'Rice Dumpling',
   satay: 'Satay',
   curry: 'Curry',
   oysterOmelet: 'Oyster Omelet',

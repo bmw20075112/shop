@@ -50,12 +50,32 @@ export default {
       set (value) {
         this.$store.commit('tabMutate', value)
       }
+    },
+
+    menuFilter () {
+      return this.$store.state.menuFilter;
     }
   },
 
   methods: {
-    scrollTop () {
-      this.$refs.top.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    scrollTop (smooth = true) {
+      if (smooth) {
+        this.$refs.top.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      } else {
+        this.$refs.top.scrollIntoView({ block: 'end' })
+      }
+    }
+  },
+
+  watch: {
+    menuFilter (val) {
+      this.scrollTop(false);
+    },
+
+    tab (val) {
+      setTimeout(() => {
+        this.scrollTop(false);
+      }, 150)
     }
   }
 }
