@@ -7,6 +7,11 @@ export default {
   accounts: '帳戶餘額',
   settings: '設定',
 
+  // Home
+  eastHome: '東方美食',
+  westHome: '西式饗宴',
+  drinksHome: '多元飲品',
+
   // TabPanelPage
   addToCart: '已經放入購物車',
   foodCaption: '美味營養的餐點',

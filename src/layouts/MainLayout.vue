@@ -1,6 +1,6 @@
 <template>
   <q-layout
-    view="hHh lpR fff"
+    view="hHh lpr fff"
   >
     <q-header
       reveal

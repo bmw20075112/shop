@@ -10,6 +10,11 @@ export default {
   user: 'User',
   settings: 'Settings',
 
+  // Home
+  eastHome: 'East Food',
+  westHome: 'West Food',
+  drinksHome: 'Drinks',
+
   // TabPanelPage
   addToCart: 'is in the Cart',
   foodCaption: 'Food with delicious taste',
