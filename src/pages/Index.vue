@@ -22,22 +22,25 @@
       </div>
     </transition>
 
-    <div class="flex justify-center">
+    <div class="flex justify-center ">
       <div
-        class="row q-py-sm q-col-gutter-sm"
-        style="width:100%; max-width:1024px"
+        class="row q-py-sm q-col-gutter-md"
+        style="width:100%; max-width:1040px"
       >
         <div
           class="col-md-4 col-sm-12 col-xs-12"
           v-for="item in menu"
           :key="item.id"
         >
-          <q-card>
+          <q-card
+            class="card cursor-pointer"
+            @click="toMenu(item.id)"
+          >
             <q-img
               :src="item.url"
               :ratio="16/9"
             >
-              <div class="absolute-bottom text-subtitle1 text-center">
+              <div class=" text-subtitle1 flex flex-center hover-info">
                 {{ item.title }}
               </div>
             </q-img>
@@ -50,28 +53,6 @@
 
 <script>
 export default {
-  data () {
-    return {
-      menu: [
-        {
-          id: 'east',
-          url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600818/east/xiaoLongBao_mcuqfp.jpg',
-          title: this.$t('eastHome')
-        },
-        {
-          id: 'west',
-          url: 'https://res.cloudinary.com/barney4760/image/upload/v1595819323/west/hamburger_cqdwct.jpg',
-          title: this.$t('westHome')
-        },
-        {
-          id: 'drinks',
-          url: 'https://res.cloudinary.com/barney4760/image/upload/v1595840072/drinks/babo-tea_rtrntr.jpg',
-          title: this.$t('drinksHome')
-        }
-      ]
-    }
-  },
-
   computed: {
     coverPosition () {
       if (this.$q.screen.lt.lg) {
@@ -95,6 +76,33 @@ export default {
       } else {
         return 'max-width:1024px';
       }
+    },
+
+    menu () {
+      return [
+        {
+          id: 'east',
+          url: 'https://res.cloudinary.com/barney4760/image/upload/v1595600818/east/xiaoLongBao_mcuqfp.jpg',
+          title: this.$t('eastHome')
+        },
+        {
+          id: 'west',
+          url: 'https://res.cloudinary.com/barney4760/image/upload/v1595819323/west/hamburger_cqdwct.jpg',
+          title: this.$t('westHome')
+        },
+        {
+          id: 'drinks',
+          url: 'https://res.cloudinary.com/barney4760/image/upload/v1595840072/drinks/babo-tea_rtrntr.jpg',
+          title: this.$t('drinksHome')
+        }
+      ]
+    }
+  },
+
+  methods: {
+    toMenu (id) {
+      this.$store.commit('tabMutate', id);
+      this.$router.push({ name: 'Menu' });
     }
   }
 }
@@ -102,7 +110,7 @@ export default {
 
 <style lang="scss">
 .test-enter-active{
-  animation: fadeInDown 1s forwards;
+  animation: fadeIn 1.5s forwards;
 }
 
 .custom-caption{
@@ -110,5 +118,11 @@ export default {
   padding: 12px;
   color: white;
   background-color: rgba(0, 0, 0, .3);
+}
+
+.card:hover{
+  .hover-info{
+    visibility: hidden;
+  }
 }
 </style>
