@@ -98,7 +98,7 @@
     <q-drawer
       v-model="drawer"
       side="right"
-      :width="320"
+      :width="drawerWidth"
       elevated
     >
       <div
@@ -109,6 +109,7 @@
           style="height:37px"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-grey-6'"
         />
+
         <div
           class="row items-center fixed-top z-top"
         >
@@ -321,6 +322,14 @@ export default {
 
       set (value) {
         this.$store.commit('drawerMutate', value);
+      }
+    },
+
+    drawerWidth () {
+      if (this.$q.screen.width < 481) {
+        return this.$q.screen.width;
+      } else {
+        return 320;
       }
     },
 

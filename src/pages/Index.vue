@@ -18,7 +18,24 @@
           :style="coverWidth"
           :height="coverHeight"
           :position="coverPosition"
-        />
+          class="relative"
+          @load="isLoad = true"
+        >
+          <!-- <transition
+            name="caption"
+          > -->
+          <span
+            class="cover-caption caption1"
+            v-show="isLoad"
+          >
+            你想吃的
+          </span>
+          <!-- </transition> -->
+
+          <span class="cover-caption caption2">
+            我們都有
+          </span>
+        </q-img>
       </div>
     </transition>
 
@@ -40,7 +57,7 @@
               :src="item.url"
               :ratio="16/9"
             >
-              <div class=" text-subtitle1 flex flex-center hover-info">
+              <div class="absolute-full text-h5 text-bold flex flex-center hover-info">
                 {{ item.title }}
               </div>
             </q-img>
@@ -53,6 +70,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      isLoad: false
+    }
+  },
   computed: {
     coverPosition () {
       if (this.$q.screen.lt.lg) {
@@ -113,6 +135,10 @@ export default {
   animation: fadeIn 1.5s forwards;
 }
 
+.caption-enter-active{
+  animation: fadeInDown 1.5s forwards;
+}
+
 .custom-caption{
   text-align: center;
   padding: 12px;
@@ -123,6 +149,41 @@ export default {
 .card:hover{
   .hover-info{
     visibility: hidden;
+  }
+}
+
+.cover-caption{
+  position: absolute;
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+  writing-mode: vertical-rl;
+  text-shadow: 1px 1px 5px black;
+}
+
+.caption1{
+  top: 50px;
+  right: 100px;
+}
+
+.caption2{
+  top: 195px;
+  right: 200px;
+}
+
+@media screen and (max-width:480px) {
+  .cover-caption{
+    font-size: 2rem;
+  }
+
+  .caption1{
+    top: 50px;
+    right: 25px;
+  }
+
+  .caption2{
+    top: 115px;
+    right: 75px;
   }
 }
 </style>

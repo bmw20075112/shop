@@ -2,13 +2,10 @@
   <q-layout
     view="hHh lpr fff"
   >
-    <q-header
-      reveal
-      elevated
-    >
+    <q-header>
       <q-toolbar>
         <q-toolbar-title>
-          <q-avatar @click="$router.go()">
+          <q-avatar @click="$router.push('/')">
             <img
               src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"
               class="cursor-pointer"
@@ -16,16 +13,9 @@
           </q-avatar>
           <span
             class="cursor-pointer q-pl-sm"
-            @click="$router.go()"
+            @click="$router.push('/')"
           >PandaEat</span>
         </q-toolbar-title>
-
-        <q-btn
-          flat
-          label="menu"
-          class="q-py-sm"
-          :to="{name: 'Menu'}"
-        />
 
         <q-btn
           flat
