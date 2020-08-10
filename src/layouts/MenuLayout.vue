@@ -196,11 +196,17 @@
         >
           <div class="float-right">
             <div class="text-subtitle1">
-              {{ $t('totalSelect') }}: <span class="text-red text-bold q-pl-xl float-right">{{ selected.length }}</span>
+              {{ $t('totalSelect') }}: <span
+                class="text-bold q-pl-xl float-right"
+                :class="$q.dark.isActive?'text-red': 'text-blue-9'"
+              >{{ selected.length }}</span>
             </div>
 
             <div class="text-subtitle1">
-              {{ $t('totalCost') }}: <span class="text-red text-bold q-pl-xl float-right">${{ totalMoney }}</span>
+              {{ $t('totalCost') }}: <span
+                class="text-bold q-pl-xl float-right"
+                :class="$q.dark.isActive?'text-red': 'text-blue-9'"
+              >${{ totalMoney }}</span>
             </div>
           </div>
 
