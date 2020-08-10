@@ -8,10 +8,16 @@
     >
       <q-toolbar>
         <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+          <q-avatar @click="$router.push('/')">
+            <img
+              src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"
+              class="cursor-pointer"
+            >
           </q-avatar>
-          PandaEat
+          <span
+            class="cursor-pointer q-pl-sm"
+            @click="$router.push('/')"
+          >PandaEat</span>
         </q-toolbar-title>
 
         <q-btn

@@ -22,8 +22,10 @@ export default function (/* { ssrContext } */) {
       // example
     },
     state: {
+      allSelect: false,
       cartItems: [],
       menuFilter: '',
+      moneyLeft: 2000,
       order: 0,
       selected: [],
       tab: 'east',
@@ -37,10 +39,28 @@ export default function (/* { ssrContext } */) {
 
       selected (state) {
         return state.selected;
+      },
+
+      totalMoney (state) {
+        if (state.selected.length === 0) {
+          return 0;
+        } else {
+          let res = 0;
+          let index;
+          for (let i of state.selected) {
+            index = state.cartItems.findIndex(cartItem => cartItem.order === i);
+            res += state.cartItems[index].price * state.cartItems[index].number;
+          }
+          return res;
+        }
       }
     },
 
     mutations: {
+      allSelectMutate (state, payload) {
+        state.allSelect = payload;
+      },
+
       orderMutate (state) {
         state.order++;
       },
@@ -59,6 +79,10 @@ export default function (/* { ssrContext } */) {
 
       menuFilterMutate (state, payload) {
         state.menuFilter = payload;
+      },
+
+      moneyLeftMutate (state, payload) {
+        state.moneyLeft += payload;
       },
 
       seletedMutate (state, payload) {

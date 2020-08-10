@@ -21,7 +21,7 @@
               {{ $t('accounts') }}
             </div>
             <div class="text-subtitle1">
-              $30000
+              ${{ $store.state.moneyLeft }}
             </div>
           </div>
         </div>

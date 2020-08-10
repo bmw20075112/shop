@@ -206,7 +206,7 @@
               {{ $t('totalCost') }}: <span
                 class="text-bold q-pl-xl float-right"
                 :class="$q.dark.isActive?'text-red': 'text-blue-9'"
-              >${{ totalMoney }}</span>
+              >$ {{ totalMoney }}</span>
             </div>
           </div>
 
@@ -227,7 +227,6 @@
               icon="shopping_cart"
               color="primary"
               :disable="selected.length<1"
-              :to="{name:'Checkout'}"
               @click="checkout"
             />
           </q-btn-group>
@@ -287,12 +286,6 @@ export default {
     Footer
   },
 
-  data () {
-    return {
-      allSelect: false
-    }
-  },
-
   methods: {
     deleteItem () {
       this.$q.dialog({
@@ -311,12 +304,44 @@ export default {
     },
 
     checkout () {
-      this.$store.commit('drawerMutate', false);
-      this.$store.dispatch('selectedAction', this.selected);
+      if (this.$store.state.moneyLeft < this.totalMoney) {
+        this.$q.dialog({
+          title: '餘額不足',
+          message: '請儲值或放棄部分商品',
+          cancel: true
+        }).onOk(() => {
+          this.$q.dialog({
+            title: '儲值',
+            message: '請輸入要儲值的金額(金額需小於10000元)',
+            prompt: {
+              model: 0,
+              type: 'number',
+              isValid: val => val < 10000
+            },
+            cancel: true
+          }).onOk((data) => {
+            this.$store.commit('moneyLeftMutate', data);
+          })
+        })
+      } else {
+        this.$store.commit('drawerMutate', false);
+        this.$store.dispatch('selectedAction', this.selected);
+        this.$router.push({ name: 'Checkout' });
+      }
     }
   },
 
   computed: {
+    allSelect: {
+      get () {
+        return this.$store.state.allSelect;
+      },
+
+      set (val) {
+        this.$store.commit('allSelectMutate', val)
+      }
+    },
+
     cartItems () {
       return this.$store.getters.cartItems;
     },
@@ -404,17 +429,7 @@ export default {
     },
 
     totalMoney () {
-      if (this.selected.length === 0) {
-        return 0;
-      } else {
-        let res = 0;
-        let index;
-        for (let i of this.selected) {
-          index = this.cartItems.findIndex(cartItem => cartItem.order === i);
-          res += this.cartItems[index].price * this.cartItems[index].number;
-        }
-        return res;
-      }
+      return this.$store.getters.totalMoney;
     },
 
     windowWith () {
@@ -456,6 +471,14 @@ export default {
       if (val.length === 0) {
         this.allSelect = false;
       } else if (val.length === this.cartItems.length) {
+        this.allSelect = true;
+      } else {
+        this.allSelect = false;
+      }
+    },
+
+    cartItems (val) {
+      if (val.length === this.selected.length) {
         this.allSelect = true;
       } else {
         this.allSelect = false;

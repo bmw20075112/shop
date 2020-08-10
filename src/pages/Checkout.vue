@@ -34,9 +34,6 @@
         :done="step > 2"
         :style="formLayout"
       >
-        <!-- <div class="text-body1 text-bold q-pb-xs">
-          收件者資料
-        </div> -->
         <q-form
           class="q-gutter-sm"
           ref="deliver"
@@ -187,6 +184,15 @@
             />
           </div>
         </q-form>
+        <div class="text-subtitle1 float-right">
+          {{ $t('totalCost') }}：
+          <span
+            class="text-bold q-pl-md"
+            :class="$q.dark.isActive?'text-red': 'text-blue-9'"
+          >
+            $ {{ totalMoney }}
+          </span>
+        </div>
       </q-step>
 
       <template v-slot:navigation>
@@ -257,6 +263,10 @@ export default {
       } else {
         return 'min-width:90vw';
       }
+    },
+
+    totalMoney () {
+      return this.$store.getters.totalMoney;
     }
   },
 
