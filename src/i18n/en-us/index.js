@@ -22,6 +22,7 @@ export default {
   hide: 'Hide',
 
   // Menu Layout
+  orders: 'Orders',
   totalSelect: 'Total Select',
   totalCost: 'Total Cost',
   delete: 'Delete',

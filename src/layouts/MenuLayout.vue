@@ -123,19 +123,18 @@
           </div>
 
           <div
-            class="col-7 q-pl-md"
+            class="col-10 q-pl-md"
             style="font-size:18px"
           >
-            訂單
+            {{ $t('orders') }}
           </div>
 
-          <div class="col-3">
+          <div class="absolute-right">
             <q-btn
               color="primary"
               flat
               :icon="allSelect?'check_box':'check_box_outline_blank'"
               :disable="cartItems.length===0"
-              class="q-ml-lg"
               @click="allSelect = !allSelect"
             />
           </div>
@@ -306,6 +305,7 @@ export default {
     },
 
     checkout () {
+      this.$store.commit('drawerMutate', false);
       this.$store.dispatch('selectedAction', this.selected);
     }
   },

@@ -19,6 +19,7 @@ export default {
   hide: '隱藏',
 
   // menuLayout
+  orders: '訂單',
   totalSelect: '總選取件數',
   totalCost: '總計金額',
   delete: '刪除訂單',
