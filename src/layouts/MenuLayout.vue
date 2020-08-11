@@ -252,22 +252,22 @@
         </q-card-section>
 
         <q-card-section>
-          Deposit to continue or delete some orders
+          Deposit or delete some orders
         </q-card-section>
 
-        <q-card-section class="float-right">
+        <q-card-section class="">
           <div>
             <div class="text-subtitle1">
               {{ $t('accounts') }} :
 
-              <span class="text-positive text-bold q-pl-xl float-right">
+              <span class="text-positive text-bold q-pl-sm">
                 $ {{ moneyLeft }}
               </span>
             </div>
 
             <div class="text-subtitle1">
               {{ $t('totalCost') }} : <span
-                class="text-negative text-bold q-pl-xl float-right"
+                class="text-negative text-bold q-pl-sm"
               >$ {{ totalCost }}</span>
             </div>
           </div>

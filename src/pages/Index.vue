@@ -39,13 +39,13 @@
       </div>
     </transition>
 
-    <div class="flex justify-center ">
+    <div class="flex justify-center q-pa-sm">
       <div
-        class="row q-py-sm q-col-gutter-md"
+        class="row q-py-sm q-col-gutter-lg"
         style="width:100%; max-width:1040px"
       >
         <div
-          class="col-md-4 col-sm-12 col-xs-12"
+          class="col-md-4 col-sm-4 col-xs-12"
           v-for="item in menu"
           :key="item.id"
         >

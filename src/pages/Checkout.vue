@@ -3,7 +3,8 @@
     <q-stepper
       v-model="step"
       ref="stepper"
-      color="primary"
+      :active-color="$q.dark.isActive? 'white': ''"
+      :done-color="$q.dark.isActive? 'grey': ''"
       animated
       :vertical='$q.screen.lt.md?true:false'
       transition-next="slide-left"
@@ -16,8 +17,11 @@
         :done="step > 1"
         :style="formLayout"
       >
-        <div class="text-negative column items-center">
-          <div class="text-h5 no-margin q-pt-xl text-bold">
+        <div
+          class="column items-center text-bold"
+          :class="$q.dark.isActive? 'text-orange': 'text-red'"
+        >
+          <div class="text-h5 no-margin q-pt-xl">
             {{ $t('warningTitle') }}
           </div>
 
@@ -199,10 +203,10 @@
         <q-stepper-navigation class="float-right">
           <q-btn
             flat
-            color="primary"
             @click="back"
             :label="$t('back')"
             class="q-ml-sm"
+            :color="$q.dark.isActive?'white':'primary'"
           />
 
           <q-btn
