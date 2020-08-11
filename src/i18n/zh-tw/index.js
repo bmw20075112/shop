@@ -19,11 +19,14 @@ export default {
   hide: '隱藏',
 
   // menuLayout
+  balance: '餘額',
+  checkout: '結帳',
+  delete: '刪除訂單',
+  deposit: '儲值金額',
+  insufficient: '餘額不足',
   orders: '訂單',
   totalSelect: '總選取件數',
-  totalCost: '總計金額',
-  delete: '刪除訂單',
-  checkout: '結帳',
+  totalCost: '消費金額',
 
   // Menu Filter
   filter: '菜單篩選',

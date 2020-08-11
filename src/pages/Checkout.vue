@@ -190,7 +190,7 @@
             class="text-bold q-pl-md"
             :class="$q.dark.isActive?'text-red': 'text-blue-9'"
           >
-            $ {{ totalMoney }}
+            $ {{ totalCost }}
           </span>
         </div>
       </q-step>
@@ -265,8 +265,8 @@ export default {
       }
     },
 
-    totalMoney () {
-      return this.$store.getters.totalMoney;
+    totalCost () {
+      return this.$store.getters.totalCost;
     }
   },
 
@@ -298,6 +298,7 @@ export default {
           this.percentage += Math.floor(Math.random() * 20) + 10;
           if (this.percentage >= 100) {
             clearInterval(this.interval);
+            this.$store.commit('moneyLeftMutate', -1 * this.totalCost);
             this.loading = false;
             this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
             this.$store.dispatch('selectedAction', []);

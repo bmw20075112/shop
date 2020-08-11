@@ -18,7 +18,7 @@
             spinner-size="32px"
           />
           <q-card-section>
-            <div class="text-h6 text-orange q-pb-xs font-weight-black">
+            <div class="text-h6 text-orange q-pb-xs text-bold">
               {{ $t(`${food.name}`) }}
             </div>
 
@@ -74,7 +74,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <div class="text-subtitle1 text-red">
+          <div class="text-subtitle1 text-red text-bold">
             ${{ selectedPic.price }}
           </div>
           <div class="text-caption text-grey">
@@ -96,7 +96,8 @@
               ref="number"
               class="q-mb-xl"
               :rules="[val=>Number.isInteger(val) || 'Input must be positive interger',
-                       val=>val>0 || 'Input must be positive interger' ]"
+                       val=>val>0 || 'Input must be positive interger',
+                       val=>val<=100 || 'Input should not be larger than 100' ]"
             >
               <template v-slot:prepend>
                 <q-btn

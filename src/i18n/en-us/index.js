@@ -22,11 +22,14 @@ export default {
   hide: 'Hide',
 
   // Menu Layout
-  orders: 'Orders',
-  totalSelect: 'Total Select',
-  totalCost: 'Total Cost',
-  delete: 'Delete',
+  balance: 'Balance',
   checkout: 'Checkout',
+  delete: 'Delete',
+  deposit: 'Deposit',
+  insufficient: 'Insufficient Balance',
+  orders: 'Orders',
+  totalCost: 'Total Cost',
+  totalSelect: 'Total Select',
 
   // Menu Filter
   filter: 'Filter',

@@ -174,7 +174,7 @@
                   caption
                   class="text-bold"
                 >
-                  {{ $t('number') }}: <span class="text-red q-ml-sm">{{ cartItem.number }}</span>
+                  {{ $t('number') }}: <span class="text-red text-bold q-ml-sm">{{ cartItem.number }}</span>
                 </q-item-label>
               </q-item-section>
 
@@ -196,17 +196,21 @@
         >
           <div class="float-right">
             <div class="text-subtitle1">
-              {{ $t('totalSelect') }}: <span
+              {{ $t('totalSelect') }}:
+
+              <span
                 class="text-bold q-pl-xl float-right"
                 :class="$q.dark.isActive?'text-red': 'text-blue-9'"
-              >{{ selected.length }}</span>
+              >
+                {{ selected.length }}
+              </span>
             </div>
 
             <div class="text-subtitle1">
               {{ $t('totalCost') }}: <span
                 class="text-bold q-pl-xl float-right"
                 :class="$q.dark.isActive?'text-red': 'text-blue-9'"
-              >$ {{ totalMoney }}</span>
+              >$ {{ totalCost }}</span>
             </div>
           </div>
 
@@ -235,6 +239,96 @@
 
       <!-- drawer content -->
     </q-drawer>
+
+    <q-dialog v-model="addMoney">
+      <q-card :class="$q.dark.isActive?'bg-blue-grey-10':''">
+        <q-card-section class="row items-center">
+          <q-avatar
+            icon="attach_money"
+            color="negative"
+            text-color="white"
+          />
+          <span class="q-ml-sm text-h6">{{ $t('insufficient') }}</span>
+        </q-card-section>
+
+        <q-card-section>
+          Deposit to continue or delete some orders
+        </q-card-section>
+
+        <q-card-section class="float-right">
+          <div>
+            <div class="text-subtitle1">
+              {{ $t('accounts') }} :
+
+              <span class="text-positive text-bold q-pl-xl float-right">
+                $ {{ moneyLeft }}
+              </span>
+            </div>
+
+            <div class="text-subtitle1">
+              {{ $t('totalCost') }} : <span
+                class="text-negative text-bold q-pl-xl float-right"
+              >$ {{ totalCost }}</span>
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-actions class="float-right">
+          <q-form
+            @submit="onSubmit"
+            class="q-gutter-md"
+          >
+            <q-input
+              v-model.number="money"
+              type="number"
+              :label="$t('deposit')"
+              ref="money"
+              class="q-mb-xl"
+              :rules="[val=>Number.isInteger(val) || 'Input must be positive interger',
+                       val=>val>0 || 'Input must be positive interger',
+                       val=>val+moneyLeft<=20000 || 'Accounts should not larger than 20000']"
+            >
+              <template v-slot:prepend>
+                <q-btn
+                  flat
+                  color="primary"
+                  round
+                  icon="remove"
+                  @click="count(-1000)"
+                  :disable="money<1"
+                />
+              </template>
+              <template v-slot:append>
+                <q-btn
+                  flat
+                  color="primary"
+                  round
+                  icon="add"
+                  @click="count(1000)"
+                />
+              </template>
+            </q-input>
+
+            <q-btn
+              type="button"
+              :label="$t('cancel')"
+              class="absolute"
+              style="right:75px; top:60%"
+              flat
+              v-close-popup
+            />
+
+            <q-btn
+              icon="add"
+              type="submit"
+              color="primary"
+              class="absolute"
+              style="right:0; top:60%"
+            />
+          </q-form>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <q-page-container>
       <div class="row justify-center">
@@ -286,6 +380,13 @@ export default {
     Footer
   },
 
+  data () {
+    return {
+      addMoney: false,
+      money: 1000
+    }
+  },
+
   methods: {
     deleteItem () {
       this.$q.dialog({
@@ -304,29 +405,34 @@ export default {
     },
 
     checkout () {
-      if (this.$store.state.moneyLeft < this.totalMoney) {
-        this.$q.dialog({
-          title: '餘額不足',
-          message: '請儲值或放棄部分商品',
-          cancel: true
-        }).onOk(() => {
-          this.$q.dialog({
-            title: '儲值',
-            message: '請輸入要儲值的金額(金額需小於10000元)',
-            prompt: {
-              model: 0,
-              type: 'number',
-              isValid: val => val < 10000
-            },
-            cancel: true
-          }).onOk((data) => {
-            this.$store.commit('moneyLeftMutate', data);
-          })
-        })
+      if (this.moneyLeft < this.totalCost) {
+        this.money = 1000;
+        this.addMoney = true;
       } else {
         this.$store.commit('drawerMutate', false);
         this.$store.dispatch('selectedAction', this.selected);
         this.$router.push({ name: 'Checkout' });
+      }
+    },
+
+    count (money) {
+      this.money = Number(this.money) + money;
+    },
+
+    onSubmit () {
+      this.$refs.money.validate();
+      if (this.$refs.money.hasError) {
+        this.formHasError = true;
+      } else {
+        this.$store.commit('moneyLeftMutate', this.money);
+        this.addMoney = false;
+        this.$q.dialog({
+          title: 'Deposit Success',
+          message: `$${this.moneyLeft} in your accounts now`,
+          ok: {
+            color: 'primary'
+          }
+        })
       }
     }
   },
@@ -343,7 +449,7 @@ export default {
     },
 
     cartItems () {
-      return this.$store.getters.cartItems;
+      return this.$store.state.cartItems;
     },
 
     drawer: {
@@ -382,6 +488,10 @@ export default {
       set (val) {
         this.$store.commit('menuFilterMutate', val);
       }
+    },
+
+    moneyLeft () {
+      return this.$store.state.moneyLeft;
     },
 
     options () {
@@ -428,8 +538,8 @@ export default {
       }
     },
 
-    totalMoney () {
-      return this.$store.getters.totalMoney;
+    totalCost () {
+      return this.$store.getters.totalCost;
     },
 
     windowWith () {

@@ -5,7 +5,7 @@
     <q-header>
       <q-toolbar>
         <q-toolbar-title>
-          <q-avatar @click="$router.push('/')">
+          <q-avatar @click="$router.go()">
             <img
               src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"
               class="cursor-pointer"
@@ -13,7 +13,7 @@
           </q-avatar>
           <span
             class="cursor-pointer q-pl-sm"
-            @click="$router.push('/')"
+            @click="$router.go()"
           >PandaEat</span>
         </q-toolbar-title>
 

@@ -41,7 +41,7 @@ export default function (/* { ssrContext } */) {
         return state.selected;
       },
 
-      totalMoney (state) {
+      totalCost (state) {
         if (state.selected.length === 0) {
           return 0;
         } else {
