@@ -132,11 +132,30 @@
           <div class="absolute-right">
             <q-btn
               color="primary"
+              class="relative"
               flat
               :icon="allSelect?'check_box':'check_box_outline_blank'"
               :disable="cartItems.length===0"
               @click="allSelect = !allSelect"
             />
+          </div>
+
+          <div
+            class="absolute"
+            style="right:60px"
+          >
+            <q-btn
+              color="primary"
+              icon="history"
+              @click="openHistory()"
+            >
+              <q-badge
+                floating
+                color="orange q-mt-xs"
+              >
+                2
+              </q-badge>
+            </q-btn>
           </div>
         </div>
 
@@ -434,6 +453,10 @@ export default {
           }
         })
       }
+    },
+
+    openHistory () {
+      console.log(1);
     }
   },
 

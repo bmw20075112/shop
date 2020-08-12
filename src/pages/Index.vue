@@ -42,7 +42,7 @@
     <div class="flex justify-center q-pa-sm">
       <div
         class="row q-py-sm q-col-gutter-lg"
-        style="width:100%; max-width:1040px"
+        style="width:100%; max-width:1048px"
       >
         <div
           class="col-md-4 col-sm-4 col-xs-12"

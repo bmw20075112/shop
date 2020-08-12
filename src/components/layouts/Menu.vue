@@ -30,9 +30,8 @@
       <q-btn
         class="q-mt-sm"
         color="primary"
+        icon="logout"
         :label="$t('logout')"
-        push
-        size="sm"
         v-close-popup
       />
 

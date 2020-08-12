@@ -18,14 +18,14 @@
         :style="formLayout"
       >
         <div
-          class="column items-center text-bold"
+          class="column items-center"
           :class="$q.dark.isActive? 'text-orange': 'text-red'"
         >
-          <div class="text-h5 no-margin q-pt-xl">
+          <div class="text-h5 text-bold no-margin q-pt-xl">
             {{ $t('warningTitle') }}
           </div>
 
-          <div class="text-body1 q-pt-md">
+          <div class="text-body1 text-bold q-pt-md">
             {{ $t('warningSub') }}
           </div>
         </div>
@@ -310,7 +310,7 @@ export default {
               title: this.$t('successTitle'),
               message: this.$t('successMessage')
             }).onOk(() => {
-              this.$router.push('/');
+              this.$router.push({ name: 'Menu' });
             })
           }
         }, 500)
