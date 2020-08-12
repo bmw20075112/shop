@@ -20,11 +20,13 @@ export default {
 
   // menuLayout
   balance: '餘額',
+  cart: 'Cart',
   checkout: '結帳',
   delete: '刪除訂單',
   deposit: '儲值金額',
   insufficient: '餘額不足',
   orders: '訂單',
+  records: '購買紀錄',
   totalSelect: '總選取件數',
   totalCost: '消費金額',
 

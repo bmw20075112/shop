@@ -23,11 +23,13 @@ export default {
 
   // Menu Layout
   balance: 'Balance',
+  cart: 'Cart',
   checkout: 'Checkout',
   delete: 'Delete',
   deposit: 'Deposit',
   insufficient: 'Insufficient Balance',
   orders: 'Orders',
+  records: 'Records',
   totalCost: 'Total Cost',
   totalSelect: 'Total Select',
 

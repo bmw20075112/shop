@@ -27,6 +27,7 @@ export default function (/* { ssrContext } */) {
       menuFilter: '',
       moneyLeft: 2000,
       order: 0,
+      orderSuccess: [],
       selected: [],
       tab: 'east',
       drawer: false
@@ -83,6 +84,10 @@ export default function (/* { ssrContext } */) {
 
       moneyLeftMutate (state, payload) {
         state.moneyLeft += payload;
+      },
+
+      orderSend (state, payload) {
+        state.orderSuccess.push(payload);
       },
 
       seletedMutate (state, payload) {

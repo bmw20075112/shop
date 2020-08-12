@@ -185,6 +185,7 @@ export default {
           message: `${this.$t(`${this.selectedPic.name}`)}` + ` ${this.$t('addToCart')}`,
           avatar: this.selectedPic.url,
           color: 'primary',
+          timeout: 2000,
           actions: [
             { label: this.$t('hide'), color: 'orange' },
             { label: this.$t('checkout'), color: 'white', handler: () => this.$store.commit('drawerMutate', true) }

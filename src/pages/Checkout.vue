@@ -296,16 +296,18 @@ export default {
           this.$refs.expiryYear.hasError || this.$refs.ccv.hasError) {
         this.formHasError = true;
       } else {
+        this.$store.commit('orderSend', ...this.selected);
         this.loading = true;
         this.percentage = 0;
         this.interval = setInterval(() => {
           this.percentage += Math.floor(Math.random() * 20) + 10;
           if (this.percentage >= 100) {
             clearInterval(this.interval);
-            this.$store.commit('moneyLeftMutate', -1 * this.totalCost);
             this.loading = false;
+            this.$store.commit('moneyLeftMutate', -1 * this.totalCost);
             this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
             this.$store.dispatch('selectedAction', []);
+            this.$store.commit('allSelectMutate', false);
             this.$q.dialog({
               title: this.$t('successTitle'),
               message: this.$t('successMessage')

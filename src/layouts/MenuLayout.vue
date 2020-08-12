@@ -106,7 +106,7 @@
         style="height:100%"
       >
         <div
-          style="height:37px"
+          style="height:50px"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-grey-6'"
         />
 
@@ -117,6 +117,7 @@
             <q-btn
               color="primary"
               icon="close"
+              style="height:50px"
               unelevated
               @click="drawer=false"
             />
@@ -133,6 +134,7 @@
             <q-btn
               color="primary"
               class="relative"
+              style="height:50px"
               flat
               :icon="allSelect?'check_box':'check_box_outline_blank'"
               :disable="cartItems.length===0"
@@ -142,26 +144,41 @@
 
           <div
             class="absolute"
-            style="right:60px"
+            style="right:57px"
+            v-if="orderSuccess.length>0"
           >
             <q-btn
-              color="primary"
+              unelevated
               icon="history"
+              style="height:50px"
               @click="openHistory()"
             >
               <q-badge
                 floating
-                color="orange q-mt-xs"
+                color="orange"
+                class="q-mt-xs"
               >
-                2
+                {{ orderSuccess.length }}
               </q-badge>
             </q-btn>
           </div>
         </div>
 
+        <!-- drawer content when cartItem is empty -->
+
+        <h6
+          v-if="cartItems.length===0"
+          class="flex flex-center"
+        >
+          No Order Yet
+        </h6>
+
+        <!-- drawer scorll area -->
+
         <q-scroll-area
           class="col"
           visible
+          v-else
         >
           <q-list
             bordered
@@ -207,6 +224,8 @@
             </q-item>
           </q-list>
         </q-scroll-area>
+
+        <!-- drawer bottom-->
 
         <div
           class="z-top fixed-bottom q-pa-sm text-white"
@@ -255,9 +274,9 @@
           </q-btn-group>
         </div>
       </div>
-
-      <!-- drawer content -->
     </q-drawer>
+
+    <!-- Add Money System-->
 
     <q-dialog v-model="addMoney">
       <q-card :class="$q.dark.isActive?'bg-blue-grey-10':''">
@@ -274,7 +293,7 @@
           Deposit or delete some orders
         </q-card-section>
 
-        <q-card-section class="">
+        <q-card-section>
           <div>
             <div class="text-subtitle1">
               {{ $t('accounts') }} :
@@ -541,6 +560,10 @@ export default {
       ]
     },
 
+    orderSuccess () {
+      return this.$store.state.orderSuccess;
+    },
+
     tab: {
       get () {
         return this.$store.state.tab;
@@ -611,7 +634,9 @@ export default {
     },
 
     cartItems (val) {
-      if (val.length === this.selected.length) {
+      if (val.length === 0) {
+        this.allSelect = false;
+      } else if (val.length === this.selected.length) {
         this.allSelect = true;
       } else {
         this.allSelect = false;
