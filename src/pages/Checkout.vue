@@ -306,6 +306,7 @@ export default {
             this.loading = false;
             this.$store.commit('moneyLeftMutate', -1 * this.totalCost);
             this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
+            this.$store.commit('drawerMutate', false);
             this.$store.dispatch('selectedAction', []);
             this.$store.commit('allSelectMutate', false);
             this.$q.dialog({
