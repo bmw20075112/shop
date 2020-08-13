@@ -103,12 +103,11 @@
     >
       <div
         class="column"
-        :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
         style="height:100%"
       >
         <div
           style="height:50px"
-          :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
+          :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-grey-6'"
         />
 
         <div
@@ -116,10 +115,10 @@
         >
           <div class="col-2">
             <q-btn
-              :color="$q.dark.isActive?'white':'primary'"
+              color="primary"
               icon="close"
               style="height:50px"
-              flat
+              unelevated
               @click="drawer=false"
             />
           </div>
@@ -132,36 +131,36 @@
           </div>
 
           <div class="absolute-right">
-            <q-btn-group
+            <q-btn
+              color="primary"
+              class="relative"
               style="height:50px"
               flat
+              :icon="allSelect?'check_box':'check_box_outline_blank'"
+              :disable="cartItems.length===0"
+              @click="allSelect = !allSelect"
+            />
+          </div>
+
+          <div
+            class="absolute"
+            style="right:57px"
+            v-if="orderSuccess.length>0"
+          >
+            <q-btn
+              unelevated
+              icon="history"
+              style="height:50px"
+              @click="openHistory()"
             >
-              <q-btn
-                icon="history"
-                :color="$q.dark.isActive?'bg-blue-grey-10':'white'"
-                :text-color="$q.dark.isActive?'white':'primary'"
-                :disable="orderSuccess.length===0"
-                @click="history=true"
+              <q-badge
+                floating
+                color="orange"
+                class="q-mt-xs"
               >
-                <q-badge
-                  floating
-                  color="orange"
-                  text-color="black"
-                  class="q-mt-xs"
-                >
-                  {{ orderSuccess.length }}
-                </q-badge>
-              </q-btn>
-
-              <q-btn
-                :color="$q.dark.isActive?'bg-blue-grey-10':'white'"
-                :text-color="$q.dark.isActive?'white':'primary'"
-
-                :icon="allSelect?'check_box':'check_box_outline_blank'"
-                :disable="cartItems.length===0"
-                @click="allSelect = !allSelect"
-              />
-            </q-btn-group>
+                {{ orderSuccess.length }}
+              </q-badge>
+            </q-btn>
           </div>
         </div>
 
@@ -171,7 +170,7 @@
           v-if="cartItems.length===0"
           class="flex flex-center"
         >
-          No order
+          No Order Yet
         </h6>
 
         <!-- drawer scorll area -->
@@ -184,7 +183,6 @@
           <q-list
             bordered
             class="q-pl-sm order-list"
-            :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-white'"
             v-for="cartItem in cartItems"
             :key="cartItem.order"
           >
@@ -212,8 +210,7 @@
                   caption
                   class="text-bold"
                 >
-                  {{ $t('number') }}:
-                  <span class="text-orange text-bold q-ml-sm">{{ cartItem.number }}</span>
+                  {{ $t('number') }}: <span class="text-red text-bold q-ml-sm">{{ cartItem.number }}</span>
                 </q-item-label>
               </q-item-section>
 
@@ -221,7 +218,6 @@
                 <q-checkbox
                   :val="cartItem.order"
                   dense
-                  :color="$q.dark.isActive?'black':''"
                   v-model="selected"
                 />
               </q-item-section>
@@ -242,7 +238,7 @@
 
               <span
                 class="text-bold q-pl-xl float-right"
-                :class="$q.dark.isActive?'text-orange': 'text-blue-9'"
+                :class="$q.dark.isActive?'text-red': 'text-blue-9'"
               >
                 {{ selected.length }}
               </span>
@@ -251,7 +247,7 @@
             <div class="text-subtitle1">
               {{ $t('totalCost') }}: <span
                 class="text-bold q-pl-xl float-right"
-                :class="$q.dark.isActive?'text-orange': 'text-blue-9'"
+                :class="$q.dark.isActive?'text-red': 'text-blue-9'"
               >$ {{ totalCost }}</span>
             </div>
           </div>
@@ -323,9 +319,9 @@
             <q-input
               v-model.number="money"
               type="number"
+              :label="$t('deposit')"
               ref="money"
               class="q-mb-xl"
-              :label="$t('deposit')"
               :rules="[val=>Number.isInteger(val) || 'Input must be positive interger',
                        val=>val>0 || 'Input must be positive interger',
                        val=>val+moneyLeft<=20000 || 'Accounts should not larger than 20000']"
@@ -372,10 +368,6 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="history">
-      <HistoryDialog />
-    </q-dialog>
-
     <q-page-container>
       <div class="row justify-center">
         <router-view />
@@ -419,18 +411,16 @@
 <script>
 import Menu from '../components/layouts/Menu.vue';
 import Footer from '../components/layouts/Footer.vue'
-import HistoryDialog from '../components/layouts/HistoryDialog.vue'
+
 export default {
   components: {
-    Footer,
-    HistoryDialog,
-    Menu
+    Menu,
+    Footer
   },
 
   data () {
     return {
       addMoney: false,
-      history: false,
       money: 1000
     }
   },
@@ -438,14 +428,13 @@ export default {
   methods: {
     deleteItem () {
       this.$q.dialog({
-        title: 'Delete Order',
+        title: 'Confirm',
         message: 'Would you like to delete?',
         ok: {
           color: 'red'
         },
         cancel: {
-          color: 'grey',
-          flat: true
+          color: 'grey'
         }
       }).onOk(() => {
         this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
@@ -458,6 +447,7 @@ export default {
         this.money = 1000;
         this.addMoney = true;
       } else {
+        this.$store.commit('drawerMutate', false);
         this.$store.dispatch('selectedAction', this.selected);
         this.$router.push({ name: 'Checkout' });
       }
@@ -482,6 +472,10 @@ export default {
           }
         })
       }
+    },
+
+    openHistory () {
+      console.log(1);
     }
   },
 
