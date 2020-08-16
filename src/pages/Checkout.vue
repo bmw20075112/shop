@@ -227,6 +227,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data () {
     return {
@@ -249,6 +250,11 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      'selectedContents',
+      'totalCost'
+    ]),
+
     selected () {
       return this.$store.state.selected;
     },
@@ -267,10 +273,6 @@ export default {
       } else {
         return 'min-width:90vw';
       }
-    },
-
-    totalCost () {
-      return this.$store.getters.totalCost;
     }
   },
 
@@ -296,7 +298,12 @@ export default {
           this.$refs.expiryYear.hasError || this.$refs.ccv.hasError) {
         this.formHasError = true;
       } else {
-        this.$store.commit('orderSend', ...this.selected);
+        let timeStamp = Date.now();
+        this.$store.commit('orderSuccessSend', {
+          products: this.selectedContents,
+          totalCost: this.totalCost,
+          timeStamp
+        });
         this.loading = true;
         this.percentage = 0;
         this.interval = setInterval(() => {

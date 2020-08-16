@@ -1,5 +1,8 @@
 # Quasar App (shop)
 
+## 工作紀錄
+1. Drawer合併History版型待調整
+
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
 
@@ -11,6 +14,8 @@
 5. 字體
 6. 購買紀錄
 7. 合併訂單(SET OR MAP)
+8. History分頁
+9. History排序
 
 ## 已解決Bug
 1. 購物車刪除選項無法控制數量

@@ -38,7 +38,7 @@
           <q-badge
             color="orange"
             text-color="black"
-            :label="$store.getters.cartItems.length"
+            :label="cartItems.length"
             floating
           />
         </q-btn>
@@ -141,7 +141,7 @@
                 :color="$q.dark.isActive?'bg-blue-grey-10':'white'"
                 :text-color="$q.dark.isActive?'white':'primary'"
                 :disable="orderSuccess.length===0"
-                @click="history=true"
+                @click="history=!history"
               >
                 <q-badge
                   floating
@@ -181,52 +181,56 @@
           visible
           v-else
         >
-          <q-list
-            bordered
-            class="q-pl-sm order-list"
-            :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-white'"
-            v-for="cartItem in cartItems"
-            :key="cartItem.order"
-          >
-            <q-item
-              tag="label"
-              v-ripple
+          <HistoryDrawer v-show="history" />
+
+          <div v-show="!history">
+            <q-list
+              bordered
+              class="q-pl-sm order-list"
+              :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-white'"
+              v-for="cartItem in cartItems"
+              :key="cartItem.order"
             >
-              <q-item-section thumbnail>
-                <img
-                  :src="cartItem.url"
-                  alt="order_thumbnail"
-                >
-              </q-item-section>
+              <q-item
+                tag="label"
+                v-ripple
+              >
+                <q-item-section thumbnail>
+                  <img
+                    :src="cartItem.url"
+                    alt="order_thumbnail"
+                  >
+                </q-item-section>
 
-              <q-item-section>
-                <q-item-label>
-                  {{ $t(`${cartItem.name}`) }}
-                </q-item-label>
+                <q-item-section>
+                  <q-item-label>
+                    {{ $t(`${cartItem.name}`) }}
+                  </q-item-label>
 
-                <q-item-label caption>
-                  ${{ cartItem.price }}
-                </q-item-label>
+                  <q-item-label caption>
+                    ${{ cartItem.price }}
+                  </q-item-label>
 
-                <q-item-label
-                  caption
-                  class="text-bold"
-                >
-                  {{ $t('number') }}:
-                  <span class="text-orange text-bold q-ml-sm">{{ cartItem.number }}</span>
-                </q-item-label>
-              </q-item-section>
+                  <q-item-label
+                    caption
+                    class="text-bold"
+                  >
+                    {{ $t('number') }}:
+                    <span class="text-orange text-bold q-ml-sm">{{ cartItem.number }}</span>
+                  </q-item-label>
+                </q-item-section>
 
-              <q-item-section side>
-                <q-checkbox
-                  :val="cartItem.order"
-                  dense
-                  :color="$q.dark.isActive?'black':''"
-                  v-model="selected"
-                />
-              </q-item-section>
-            </q-item>
-          </q-list>
+                <q-item-section side>
+                  <q-checkbox
+                    :val="cartItem.order"
+                    dense
+                    :color="$q.dark.isActive?'black':''"
+                    v-model="selected"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
         </q-scroll-area>
 
         <!-- drawer bottom-->
@@ -235,6 +239,7 @@
           class="z-top fixed-bottom q-pa-sm text-white"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-grey-6'"
           style="bottom:50px"
+          v-show="!history"
         >
           <div class="float-right">
             <div class="text-subtitle1">
@@ -372,10 +377,6 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="history">
-      <HistoryDialog />
-    </q-dialog>
-
     <q-page-container>
       <div class="row justify-center">
         <router-view />
@@ -418,12 +419,12 @@
 
 <script>
 import Menu from '../components/layouts/Menu.vue';
-import Footer from '../components/layouts/Footer.vue'
-import HistoryDialog from '../components/layouts/HistoryDialog.vue'
+import Footer from '../components/layouts/Footer.vue';
+import HistoryDrawer from '../components/layouts/HistoryDrawer.vue'
 export default {
   components: {
     Footer,
-    HistoryDialog,
+    HistoryDrawer,
     Menu
   },
 

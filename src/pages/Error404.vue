@@ -10,7 +10,6 @@
         style="opacity:.4"
       >
         Oops. Nothing here...
-        Testing
       </div>
 
       <q-btn

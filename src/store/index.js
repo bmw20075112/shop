@@ -42,6 +42,16 @@ export default function (/* { ssrContext } */) {
         return state.selected;
       },
 
+      selectedContents (state) {
+        const res = [];
+        let index;
+        state.selected.forEach(el => {
+          index = state.cartItems.findIndex(item => item.order === el);
+          res.push(state.cartItems[index]);
+        });
+        return res;
+      },
+
       totalCost (state) {
         if (state.selected.length === 0) {
           return 0;
@@ -86,7 +96,7 @@ export default function (/* { ssrContext } */) {
         state.moneyLeft += payload;
       },
 
-      orderSend (state, payload) {
+      orderSuccessSend (state, payload) {
         state.orderSuccess.push(payload);
       },
 
