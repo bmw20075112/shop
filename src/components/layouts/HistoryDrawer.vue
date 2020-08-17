@@ -1,30 +1,46 @@
 <template>
   <div>
     <q-list
-      v-for="(order, index) in orderSuccess"
+      bordered
+      class="historyList"
+      :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-white'"
+      v-for="(order, index) in currentList"
       :key="order.timeStamp"
     >
-      <q-item-label header>
+      <q-badge
+        :label="(currentPagination-1)*5+index+1"
+        class="absolute"
+        color="orange"
+        :text-color="$q.dark.isActive?'black':'white'"
+      />
+
+      <q-item-label
+        header
+        class="text-subtitle2 q-pb-none q-pt-none"
+        :style="badgeAlign"
+      >
         {{ orderTimeTranslate[index] }}
       </q-item-label>
 
       <q-item
         v-for="product in order.products"
         :key="product.id"
+        class="q-pb-xs"
       >
-        <q-item-section avatar>
-          <q-avatar rounded>
-            <img
-              :src="product.url"
-              alt="avatar"
-            >
-          </q-avatar>
+        <q-item-section
+          thumbnail
+          :style="badgeAlign"
+        >
+          <img
+            :src="product.url"
+            alt="avatar"
+          >
         </q-item-section>
 
         <q-item-section>
           <q-item-label>{{ $t(`${product.name}`) }}</q-item-label>
           <q-item-label caption>
-            price
+            ${{ product.price }}
           </q-item-label>
         </q-item-section>
 
@@ -33,31 +49,29 @@
           center
         >
           <q-item-label
-            class="text-bold"
+            class="text-bold text-h6 q-mr-xs"
           >
-            <span class="text-orange text-bold q-ml-sm">{{ product.number }}</span>
+            X {{ product.number }}
           </q-item-label>
         </q-item-section>
       </q-item>
 
-      <q-item>
+      <q-item class="q-pt-none">
         <q-item-section avatar />
-        <q-item-section class="text-bold text-red">
-          {{ $t('totalCost') }} :
-        </q-item-section>
+        <q-item-section />
 
         <q-item-section
           side
           center
         >
           <q-item-label
-            class="text-bold text-red text-bold q-ml-sm"
+            class="text-subtitle1 text-bold text-orange text-bold q-mr-xs q-mt-md"
           >
+            {{ $t('totalCost') }} :
             ${{ order.totalCost }}
           </q-item-label>
         </q-item-section>
       </q-item>
-      <q-separator />
     </q-list>
   </div>
 </template>
@@ -65,11 +79,23 @@
 <script>
 import { date } from 'quasar';
 // const { formatDate } = date;
-// console.log(formatDate);
 export default {
+  data () {
+    return {
+      badgeAlign: 'padding-left:32px'
+    }
+  },
   computed: {
     orderTimeTranslate () {
-      return this.orderSuccess.map(el => date.formatDate(el.timeStamp, 'YYYY/MM/DD HH:mm:ss'));
+      return this.currentList.map(el => date.formatDate(el.timeStamp, 'YYYY/MM/DD HH:mm:ss'));
+    },
+
+    currentList () {
+      return this.orderSuccess.slice(this.currentPagination * 5 - 5, this.currentPagination * 5);
+    },
+
+    currentPagination () {
+      return this.$store.state.currentPagination;
     },
 
     orderSuccess () {
@@ -80,5 +106,7 @@ export default {
 </script>
 
 <style>
-
+.historyList:last-child{
+  margin-bottom: 50px;
+}
 </style>

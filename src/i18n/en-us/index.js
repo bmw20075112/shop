@@ -22,14 +22,20 @@ export default {
   hide: 'Hide',
 
   // Menu Layout
+  ascendentCost: 'From small to large',
+  ascendentTime: 'From old to new',
   balance: 'Balance',
   cart: 'Cart',
   checkout: 'Checkout',
   delete: 'Delete',
   deposit: 'Deposit',
+  descendentCost: 'From large to small',
+  descendentTime: 'From new to old',
   insufficient: 'Insufficient Balance',
   orders: 'Orders',
   records: 'Records',
+  sortByCost: 'Sort by cost',
+  sortByTime: 'Sort by time',
   totalCost: 'Total Cost',
   totalSelect: 'Total Select',
 

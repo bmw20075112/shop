@@ -2,6 +2,8 @@
 
 ## 工作紀錄
 1. Drawer合併History版型待調整
+2. 排序JS還沒寫
+3. 添加已完成訂單測試用按鈕
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用

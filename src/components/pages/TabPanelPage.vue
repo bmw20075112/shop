@@ -127,11 +127,12 @@
               style="right:0; top:60%"
             />
             <q-btn
+              flat
               type="button"
-              :label="$t('cancel')"
-              color="primary"
               class="absolute"
               style="right:75px; top:60%"
+              :color="$q.dark.isActive?'white':'primary'"
+              :label="$t('cancel')"
               v-close-popup
             />
           </q-form>

@@ -19,14 +19,21 @@ export default {
   hide: '隱藏',
 
   // menuLayout
+  ascendentCost: '由小到大',
+  ascendentTime: '由舊到新',
   balance: '餘額',
   cart: 'Cart',
   checkout: '結帳',
   delete: '刪除訂單',
   deposit: '儲值金額',
+  descendentCost: '由大到小',
+  descendentTime: '由新到舊',
   insufficient: '餘額不足',
   orders: '訂單',
   records: '購買紀錄',
+  sortByCost: '以金額排序',
+  sortByTime: '以時間排序',
+
   totalSelect: '總選取件數',
   totalCost: '消費金額',
 

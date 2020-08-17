@@ -24,13 +24,14 @@ export default function (/* { ssrContext } */) {
     state: {
       allSelect: false,
       cartItems: [],
+      currentPagination: 1,
+      drawer: false,
       menuFilter: '',
       moneyLeft: 2000,
       order: 0,
       orderSuccess: [],
       selected: [],
-      tab: 'east',
-      drawer: false
+      tab: 'east'
     },
 
     getters: {
@@ -98,6 +99,10 @@ export default function (/* { ssrContext } */) {
 
       orderSuccessSend (state, payload) {
         state.orderSuccess.push(payload);
+      },
+
+      paginationNext (state, payload) {
+        state.currentPagination = payload;
       },
 
       seletedMutate (state, payload) {

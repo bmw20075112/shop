@@ -31,6 +31,12 @@
         </q-btn>
 
         <q-btn
+          color="primary"
+          icon="add"
+          @click="addFake()"
+        />
+
+        <q-btn
           flat
           icon="shopping_cart"
           @click="drawer = !drawer"
@@ -145,12 +151,52 @@
               >
                 <q-badge
                   floating
-                  color="orange"
-                  text-color="black"
+                  color="primary"
+                  text-color="white"
                   class="q-mt-xs"
                 >
                   {{ orderSuccess.length }}
                 </q-badge>
+              </q-btn>
+
+              <q-btn
+                :color="$q.dark.isActive?'bg-blue-grey-10':'white'"
+                :text-color="$q.dark.isActive?'white':'primary'"
+                icon="sort"
+              >
+                <q-menu>
+                  <q-list
+                    style="min-width: 150px"
+                    v-for="item in drawerSort"
+                    :key="item.id"
+                  >
+                    <q-item
+                      clickable
+                      v-close-popup
+                    >
+                      <q-item-section>
+                        <q-item-label>{{ item.labelMain }}</q-item-label>
+                        <q-item-label caption>
+                          {{ item.labelSub }}
+                        </q-item-label>
+                      </q-item-section>
+                      <q-item-section side>
+                        <div>
+                          <q-icon
+                            :name="item.icon"
+                            size="sm"
+                          />
+                          <q-icon
+                            :name="item.pointTo"
+                            size="sm"
+                          />
+                        </div>
+                      </q-item-section>
+                    </q-item>
+
+                    <q-separator />
+                  </q-list>
+                </q-menu>
               </q-btn>
 
               <q-btn
@@ -165,75 +211,95 @@
           </div>
         </div>
 
-        <!-- drawer content when cartItem is empty -->
-
-        <h6
-          v-if="cartItems.length===0"
-          class="flex flex-center"
-        >
-          No order
-        </h6>
-
         <!-- drawer scorll area -->
 
         <q-scroll-area
           class="col"
           visible
-          v-else
         >
+          <div
+            class="top"
+            ref="top"
+          />
           <HistoryDrawer v-show="history" />
-
-          <div v-show="!history">
-            <q-list
-              bordered
-              class="q-pl-sm order-list"
-              :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-white'"
-              v-for="cartItem in cartItems"
-              :key="cartItem.order"
+          <div
+            class="cartList"
+            v-show="!history"
+          >
+            <h6
+              v-if="cartItems.length===0"
+              class="flex flex-center"
             >
-              <q-item
-                tag="label"
-                v-ripple
+              No order
+            </h6>
+
+            <div v-else>
+              <q-list
+                bordered
+                class="q-pl-sm order-list"
+                :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-white'"
+                v-for="cartItem in cartItems"
+                :key="cartItem.order"
               >
-                <q-item-section thumbnail>
-                  <img
-                    :src="cartItem.url"
-                    alt="order_thumbnail"
-                  >
-                </q-item-section>
+                <q-item
+                  tag="label"
+                  v-ripple
+                >
+                  <q-item-section thumbnail>
+                    <img
+                      :src="cartItem.url"
+                      alt="order_thumbnail"
+                    >
+                  </q-item-section>
 
-                <q-item-section>
-                  <q-item-label>
-                    {{ $t(`${cartItem.name}`) }}
-                  </q-item-label>
+                  <q-item-section>
+                    <q-item-label>
+                      {{ $t(`${cartItem.name}`) }}
+                    </q-item-label>
 
-                  <q-item-label caption>
-                    ${{ cartItem.price }}
-                  </q-item-label>
+                    <q-item-label caption>
+                      ${{ cartItem.price }}
+                    </q-item-label>
 
-                  <q-item-label
-                    caption
-                    class="text-bold"
-                  >
-                    {{ $t('number') }}:
-                    <span class="text-orange text-bold q-ml-sm">{{ cartItem.number }}</span>
-                  </q-item-label>
-                </q-item-section>
+                    <q-item-label
+                      caption
+                      class="text-bold"
+                    >
+                      {{ $t('number') }}:
+                      <span class="text-orange text-bold q-ml-sm">{{ cartItem.number }}</span>
+                    </q-item-label>
+                  </q-item-section>
 
-                <q-item-section side>
-                  <q-checkbox
-                    :val="cartItem.order"
-                    dense
-                    :color="$q.dark.isActive?'black':''"
-                    v-model="selected"
-                  />
-                </q-item-section>
-              </q-item>
-            </q-list>
+                  <q-item-section side>
+                    <q-checkbox
+                      :val="cartItem.order"
+                      dense
+                      :color="$q.dark.isActive?'black':''"
+                      v-model="selected"
+                    />
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
           </div>
         </q-scroll-area>
 
         <!-- drawer bottom-->
+
+        <div
+          class="z-top fixed-bottom flex-center flex q-pa-sm text-white"
+          :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
+          v-show="history"
+        >
+          <q-pagination
+            :color="$q.dark.isActive? 'orange': 'primary'"
+            :boundary-numbers="false"
+            :input="true"
+            :max="paginationMax"
+            :max-pages="6"
+            v-model="currentPagination"
+          />
+        </div>
 
         <div
           class="z-top fixed-bottom q-pa-sm text-white"
@@ -437,6 +503,15 @@ export default {
   },
 
   methods: {
+    addFake () {
+      let timeStamp = Date.now();
+      this.$store.commit('orderSuccessSend', {
+        products: [{ id: 'w1', name: 'spaghetti', price: 115, type: 'mainDish', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595819324/west/spaghetti_nsdxqw.jpg', number: 2 }],
+        totalCost: 230,
+        timeStamp
+      })
+    },
+
     deleteItem () {
       this.$q.dialog({
         title: 'Delete Order',
@@ -501,6 +576,16 @@ export default {
       return this.$store.state.cartItems;
     },
 
+    currentPagination: {
+      get () {
+        return this.$store.state.currentPagination;
+      },
+
+      set (val) {
+        this.$store.commit('paginationNext', val);
+      }
+    },
+
     drawer: {
       get () {
         return this.$store.state.drawer;
@@ -509,6 +594,15 @@ export default {
       set (value) {
         this.$store.commit('drawerMutate', value);
       }
+    },
+
+    drawerSort () {
+      return [
+        { id: 1, labelMain: this.$t('sortByCost'), labelSub: this.$t('ascendentCost'), icon: 'attach_money', pointTo: 'arrow_upward' },
+        { id: 2, labelMain: this.$t('sortByCost'), labelSub: this.$t('descendentCost'), icon: 'attach_money', pointTo: 'arrow_downward' },
+        { id: 3, labelMain: this.$t('sortByTime'), labelSub: this.$t('ascendentTime'), icon: 'access_time', pointTo: 'arrow_upward' },
+        { id: 4, labelMain: this.$t('sortByTime'), labelSub: this.$t('descendentTime'), icon: 'access_time', pointTo: 'arrow_downward' }
+      ]
     },
 
     drawerWidth () {
@@ -571,6 +665,10 @@ export default {
       return this.$store.state.orderSuccess;
     },
 
+    paginationMax () {
+      return Math.ceil(this.orderSuccess.length / 5);
+    },
+
     tab: {
       get () {
         return this.$store.state.tab;
@@ -628,6 +726,10 @@ export default {
         }
         this.$store.dispatch('selectedAction', temp);
       }
+    },
+
+    currentPagination (val) {
+      this.$refs.top.scrollIntoView({ block: 'end' });
     },
 
     selected (val) {
