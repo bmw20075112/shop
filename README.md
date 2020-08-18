@@ -4,9 +4,11 @@
 1. Drawer合併History版型待調整
 2. 排序JS還沒寫
 3. 添加已完成訂單測試用按鈕
+4. historyOrder iterate id 待命名
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
+2. 合併訂單(number undefined?)
 
 ## 預定開發
 1. 語言自動偵測

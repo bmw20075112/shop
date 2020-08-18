@@ -154,6 +154,10 @@ export default {
   },
 
   computed: {
+    drawer () {
+      return this.$store.state.drawer;
+    },
+
     menuNow () {
       return this.$store.getters.menuNow;
     },
@@ -182,16 +186,18 @@ export default {
         });
         this.openBuy = false;
         this.number = 1;
-        this.$q.notify({
-          message: `${this.$t(`${this.selectedPic.name}`)}` + ` ${this.$t('addToCart')}`,
-          avatar: this.selectedPic.url,
-          color: 'primary',
-          timeout: 2000,
-          actions: [
-            { label: this.$t('hide'), color: 'orange' },
-            { label: this.$t('checkout'), color: 'white', handler: () => this.$store.commit('drawerMutate', true) }
-          ]
-        })
+        if (!this.drawer) {
+          this.$q.notify({
+            message: `${this.$t(`${this.selectedPic.name}`)}` + ` ${this.$t('addToCart')}`,
+            avatar: this.selectedPic.url,
+            color: 'primary',
+            timeout: 2000,
+            actions: [
+              { label: this.$t('hide'), color: 'orange' },
+              { label: this.$t('checkout'), color: 'white', handler: () => this.$store.commit('drawerMutate', true) }
+            ]
+          })
+        }
       }
     },
 

@@ -66,6 +66,19 @@ export default function (/* { ssrContext } */) {
           return res;
         }
       }
+
+      // uniqueContent () {
+      //   const temp = {};
+      //   for (let i of this.selectedContents) {
+      //     if (i.id in temp) {
+      //       temp[i.id] = i;
+      //     } else {
+      //       temp[i.id].number = temp[i.id].number + i.number;
+      //     }
+      //   }
+      //   console.log([...Object.values(temp)]);
+      //   return [...Object.values(temp)];
+      // }
     },
 
     mutations: {

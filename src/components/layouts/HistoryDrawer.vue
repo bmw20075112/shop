@@ -16,7 +16,7 @@
 
       <q-item-label
         header
-        class="text-subtitle2 q-pb-none q-pt-none"
+        class="text-subtitle2 q-pt-none"
         :style="badgeAlign"
       >
         {{ orderTimeTranslate[index] }}
@@ -107,6 +107,6 @@ export default {
 
 <style>
 .historyList:last-child{
-  margin-bottom: 50px;
+  margin-bottom: 55px;
 }
 </style>

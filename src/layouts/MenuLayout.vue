@@ -134,7 +134,7 @@
             class="col-10 q-pl-md"
             style="font-size:18px"
           >
-            {{ $t('orders') }}
+            {{ drawerTitle }}
           </div>
 
           <div class="absolute-right">
@@ -143,7 +143,7 @@
               flat
             >
               <q-btn
-                icon="history"
+                :icon="history?'shopping_cart':'history'"
                 :color="$q.dark.isActive?'bg-blue-grey-10':'white'"
                 :text-color="$q.dark.isActive?'white':'primary'"
                 :disable="orderSuccess.length===0"
@@ -155,18 +155,25 @@
                   text-color="white"
                   class="q-mt-xs"
                 >
-                  {{ orderSuccess.length }}
+                  <span v-show="!history">{{ orderSuccess.length }}</span>
+                  <span v-show="history">{{ cartItems.length }}</span>
                 </q-badge>
               </q-btn>
 
               <q-btn
                 :color="$q.dark.isActive?'bg-blue-grey-10':'white'"
                 :text-color="$q.dark.isActive?'white':'primary'"
+                :disable="orderSuccess.length<1"
                 icon="sort"
+                v-show="history"
               >
-                <q-menu>
+                <q-menu
+                  :content-class="$q.dark.isActive?'bg-blue-grey-14':'bg-white'"
+                  transition-show="jump-down"
+                  transition-hide="jump-up"
+                >
                   <q-list
-                    style="min-width: 150px"
+                    style="min-width: 200px"
                     v-for="item in drawerSort"
                     :key="item.id"
                   >
@@ -176,21 +183,18 @@
                     >
                       <q-item-section>
                         <q-item-label>{{ item.labelMain }}</q-item-label>
-                        <q-item-label caption>
+                        <q-item-label
+                          caption
+                          class="text-orange text-bold"
+                        >
                           {{ item.labelSub }}
                         </q-item-label>
                       </q-item-section>
                       <q-item-section side>
-                        <div>
-                          <q-icon
-                            :name="item.icon"
-                            size="sm"
-                          />
-                          <q-icon
-                            :name="item.pointTo"
-                            size="sm"
-                          />
-                        </div>
+                        <q-icon
+                          :name="item.icon"
+                          size="sm"
+                        />
                       </q-item-section>
                     </q-item>
 
@@ -202,10 +206,10 @@
               <q-btn
                 :color="$q.dark.isActive?'bg-blue-grey-10':'white'"
                 :text-color="$q.dark.isActive?'white':'primary'"
-
                 :icon="allSelect?'check_box':'check_box_outline_blank'"
-                :disable="cartItems.length===0"
+                :disable="cartItems.length<1"
                 @click="allSelect = !allSelect"
+                v-show="!history"
               />
             </q-btn-group>
           </div>
@@ -287,7 +291,7 @@
         <!-- drawer bottom-->
 
         <div
-          class="z-top fixed-bottom flex-center flex q-pa-sm text-white"
+          class="z-top fixed-bottom flex-center flex q-pa-sm text-white drawer-bottom"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
           v-show="history"
         >
@@ -596,12 +600,20 @@ export default {
       }
     },
 
+    drawerTitle () {
+      if (!this.history) {
+        return this.$t('orders');
+      } else {
+        return this.$t('orderRecord');
+      }
+    },
+
     drawerSort () {
       return [
-        { id: 1, labelMain: this.$t('sortByCost'), labelSub: this.$t('ascendentCost'), icon: 'attach_money', pointTo: 'arrow_upward' },
-        { id: 2, labelMain: this.$t('sortByCost'), labelSub: this.$t('descendentCost'), icon: 'attach_money', pointTo: 'arrow_downward' },
-        { id: 3, labelMain: this.$t('sortByTime'), labelSub: this.$t('ascendentTime'), icon: 'access_time', pointTo: 'arrow_upward' },
-        { id: 4, labelMain: this.$t('sortByTime'), labelSub: this.$t('descendentTime'), icon: 'access_time', pointTo: 'arrow_downward' }
+        { id: 1, labelMain: this.$t('sortByCost'), labelSub: this.$t('ascendentCost'), icon: 'attach_money' },
+        { id: 2, labelMain: this.$t('sortByCost'), labelSub: this.$t('descendentCost'), icon: 'attach_money' },
+        { id: 3, labelMain: this.$t('sortByTime'), labelSub: this.$t('ascendentTime'), icon: 'access_time' },
+        { id: 4, labelMain: this.$t('sortByTime'), labelSub: this.$t('descendentTime'), icon: 'access_time' }
       ]
     },
 
@@ -756,7 +768,12 @@ export default {
       if (!val) {
         this.$store.commit('menuFilterMutate', '');
       }
+    },
+
+    uniqueContent (val) {
+      console.log(val);
     }
+
   }
 }
 </script>
@@ -767,6 +784,11 @@ export default {
     color: white;
   }
 }
+
+.drawer-bottom{
+  border-top: 1px solid lightgrey;
+}
+
 .order-list:last-child{
   margin-bottom: 125px;
 }

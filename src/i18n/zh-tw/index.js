@@ -30,10 +30,9 @@ export default {
   descendentTime: '由新到舊',
   insufficient: '餘額不足',
   orders: '訂單',
-  records: '購買紀錄',
+  orderRecord: '訂單紀錄',
   sortByCost: '以金額排序',
   sortByTime: '以時間排序',
-
   totalSelect: '總選取件數',
   totalCost: '消費金額',
 
