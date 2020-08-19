@@ -24,7 +24,7 @@
 
       <q-item
         v-for="product in order.products"
-        :key="product.id"
+        :key="product.order"
         class="q-pb-xs"
       >
         <q-item-section
@@ -51,7 +51,7 @@
           <q-item-label
             class="text-bold text-h6 q-mr-xs"
           >
-            X {{ product.number }}
+            X {{ product.totalNumber }}
           </q-item-label>
         </q-item-section>
       </q-item>

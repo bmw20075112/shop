@@ -19,19 +19,18 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       menu
-      // example
     },
+
     state: {
-      allSelect: false,
-      cartItems: [],
-      currentPagination: 1,
-      drawer: false,
-      menuFilter: '',
-      moneyLeft: 2000,
-      order: 0,
-      orderSuccess: [],
-      selected: [],
-      tab: 'east'
+      allSelect: false, // drawer是否選取全部訂單
+      cartItems: [], // 購物車裡的所有訂單(不管有無選取)
+      currentPagination: 1, // 已完成訂單目前查看分頁
+      drawer: false, // drawer是否打開
+      menuFilter: '', // mobile專用篩選菜單細項
+      moneyLeft: 2000, // 使用者餘額
+      orderSuccess: [], // 已完成付費的訂單
+      selected: [], // 未付費的已選取訂單
+      tab: 'east' // 目前的菜單類別
     },
 
     getters: {
@@ -44,13 +43,22 @@ export default function (/* { ssrContext } */) {
       },
 
       selectedContents (state) {
-        const res = [];
+        const temp = [];
+        const res = {};
         let index;
         state.selected.forEach(el => {
-          index = state.cartItems.findIndex(item => item.order === el);
-          res.push(state.cartItems[index]);
+          index = state.cartItems.findIndex(item => item.itemID === el);
+          temp.push(state.cartItems[index]);
         });
-        return res;
+
+        for (let i of temp) {
+          if (i.id in res) {
+            res[i.id].totalNumber = res[i.id].totalNumber + i.number;
+          } else {
+            res[i.id] = { ...i, totalNumber: i.number };
+          }
+        }
+        return [...Object.values(res)];
       },
 
       totalCost (state) {
@@ -60,25 +68,12 @@ export default function (/* { ssrContext } */) {
           let res = 0;
           let index;
           for (let i of state.selected) {
-            index = state.cartItems.findIndex(cartItem => cartItem.order === i);
+            index = state.cartItems.findIndex(cartItem => cartItem.itemID === i);
             res += state.cartItems[index].price * state.cartItems[index].number;
           }
           return res;
         }
       }
-
-      // uniqueContent () {
-      //   const temp = {};
-      //   for (let i of this.selectedContents) {
-      //     if (i.id in temp) {
-      //       temp[i.id] = i;
-      //     } else {
-      //       temp[i.id].number = temp[i.id].number + i.number;
-      //     }
-      //   }
-      //   console.log([...Object.values(temp)]);
-      //   return [...Object.values(temp)];
-      // }
     },
 
     mutations: {
@@ -86,17 +81,13 @@ export default function (/* { ssrContext } */) {
         state.allSelect = payload;
       },
 
-      orderMutate (state) {
-        state.order++;
-      },
       cartMutate (state, payload) {
         if (payload.type === 'add') {
-          this.commit('orderMutate');
-          state.cartItems.push({ ...payload.value, order: state.order });
+          state.cartItems.push({ ...payload.value });
         } else if (payload.type === 'remove') {
           let index;
           for (let i of payload.value) {
-            index = state.cartItems.findIndex(cartItem => cartItem.order === i);
+            index = state.cartItems.findIndex(cartItem => cartItem.itemID === i);
             state.cartItems.splice(index, 1);
           }
         }

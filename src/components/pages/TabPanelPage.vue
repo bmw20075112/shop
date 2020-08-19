@@ -181,7 +181,8 @@ export default {
           type: 'add',
           value: {
             ...this.selectedPic,
-            number: this.number
+            number: this.number,
+            itemID: this.selectedPic.id + Date.now()
           }
         });
         this.openBuy = false;

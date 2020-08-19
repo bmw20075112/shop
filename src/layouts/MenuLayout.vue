@@ -243,7 +243,7 @@
                 class="q-pl-sm order-list"
                 :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-white'"
                 v-for="cartItem in cartItems"
-                :key="cartItem.order"
+                :key="cartItem.itemID"
               >
                 <q-item
                   tag="label"
@@ -276,7 +276,7 @@
 
                   <q-item-section side>
                     <q-checkbox
-                      :val="cartItem.order"
+                      :val="cartItem.itemID"
                       dense
                       :color="$q.dark.isActive?'black':''"
                       v-model="selected"
@@ -293,6 +293,7 @@
         <div
           class="z-top fixed-bottom flex-center flex q-pa-sm text-white drawer-bottom"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
+          :style="$q.dark.isActive? 'border-top: 1px solid grey;': 'border-top: 1px solid lightgrey;'"
           v-show="history"
         >
           <q-pagination
@@ -510,7 +511,7 @@ export default {
     addFake () {
       let timeStamp = Date.now();
       this.$store.commit('orderSuccessSend', {
-        products: [{ id: 'w1', name: 'spaghetti', price: 115, type: 'mainDish', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595819324/west/spaghetti_nsdxqw.jpg', number: 2 }],
+        products: [{ id: 'w1', name: 'spaghetti', price: 115, type: 'mainDish', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595819324/west/spaghetti_nsdxqw.jpg', totalNumber: 2 }],
         totalCost: 230,
         timeStamp
       })
@@ -734,7 +735,7 @@ export default {
         this.$store.dispatch('selectedAction', []);
         let temp = [];
         for (let i of this.cartItems) {
-          temp.push(i.order);
+          temp.push(i.itemID);
         }
         this.$store.dispatch('selectedAction', temp);
       }
@@ -768,12 +769,7 @@ export default {
       if (!val) {
         this.$store.commit('menuFilterMutate', '');
       }
-    },
-
-    uniqueContent (val) {
-      console.log(val);
     }
-
   }
 }
 </script>
@@ -783,10 +779,6 @@ export default {
   .q-field__native{
     color: white;
   }
-}
-
-.drawer-bottom{
-  border-top: 1px solid lightgrey;
 }
 
 .order-list:last-child{

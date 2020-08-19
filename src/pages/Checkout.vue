@@ -273,6 +273,10 @@ export default {
       } else {
         return 'min-width:90vw';
       }
+    },
+
+    orderSuccess () {
+      return this.$store.state.orderSuccess;
     }
   },
 
@@ -300,6 +304,7 @@ export default {
       } else {
         let timeStamp = Date.now();
         this.$store.commit('orderSuccessSend', {
+          packageID: this.selectedContents[0].id + timeStamp,
           products: this.selectedContents,
           totalCost: this.totalCost,
           timeStamp
