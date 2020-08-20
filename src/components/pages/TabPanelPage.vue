@@ -143,6 +143,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   data () {
     return {
@@ -154,16 +155,13 @@ export default {
   },
 
   computed: {
-    drawer () {
-      return this.$store.state.drawer;
-    },
+    ...mapState([
+      'drawer',
+      'tab'
+    ]),
 
     menuNow () {
       return this.$store.getters.menuNow;
-    },
-
-    tab () {
-      return this.$store.state.tab;
     }
   },
 
@@ -177,7 +175,8 @@ export default {
       if (this.$refs.number.hasError) {
         this.formHasError = true;
       } else {
-        this.$store.dispatch('cartAction', {
+        this.$store.commit('historyMutate', false);
+        this.$store.commit('cartMutate', {
           type: 'add',
           value: {
             ...this.selectedPic,

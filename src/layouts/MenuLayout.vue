@@ -174,12 +174,13 @@
                 >
                   <q-list
                     style="min-width: 200px"
-                    v-for="item in drawerSort"
+                    v-for="item in historySort"
                     :key="item.id"
                   >
                     <q-item
                       clickable
                       v-close-popup
+                      @click="sortIn(item.id)"
                     >
                       <q-item-section>
                         <q-item-label>{{ item.labelMain }}</q-item-label>
@@ -502,7 +503,6 @@ export default {
   data () {
     return {
       addMoney: false,
-      history: false,
       money: 1000
     }
   },
@@ -511,7 +511,16 @@ export default {
     addFake () {
       let timeStamp = Date.now();
       this.$store.commit('orderSuccessSend', {
-        products: [{ id: 'w1', name: 'spaghetti', price: 115, type: 'mainDish', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595819324/west/spaghetti_nsdxqw.jpg', totalNumber: 2 }],
+        products: [
+          {
+            id: 'w1',
+            name: 'spaghetti',
+            price: 115,
+            type: 'mainDish',
+            url: 'https://res.cloudinary.com/barney4760/image/upload/v1595819324/west/spaghetti_nsdxqw.jpg',
+            totalNumber: 2
+          }
+        ],
         totalCost: 230,
         timeStamp
       })
@@ -529,8 +538,8 @@ export default {
           flat: true
         }
       }).onOk(() => {
-        this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
-        this.$store.dispatch('selectedAction', []);
+        this.$store.commit('cartMutate', { type: 'remove', value: this.selected });
+        this.$store.commit('seletedMutate', []);
       })
     },
 
@@ -539,7 +548,7 @@ export default {
         this.money = 1000;
         this.addMoney = true;
       } else {
-        this.$store.dispatch('selectedAction', this.selected);
+        this.$store.commit('seletedMutate', this.selected);
         this.$router.push({ name: 'Checkout' });
       }
     },
@@ -563,6 +572,10 @@ export default {
           }
         })
       }
+    },
+
+    sortIn (way) {
+      this.$store.commit('sortWayMutate', way);
     }
   },
 
@@ -609,12 +622,12 @@ export default {
       }
     },
 
-    drawerSort () {
+    historySort () {
       return [
-        { id: 1, labelMain: this.$t('sortByCost'), labelSub: this.$t('ascendentCost'), icon: 'attach_money' },
-        { id: 2, labelMain: this.$t('sortByCost'), labelSub: this.$t('descendentCost'), icon: 'attach_money' },
-        { id: 3, labelMain: this.$t('sortByTime'), labelSub: this.$t('ascendentTime'), icon: 'access_time' },
-        { id: 4, labelMain: this.$t('sortByTime'), labelSub: this.$t('descendentTime'), icon: 'access_time' }
+        { id: 'sortTimeDesc', labelMain: this.$t('sortByTime'), labelSub: this.$t('descendentTime'), icon: 'access_time' },
+        { id: 'sortTimeAsc', labelMain: this.$t('sortByTime'), labelSub: this.$t('ascendentTime'), icon: 'access_time' },
+        { id: 'sortCostDesc', labelMain: this.$t('sortByCost'), labelSub: this.$t('descendentCost'), icon: 'attach_money' },
+        { id: 'sortCostAsc', labelMain: this.$t('sortByCost'), labelSub: this.$t('ascendentCost'), icon: 'attach_money' }
       ]
     },
 
@@ -633,6 +646,16 @@ export default {
         return this.options[1];
       } else {
         return this.options[2];
+      }
+    },
+
+    history: {
+      get () {
+        return this.$store.state.history;
+      },
+
+      set (val) {
+        this.$store.commit('historyMutate', val);
       }
     },
 
@@ -698,7 +721,7 @@ export default {
       },
 
       set (value) {
-        this.$store.dispatch('selectedAction', value);
+        this.$store.commit('seletedMutate', value);
       }
     },
 
@@ -729,15 +752,15 @@ export default {
     allSelect (val) {
       if (!val) {
         if (this.selected.length === this.cartItems.length) {
-          this.$store.dispatch('selectedAction', []);
+          this.$store.commit('seletedMutate', []);
         }
       } else {
-        this.$store.dispatch('selectedAction', []);
+        this.$store.commit('seletedMutate', []);
         let temp = [];
         for (let i of this.cartItems) {
           temp.push(i.itemID);
         }
-        this.$store.dispatch('selectedAction', temp);
+        this.$store.commit('seletedMutate', temp);
       }
     },
 

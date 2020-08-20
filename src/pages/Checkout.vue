@@ -317,9 +317,9 @@ export default {
             clearInterval(this.interval);
             this.loading = false;
             this.$store.commit('moneyLeftMutate', -1 * this.totalCost);
-            this.$store.dispatch('cartAction', { type: 'remove', value: this.selected });
+            this.$store.commit('cartMutate', { type: 'remove', value: this.selected });
             this.$store.commit('drawerMutate', false);
-            this.$store.dispatch('selectedAction', []);
+            this.$store.commit('seletedMutate', []);
             this.$store.commit('allSelectMutate', false);
             this.$q.dialog({
               title: this.$t('successTitle'),

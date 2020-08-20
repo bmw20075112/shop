@@ -9,14 +9,14 @@
     >
       <q-badge
         :label="(currentPagination-1)*5+index+1"
-        class="absolute"
+        class="absolute q-ml-sm q-mt-sm"
         color="orange"
         :text-color="$q.dark.isActive?'black':'white'"
       />
 
       <q-item-label
         header
-        class="text-subtitle2 q-pt-none"
+        class="text-subtitle2 q-pt-sm q-ml-xs"
         :style="badgeAlign"
       >
         {{ orderTimeTranslate[index] }}
@@ -49,7 +49,7 @@
           center
         >
           <q-item-label
-            class="text-bold text-h6 q-mr-xs"
+            class="text-bold text-h6"
           >
             X {{ product.totalNumber }}
           </q-item-label>
@@ -65,9 +65,9 @@
           center
         >
           <q-item-label
-            class="text-subtitle1 text-bold text-orange text-bold q-mr-xs q-mt-md"
+            class="text-subtitle1 text-bold text-orange text-bold q-mt-md"
           >
-            {{ $t('totalCost') }} :
+            {{ $t('totalCost') }}&ensp;
             ${{ order.totalCost }}
           </q-item-label>
         </q-item-section>
@@ -78,6 +78,7 @@
 
 <script>
 import { date } from 'quasar';
+import { mapState } from 'vuex'
 // const { formatDate } = date;
 export default {
   data () {
@@ -86,20 +87,31 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'currentPagination',
+      'orderSuccess',
+      'sortWay'
+    ]),
+
     orderTimeTranslate () {
-      return this.currentList.map(el => date.formatDate(el.timeStamp, 'YYYY/MM/DD HH:mm:ss'));
+      return this.sortOrder.map(el => date.formatDate(el.timeStamp, 'YYYY/MM/DD HH:mm:ss'));
     },
 
     currentList () {
-      return this.orderSuccess.slice(this.currentPagination * 5 - 5, this.currentPagination * 5);
+      return this.sortOrder.slice(this.currentPagination * 5 - 5, this.currentPagination * 5);
     },
 
-    currentPagination () {
-      return this.$store.state.currentPagination;
-    },
-
-    orderSuccess () {
-      return this.$store.state.orderSuccess;
+    sortOrder () {
+      if (this.sortWay === 'sortTimeDesc') {
+        return [...this.orderSuccess].sort((a, b) => b.timeStamp - a.timeStamp);
+      } else if (this.sortWay === 'sortTimeAsc') {
+        return [...this.orderSuccess].sort((a, b) => a.timeStamp - b.timeStamp);
+      } else if (this.sortWay === 'sortCostDesc') {
+        return [...this.orderSuccess].sort((a, b) => b.totalCost - a.totalCost);
+      } else if (this.sortWay === 'sortCostAsc') {
+        return [...this.orderSuccess].sort((a, b) => a.totalCost - b.totalCost);
+      }
+      return this.orderSuccess;
     }
   }
 }

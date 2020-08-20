@@ -27,7 +27,7 @@ export default ({ router, store }) => {
 
   Router.beforeEach((to, from, next) => {
     if (to.name === 'Checkout') {
-      if (store.getters.selected.length > 0) {
+      if (store.state.selected.length > 0) {
         next();
       } else {
         next('/');

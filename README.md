@@ -1,10 +1,8 @@
 # Quasar App (shop)
 
 ## 工作紀錄
-1. Drawer合併History版型待調整
-2. 排序JS還沒寫
-3. 添加已完成訂單測試用按鈕
-4. historyOrder iterate id 待命名
+1. 排序JS還沒寫
+
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
@@ -15,7 +13,6 @@
 3. 首頁
 4. 考慮是否導入SSR
 5. 字體
-7. History排序
 
 ## 已解決Bug
 1. 購物車刪除選項無法控制數量
@@ -36,6 +33,7 @@
 9.  History分頁
 10. 合併訂單
 11. 購買紀錄
+12. History排序
 
 ## Install the dependencies
 ```bash

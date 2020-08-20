@@ -25,23 +25,17 @@ export default function (/* { ssrContext } */) {
       allSelect: false, // drawer是否選取全部訂單
       cartItems: [], // 購物車裡的所有訂單(不管有無選取)
       currentPagination: 1, // 已完成訂單目前查看分頁
-      drawer: false, // drawer是否打開
+      drawer: false, // drawer是否打開,
+      history: false, // drawer目前是否顯示為歷史紀錄
       menuFilter: '', // mobile專用篩選菜單細項
       moneyLeft: 2000, // 使用者餘額
       orderSuccess: [], // 已完成付費的訂單
       selected: [], // 未付費的已選取訂單
+      sortWay: 'sortTimeDesc',
       tab: 'east' // 目前的菜單類別
     },
 
     getters: {
-      cartItems (state) {
-        return state.cartItems;
-      },
-
-      selected (state) {
-        return state.selected;
-      },
-
       selectedContents (state) {
         const temp = [];
         const res = {};
@@ -93,6 +87,14 @@ export default function (/* { ssrContext } */) {
         }
       },
 
+      drawerMutate (state, payload) {
+        state.drawer = payload;
+      },
+
+      historyMutate (state, payload) {
+        state.history = payload;
+      },
+
       menuFilterMutate (state, payload) {
         state.menuFilter = payload;
       },
@@ -113,22 +115,12 @@ export default function (/* { ssrContext } */) {
         state.selected = payload;
       },
 
+      sortWayMutate (state, payload) {
+        state.sortWay = payload
+      },
+
       tabMutate (state, payload) {
         state.tab = payload;
-      },
-
-      drawerMutate (state, payload) {
-        state.drawer = payload;
-      }
-    },
-
-    actions: {
-      cartAction ({ commit }, payload) {
-        commit('cartMutate', payload);
-      },
-
-      selectedAction ({ commit }, payload) {
-        commit('seletedMutate', payload);
       }
     },
 
