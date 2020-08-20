@@ -18,10 +18,8 @@ export default {
   // TabPanelPage
   addToCart: 'is in the Cart',
   foodCaption: 'Food with delicious taste',
-  hide: 'Hide',
-  inputInterger: 'Input must be positive interger',
-  inputLower100: 'Input should not be larger than 100',
   number: 'Number',
+  hide: 'Hide',
 
   // Menu Layout
   ascendentCost: 'In ascendent order',
@@ -62,7 +60,7 @@ export default {
   // Checkout
   warning: 'Warning',
   warningTitle: 'This website is only for Practicing.',
-  warningSub: 'Do not type any sensitive real personal information.',
+  warningSub: 'Do not key in any sensitive real personal information.',
   deliverInfo: 'Deliver Info',
   payment: 'Payment',
   name: 'Name*',

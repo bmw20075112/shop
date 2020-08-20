@@ -18,7 +18,7 @@
             spinner-size="32px"
           />
           <q-card-section>
-            <div class="text-h6 text-orange q-pb-xs text-weight-medium">
+            <div class="text-h6 text-orange q-pb-xs text-bold">
               {{ $t(`${food.name}`) }}
             </div>
 
@@ -95,9 +95,9 @@
               :label="$t('number')"
               ref="number"
               class="q-mb-xl"
-              :rules="[val=>Number.isInteger(val) || $t('inputInterger'),
-                       val=>val>0 || $t('inputInterger'),
-                       val=>val<=100 || $t('inputLower100') ]"
+              :rules="[val=>Number.isInteger(val) || 'Input must be positive interger',
+                       val=>val>0 || 'Input must be positive interger',
+                       val=>val<=100 || 'Input should not be larger than 100' ]"
             >
               <template v-slot:prepend>
                 <q-btn
@@ -193,7 +193,7 @@ export default {
             color: 'primary',
             timeout: 2000,
             actions: [
-              { label: this.$t('hide'), color: 'grey-13' },
+              { label: this.$t('hide'), color: 'orange' },
               { label: this.$t('checkout'), color: 'white', handler: () => this.$store.commit('drawerMutate', true) }
             ]
           })

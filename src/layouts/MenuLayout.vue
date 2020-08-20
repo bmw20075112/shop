@@ -30,11 +30,11 @@
           </q-menu>
         </q-btn>
 
-        <!-- <q-btn
+        <q-btn
           color="primary"
           icon="add"
           @click="addFake()"
-        /> -->
+        />
 
         <q-btn
           flat

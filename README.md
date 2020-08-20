@@ -1,6 +1,8 @@
 # Quasar App (shop)
 
 ## 工作紀錄
+1. 排序JS還沒寫
+
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
