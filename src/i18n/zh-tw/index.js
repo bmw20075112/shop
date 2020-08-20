@@ -15,8 +15,10 @@ export default {
   // TabPanelPage
   addToCart: '已經放入購物車',
   foodCaption: '美味營養的餐點',
-  number: '數量',
   hide: '隱藏',
+  inputInterger: '輸入值必須為正整數',
+  inputLower100: '輸入值必須小於100',
+  number: '數量',
 
   // menuLayout
   ascendentCost: '由小到大',
