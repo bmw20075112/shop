@@ -1,18 +1,14 @@
 # Quasar App (shop)
 
 ## 工作紀錄
-1. 排序JS還沒寫
-
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
 
 ## 預定開發
 1. 語言自動偵測
-2. 配色
-3. 首頁
-4. 考慮是否導入SSR
-5. 字體
+2. 首頁
+3. 考慮是否導入SSR
 
 ## 已解決Bug
 1. 購物車刪除選項無法控制數量
@@ -34,6 +30,8 @@
 10. 合併訂單
 11. 購買紀錄
 12. History排序
+13. 加入中文字體
+14. 統一配色
 
 ## Install the dependencies
 ```bash

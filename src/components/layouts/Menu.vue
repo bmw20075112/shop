@@ -12,17 +12,16 @@
         </q-avatar>
 
         <div class="column q-ml-md text-bold">
-          <div class="text-subtitle1">
+          <div class="text-subtitle2">
             John Doe
           </div>
 
           <div class="column">
-            <div class=" text-primary q-pt-sm">
+            <div class="text-primary q-pt-sm">
               {{ $t('accounts') }}
             </div>
-            <div class="text-subtitle1">
-              ${{ $store.state.moneyLeft }}
-            </div>
+
+            <div>${{ $store.state.moneyLeft }}</div>
           </div>
         </div>
       </div>
