@@ -12,6 +12,7 @@
             <img
               src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"
               class="cursor-pointer"
+              alt="logo"
             >
           </q-avatar>
           <span

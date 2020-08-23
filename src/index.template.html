@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= productName %></title>
+    <title>PandaEat</title>
 
     <meta charset="utf-8">
-    <meta name="description" content="<%= productDescription %>">
+    <meta name="description" content="Food delivery service with various type of food">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>">
+
+    <meta property="og:title" content="PandaEat">
+    <meta property="og:type" content="Food">
+    <meta property="og:url" content="https://shop-dc9e1.web.app/">
+    <meta property="og:image" content="https://res.cloudinary.com/barney4760/image/upload/v1596681194/Home/deliver_sm_qv63pi.jpg">
+    <meta property="og:description" content="Food delivery service with various type of food">
     
     <link rel="icon" type="image/png" sizes="128x128" href="icons/favicon-128x128.png">
     <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
     <link rel="icon" type="image/ico" href="favicon.ico">
-    <!-- font -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="preload stylesheet" as="style">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="preload" as="style" onload="this.rel = 'stylesheet'">
+    <link href="css/4.f8aafa08.css" rel="preload" as="style" onload="this.rel = 'stylesheet'">
   </head>
   <body>
     <!-- DO NOT touch the following DIV -->

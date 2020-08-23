@@ -11,9 +11,15 @@ export default {
   settings: 'Settings',
 
   // Home
+  drinksHome: 'Drinks',
   eastHome: 'East Food',
   westHome: 'West Food',
-  drinksHome: 'Drinks',
+
+  setA: 'Set A',
+  setB: 'Set B',
+  setC: 'Set C',
+
+  shopAddress: 'Shop Address',
 
   // TabPanelPage
   addToCart: 'is in the Cart',
@@ -21,6 +27,7 @@ export default {
   hide: 'Hide',
   inputInterger: 'Input must be positive interger',
   inputLower100: 'Input should not be larger than 100',
+  inputLower20000: 'Input should not be larger than 20000',
   number: 'Number',
 
   // Menu Layout
@@ -31,6 +38,7 @@ export default {
   checkout: 'Checkout',
   delete: 'Delete',
   deposit: 'Deposit',
+  depositAlert: 'Deposit or delete some orders',
   descendentCost: 'In descendent order',
   descendentTime: 'From new to old',
   insufficient: 'Insufficient Balance',
@@ -116,7 +124,7 @@ export default {
   coffee: 'Coffee',
   coco: 'Coco',
   blackTea: 'Black Tea',
-  mutcha: 'Mutcha',
+  matcha: 'Mutcha',
   coconut: 'Coconut',
   milk: 'Milk',
   orangeJuice: 'Orange Juice',

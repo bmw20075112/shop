@@ -12,6 +12,7 @@
           @click="openCard(index)"
         >
           <q-img
+            :alt="food.name"
             :src="food.url"
             :ratio="16/9"
             spinner-color="primary"

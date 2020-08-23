@@ -12,12 +12,19 @@ export default {
   westHome: '西式饗宴',
   drinksHome: '多元飲品',
 
+  setA: '台式套餐',
+  setB: '日式套餐',
+  setC: '美式套餐',
+
+  shopAddress: '店家地址',
+
   // TabPanelPage
   addToCart: '已經放入購物車',
   foodCaption: '美味營養的餐點',
   hide: '隱藏',
   inputInterger: '輸入值必須為正整數',
   inputLower100: '輸入值必須小於100',
+  inputLower20000: 'Input should not be larger than 20000',
   number: '數量',
 
   // menuLayout
@@ -28,6 +35,7 @@ export default {
   checkout: '結帳',
   delete: '刪除訂單',
   deposit: '儲值金額',
+  depositAlert: '請儲值或刪除部分訂單',
   descendentCost: '由大到小',
   descendentTime: '由新到舊',
   insufficient: '餘額不足',
@@ -114,7 +122,7 @@ export default {
   coffee: '咖啡',
   coco: '可可',
   blackTea: '紅茶',
-  mutcha: '抹茶',
+  matcha: '抹茶',
   coconut: '椰子水',
   milk: '牛奶',
   orangeJuice: '柳橙汁',

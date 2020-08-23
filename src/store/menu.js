@@ -32,7 +32,7 @@ export default {
 
     drinksMenu: [
       { id: 'd1', name: 'baboTea', price: 45, type: 'tea', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595840072/drinks/babo-tea_rtrntr.jpg' },
-      { id: 'd2', name: 'mutcha', price: 40, type: 'tea', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595840073/drinks/Matcha_xey3gc.jpg' },
+      { id: 'd2', name: 'matcha', price: 40, type: 'tea', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595840073/drinks/Matcha_xey3gc.jpg' },
       { id: 'd3', name: 'blackTea', price: 30, type: 'tea', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595840072/drinks/black-tea_wezx4n.jpg' },
       { id: 'd4', name: 'coffee', price: 50, type: 'others', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595840072/drinks/coffee_wykbtm.jpg' },
       { id: 'd5', name: 'coco', price: 40, type: 'others', url: 'https://res.cloudinary.com/barney4760/image/upload/v1595840072/drinks/coco_zftrhu.jpg' },

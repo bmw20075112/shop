@@ -1,6 +1,9 @@
 # Quasar App (shop)
 
 ## 工作紀錄
+1. SEO優化
+2. Preload 中文字體及ICON
+3. 首頁圖新增SKELETON
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用

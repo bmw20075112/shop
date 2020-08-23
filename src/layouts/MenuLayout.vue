@@ -11,6 +11,7 @@
             <img
               src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"
               class="cursor-pointer"
+              alt="logo"
             >
           </q-avatar>
           <span
@@ -371,7 +372,7 @@
         </q-card-section>
 
         <q-card-section>
-          Deposit or delete some orders
+          {{ $t('depositAlert') }}
         </q-card-section>
 
         <q-card-section>
@@ -404,8 +405,8 @@
               class="q-mb-xl"
               :label="$t('deposit')"
               :rules="[val=>Number.isInteger(val) || 'Input must be positive interger',
-                       val=>val>0 || 'Input must be positive interger',
-                       val=>val+moneyLeft<=20000 || 'Accounts should not larger than 20000']"
+                       val=>val>0 || $t('inputInterger'),
+                       val=>val+moneyLeft<=20000 || $t('inputLower20000')]"
             >
               <template v-slot:prepend>
                 <q-btn
