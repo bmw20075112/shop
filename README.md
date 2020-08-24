@@ -1,16 +1,14 @@
 # Quasar App (shop)
 
 ## 工作紀錄
-1. SEO優化
-2. Preload 中文字體及ICON
-3. 首頁圖新增SKELETON
+1. 建立登入系統中
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
 
 ## 預定開發
-1. 語言自動偵測
-2. 首頁
+1. 成交訂單紀錄上傳DB、管理者介面(?)
+2. 語言自動偵測
 3. 考慮是否導入SSR
 
 ## 已解決Bug

@@ -14,12 +14,21 @@ export default {
   drinksHome: 'Drinks',
   eastHome: 'East Food',
   westHome: 'West Food',
-
   setA: 'Set A',
   setB: 'Set B',
   setC: 'Set C',
-
   shopAddress: 'Shop Address',
+
+  // Identity
+  accountID: 'Account ID',
+  accountName: 'Account Name',
+  emailAlert: 'Check format again',
+  emailNo: 'Email Required',
+  identityVerify: 'Identity Verification',
+  login: 'Login',
+  password: 'Password',
+  passwordAlert: '8 to 30 character, mix with numbers and letters',
+  signUp: 'Sign up',
 
   // TabPanelPage
   addToCart: 'is in the Cart',

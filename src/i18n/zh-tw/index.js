@@ -11,12 +11,21 @@ export default {
   eastHome: '東方美食',
   westHome: '西式饗宴',
   drinksHome: '多元飲品',
-
   setA: '台式套餐',
   setB: '日式套餐',
   setC: '美式套餐',
-
   shopAddress: '店家地址',
+
+  // Identity
+  accountID: '帳號',
+  accountName: '用戶名',
+  emailAlert: '請檢查格式是否錯誤',
+  emailNo: '電子郵件為必填',
+  identityVerify: '帳戶認證',
+  login: '登入',
+  password: '密碼',
+  passwordAlert: '8~30個字元，須為英文及數字混合',
+  signUp: '註冊',
 
   // TabPanelPage
   addToCart: '已經放入購物車',
@@ -73,7 +82,7 @@ export default {
   name: '姓名*',
   phone: '手機號碼*',
   address: '住址*',
-  email: '電子信箱',
+  email: '電子郵件',
   nameAlert: '姓名為必填項目',
   phoneAlert: '手機前2碼須為09',
   addressAlert: '住址為必填項目',
