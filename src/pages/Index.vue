@@ -13,8 +13,8 @@
             type="rect"
             width="1024px"
             height="70vh"
-            v-show="!isLoad"
-            style="display:inline-block"
+            style="margin:0 auto"
+            v-show="skeletonShow"
           />
 
           <q-img
@@ -29,7 +29,7 @@
             :position="coverPosition"
             class="relative"
             v-show="isLoad"
-            @load="isLoad = true"
+            @load="isLoad = true; skeletonShow=false"
           >
             <transition
               name="caption"
@@ -64,8 +64,10 @@
           style="width:100%; max-width:1048px"
         >
           <div
-            class="col-md-4 col-sm-4 col-xs-12"
-            v-for="item in menu"
+            class="col-md-4 col-sm-12 col-xs-12"
+            v-for="(item, index) in menu"
+            @mouseover="$set(hover,index,true)"
+            @mouseleave="$set(hover,index,false)"
             :key="item.id"
           >
             <q-card
@@ -76,7 +78,10 @@
                 :src="item.url"
                 :ratio="16/9"
               >
-                <div class="absolute-full text-h5 text-bold flex flex-center hover-info">
+                <div
+                  class="absolute-full text-bold flex flex-center hover-info"
+                  :class="hover[index]?'text-h4':'text-h5'"
+                >
                   {{ item.title }}
                 </div>
               </q-img>
@@ -199,14 +204,16 @@
 </template>
 
 <script>
-import key from '../api/googleKey';
+// import key from '../api/googleKey';
 export default {
   data () {
     return {
       caption2Animate: false,
+      hover: [false, false, false],
       isLoad: false,
-      key,
-      mapLink: `https://www.google.com/maps/embed/v1/place?key=${key}&q=place_id:ChIJraeA2rarQjQRPBBjyR3RxKw`,
+      // key,
+      // mapLink: `https://www.google.com/maps/embed/v1/place?key=${key}&q=place_id:ChIJraeA2rarQjQRPBBjyR3RxKw`,
+      skeletonShow: true,
       slide: 1,
       autoplay: true
     }
@@ -216,7 +223,7 @@ export default {
       if (this.$q.screen.lt.lg) {
         return '60% 0%';
       } else {
-        return '';
+        return '50% 0%';
       }
     },
 
@@ -224,7 +231,7 @@ export default {
       if (this.$q.screen.lt.lg) {
         return '75vh';
       } else {
-        return '';
+        return '70vh';
       }
     },
 
@@ -304,12 +311,6 @@ export default {
   background-color: rgba(0, 0, 0, .3);
 }
 
-.card:hover{
-  .hover-info{
-    visibility: hidden;
-  }
-}
-
 .cover-caption{
   position: absolute;
   color: white;
@@ -327,6 +328,10 @@ export default {
 .caption2{
   top: 195px;
   right: 200px;
+}
+
+.hover-info{
+  transition: 0.5s ease;
 }
 
 @media screen and (max-width:480px) {

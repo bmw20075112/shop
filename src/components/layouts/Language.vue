@@ -22,7 +22,7 @@ export default {
       if (lang === 'zh-tw') {
         this.$q.cookies.remove('isTranslate');
       } else if (lang === 'en-us') {
-        this.$q.cookies.set('isTranslate', true);
+        this.$q.cookies.set('isTranslate', true, { expires: 7, sameSite: 'Lax' });
       }
     }
   }

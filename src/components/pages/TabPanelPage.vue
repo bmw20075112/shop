@@ -19,7 +19,7 @@
             spinner-size="32px"
           />
           <q-card-section>
-            <div class="text-h6 text-orange q-pb-xs text-weight-medium">
+            <div class="text-h6 text-orange q-pb-xs text-bold">
               {{ $t(`${food.name}`) }}
             </div>
 
