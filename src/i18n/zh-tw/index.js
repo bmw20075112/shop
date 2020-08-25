@@ -24,8 +24,14 @@ export default {
   identityVerify: '帳戶認證',
   login: '登入',
   password: '密碼',
+  passwordRe: '再次輸入密碼',
+  passwordLength: '最少8碼，最多30碼',
+  passwordMix: '必須為數字和英文混合',
   passwordAlert: '8~30個字元，須為英文及數字混合',
+  password2Alert: '輸入和第一次密碼不相同',
   signUp: '註冊',
+  userID: '用戶名',
+  userNo: '用戶名為必填',
 
   // TabPanelPage
   addToCart: '已經放入購物車',

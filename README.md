@@ -1,7 +1,7 @@
 # Quasar App (shop)
 
 ## 工作紀錄
-1. 建立登入系統中
+1. 註冊TAB PANEL完成，fixed height待設定
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用

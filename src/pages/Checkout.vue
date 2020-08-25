@@ -43,6 +43,7 @@
           ref="deliver"
         >
           <q-input
+            autocomplete="username"
             v-model="name"
             ref="name"
             type="text"
@@ -51,10 +52,11 @@
             lazy-rules
             outlined
             maxlength="30"
-            :rules="[ val => val && val.length > 0 || this.$t('nameAlert')]"
+            :rules="[ val => val && val.length > 0 || $t('nameAlert')]"
           />
 
           <q-input
+            autocomplete="tel"
             v-model="phone"
             ref="phone"
             type="tel"
@@ -64,20 +66,22 @@
             lazy-rules
             outlined
             placeholder="0912-345-678"
-            :rules="[val=>/^09\d{2}-\d{3}-\d{3}/.test(`${val}`) || this.$t('phoneAlert')]"
+            :rules="[val=>/^09\d{2}-\d{3}-\d{3}/.test(val) || $t('phoneAlert')]"
           />
 
           <q-input
+            autocomplete="street-address"
             v-model="address"
             ref="address"
             type="text"
             :label="$t('address')"
             outlined
             lazy-rules
-            :rules="[val => val && val.length > 0 || this.$t('addressAlert')]"
+            :rules="[val => val && val.length > 0 || $t('addressAlert')]"
           />
 
           <q-input
+            autocomplete="email"
             v-model="email"
             type="email"
             :label="$t('email')"
