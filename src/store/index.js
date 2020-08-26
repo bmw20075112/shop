@@ -27,6 +27,7 @@ export default function (/* { ssrContext } */) {
       currentPagination: 1, // 已完成訂單目前查看分頁
       drawer: false, // drawer是否打開,
       history: false, // drawer目前是否顯示為歷史紀錄
+      identityDialog: false,
       menuFilter: '', // mobile專用篩選菜單細項
       moneyLeft: 2000, // 使用者餘額
       orderSuccess: [], // 已完成付費的訂單
@@ -93,6 +94,10 @@ export default function (/* { ssrContext } */) {
 
       historyMutate (state, payload) {
         state.history = payload;
+      },
+
+      identityMutate (state, payload) {
+        state.identityDialog = payload;
       },
 
       menuFilterMutate (state, payload) {

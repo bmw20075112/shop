@@ -22,17 +22,21 @@ export default {
   // Identity
   accountID: 'Account ID',
   accountName: 'Account Name',
+  agreeAlert: 'You have to accept the license',
   emailAlert: 'Check format again',
+  emailDuplicate: 'Email was registered by someone',
   emailNo: 'Email required',
   identityVerify: 'Identity Verification',
+  license: 'I know all product is fake',
   login: 'Login',
   password: 'Password',
   passwordRe: 'Repeat Password',
-  passwordLength: 'Length should be between 8 and 30',
+  passwordLength: 'Length should be between 8~30',
   passwordMix: 'Mix with numbers and letters',
   password2Alert: 'It\'s not equal to first password',
   signUp: 'Sign up',
-  userID: 'User Name',
+  userLength: 'Length up to 12',
+  userName: 'User Name',
   userNo: 'User Name Required',
 
   // TabPanelPage

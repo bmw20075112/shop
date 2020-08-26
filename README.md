@@ -2,6 +2,7 @@
 
 ## 工作紀錄
 1. 註冊TAB PANEL完成，fixed height待設定
+2. FIREBASE 密碼有改
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
@@ -33,6 +34,7 @@
 12. History排序
 13. 加入中文字體
 14. 統一配色
+15. 確認EMAIL是否被註冊過
 
 ## Install the dependencies
 ```bash

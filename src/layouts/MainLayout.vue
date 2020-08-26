@@ -21,7 +21,7 @@
         <q-btn
           flat
           icon="warning"
-          @click="identity=true"
+          @click="identityDialog=true"
         />
 
         <q-btn
@@ -39,7 +39,7 @@
 
     <q-page-container>
       <router-view />
-      <q-dialog v-model="identity">
+      <q-dialog v-model="identityDialog">
         <Identity />
       </q-dialog>
     </q-page-container>
@@ -64,6 +64,18 @@ export default {
     return {
       identity: false,
       right: false
+    }
+  },
+
+  computed: {
+    identityDialog: {
+      get () {
+        return this.$store.state.identityDialog;
+      },
+
+      set (val) {
+        this.$store.commit('identityMutate', val);
+      }
     }
   },
 

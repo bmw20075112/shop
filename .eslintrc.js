@@ -53,6 +53,7 @@ module.exports = {
     'generator-star-spacing': 'off',
     // allow paren-less arrow functions
     'arrow-parens': 'off',
+    // 'no-unused-vars': 'off',
     'one-var': 'off',
     'semi':'off',
     'prefer-const': 'off',

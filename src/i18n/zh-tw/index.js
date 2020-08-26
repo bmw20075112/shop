@@ -19,9 +19,12 @@ export default {
   // Identity
   accountID: '帳號',
   accountName: '用戶名',
+  agreeAlert: '必須勾選同意事項',
   emailAlert: '請檢查格式是否錯誤',
+  emailDuplicate: '此信箱已被註冊',
   emailNo: '電子郵件為必填',
   identityVerify: '帳戶認證',
+  license: '我知道所有商品皆為虛構',
   login: '登入',
   password: '密碼',
   passwordRe: '再次輸入密碼',
@@ -30,7 +33,8 @@ export default {
   passwordAlert: '8~30個字元，須為英文及數字混合',
   password2Alert: '輸入和第一次密碼不相同',
   signUp: '註冊',
-  userID: '用戶名',
+  userLength: '最長12個字',
+  userName: '用戶名',
   userNo: '用戶名為必填',
 
   // TabPanelPage
