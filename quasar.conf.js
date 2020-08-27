@@ -56,7 +56,7 @@ module.exports = function (/* ctx */) {
       // preloadChunks: true,
       // showProgress: false,
       gzip: true,
-      // analyze: true,
+      analyze: true,
 
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,
@@ -93,8 +93,8 @@ module.exports = function (/* ctx */) {
       // Quasar plugins
       plugins: [
         'Cookies',
-        'Notify',
-        'Dialog'
+        'Dialog',
+        'Notify'
       ]
     },
 

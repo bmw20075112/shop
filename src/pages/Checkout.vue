@@ -100,21 +100,21 @@
         <div class="row justify-end items-center q-pb-md">
           <div class="row q-gutter-x-md no-padding no-margin">
             <q-img
-              src="~assets/visa.png"
+              src="https://res.cloudinary.com/barney4760/image/upload/v1598517519/checkout/visa_zsxc0m.png"
               spinner-color="primary"
               spinner-size="32px"
               :width="iconWidth"
             />
 
             <q-img
-              src="~assets/mastercard.png"
+              src="https://res.cloudinary.com/barney4760/image/upload/v1598517517/checkout/mastercard_wdtiys.png"
               spinner-color="primary"
               spinner-size="32px"
               :width="iconWidth"
             />
 
             <q-img
-              src="~assets/jcb.png"
+              src="https://res.cloudinary.com/barney4760/image/upload/v1598517515/checkout/jcb_bonqhq.png"
               spinner-color="primary"
               spinner-size="32px"
               :width="iconWidth"

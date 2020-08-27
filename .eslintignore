@@ -5,4 +5,4 @@
 /.quasar
 /node_modules
 /src/api/firebase/firebase.js
-/src/components/layouts/Identity.vue
+# /src/components/layouts/Identity.vue

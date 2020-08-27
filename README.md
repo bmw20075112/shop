@@ -2,7 +2,7 @@
 
 ## 工作紀錄
 1. 註冊TAB PANEL完成，fixed height待設定
-2. FIREBASE 密碼有改
+2. 想辦法tree shake firebase(太肥)
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
@@ -35,6 +35,7 @@
 13. 加入中文字體
 14. 統一配色
 15. 確認EMAIL是否被註冊過
+16. 登入註冊Panel完成
 
 ## Install the dependencies
 ```bash

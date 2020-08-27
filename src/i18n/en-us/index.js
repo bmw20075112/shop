@@ -24,7 +24,7 @@ export default {
   accountName: 'Account Name',
   agreeAlert: 'You have to accept the license',
   emailAlert: 'Check format again',
-  emailDuplicate: 'Email was registered by someone',
+  emailDuplicate: 'Email was registered',
   emailNo: 'Email required',
   identityVerify: 'Identity Verification',
   license: 'I know all product is fake',
