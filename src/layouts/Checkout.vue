@@ -27,7 +27,7 @@
           :label="$q.screen.lt.md? '' : $t('user') "
           class="q-py-sm"
         >
-          <q-menu>
+          <q-menu v-model="menu">
             <Menu />
           </q-menu>
         </q-btn>
@@ -52,9 +52,22 @@ export default {
     Menu,
     Footer
   },
+
   data () {
     return {
       right: false
+    }
+  },
+
+  computed: {
+    menu: {
+      get () {
+        return this.$store.state.menuOpen;
+      },
+
+      set (val) {
+        this.$store.commit('menuOpenMutate', val);
+      }
     }
   },
 

@@ -26,16 +26,10 @@
           :label="$q.screen.lt.md? '' : $t('user') "
           class="q-py-sm"
         >
-          <q-menu>
+          <q-menu v-model="menu">
             <Menu />
           </q-menu>
         </q-btn>
-
-        <!-- <q-btn
-          color="primary"
-          icon="add"
-          @click="addFake()"
-        /> -->
 
         <q-btn
           flat
@@ -381,7 +375,7 @@
               {{ $t('accounts') }} :
 
               <span class="text-positive text-bold q-pl-sm">
-                $ {{ moneyLeft }}
+                $ {{ accounts }}
               </span>
             </div>
 
@@ -406,7 +400,7 @@
               :label="$t('deposit')"
               :rules="[val=>Number.isInteger(val) || 'Input must be positive interger',
                        val=>val>0 || $t('inputInterger'),
-                       val=>val+moneyLeft<=20000 || $t('inputLower20000')]"
+                       val=>val+accounts<=20000 || $t('inputLower20000')]"
             >
               <template v-slot:prepend>
                 <q-btn
@@ -471,7 +465,7 @@
         :breakpoint="1024"
         v-model="tab"
         switch-indicator
-        @click="$store.commit('menuFilterMutate', '')"
+        @click="menuFilterMutate('')"
       >
         <q-tab
           name="east"
@@ -491,9 +485,12 @@
 </template>
 
 <script>
-import Menu from '../components/layouts/Menu.vue';
+import { auth, db } from '../api/firebase/firebase.js';
+import { mapGetters, mapMutations, mapState } from 'vuex';
+import firebase from 'firebase/app';
 import Footer from '../components/layouts/Footer.vue';
-import HistoryDrawer from '../components/layouts/HistoryDrawer.vue'
+import HistoryDrawer from '../components/layouts/HistoryDrawer.vue';
+import Menu from '../components/layouts/Menu.vue';
 export default {
   components: {
     Footer,
@@ -509,23 +506,17 @@ export default {
   },
 
   methods: {
-    addFake () {
-      let timeStamp = Date.now();
-      this.$store.commit('orderSuccessSend', {
-        products: [
-          {
-            id: 'w1',
-            name: 'spaghetti',
-            price: 115,
-            type: 'mainDish',
-            url: 'https://res.cloudinary.com/barney4760/image/upload/v1595819324/west/spaghetti_nsdxqw.jpg',
-            totalNumber: 2
-          }
-        ],
-        totalCost: 230,
-        timeStamp
-      })
-    },
+    ...mapMutations([
+      'allSelectMutate',
+      'cartMutate',
+      'drawerMutate',
+      'historyMutate',
+      'menuFilterMutate',
+      'paginationNext',
+      'seletedMutate',
+      'sortWayMutate',
+      'tabMutate'
+    ]),
 
     deleteItem () {
       this.$q.dialog({
@@ -539,17 +530,17 @@ export default {
           flat: true
         }
       }).onOk(() => {
-        this.$store.commit('cartMutate', { type: 'remove', value: this.selected });
-        this.$store.commit('seletedMutate', []);
+        this.cartMutate({ type: 'remove', value: this.selected });
+        this.seletedMutate([]);
       })
     },
 
     checkout () {
-      if (this.moneyLeft < this.totalCost) {
+      if (this.accounts < this.totalCost) {
         this.money = 1000;
         this.addMoney = true;
       } else {
-        this.$store.commit('seletedMutate', this.selected);
+        this.seletedMutate(this.selected);
         this.$router.push({ name: 'Checkout' });
       }
     },
@@ -563,11 +554,13 @@ export default {
       if (this.$refs.money.hasError) {
         this.formHasError = true;
       } else {
-        this.$store.commit('moneyLeftMutate', this.money);
+        db.collection('users').doc(auth.currentUser.uid).update({
+          accounts: this.accounts + this.money
+        });
         this.addMoney = false;
         this.$q.dialog({
           title: 'Deposit Success',
-          message: `$${this.moneyLeft} in your accounts now`,
+          message: `$${this.accounts} in your accounts now`,
           ok: {
             color: 'primary'
           }
@@ -576,23 +569,29 @@ export default {
     },
 
     sortIn (way) {
-      this.$store.commit('sortWayMutate', way);
+      this.sortWayMutate(way);
     }
   },
 
   computed: {
+    ...mapGetters([
+      'accounts',
+      'totalCost'
+    ]),
+
+    ...mapState([
+      'cartItems',
+      'orderSuccess'
+    ]),
+
     allSelect: {
       get () {
         return this.$store.state.allSelect;
       },
 
       set (val) {
-        this.$store.commit('allSelectMutate', val)
+        this.allSelectMutate(val);
       }
-    },
-
-    cartItems () {
-      return this.$store.state.cartItems;
     },
 
     currentPagination: {
@@ -601,7 +600,7 @@ export default {
       },
 
       set (val) {
-        this.$store.commit('paginationNext', val);
+        this.paginationNext(val);
       }
     },
 
@@ -610,8 +609,8 @@ export default {
         return this.$store.state.drawer;
       },
 
-      set (value) {
-        this.$store.commit('drawerMutate', value);
+      set (val) {
+        this.drawerMutate(val);
       }
     },
 
@@ -656,7 +655,17 @@ export default {
       },
 
       set (val) {
-        this.$store.commit('historyMutate', val);
+        this.historyMutate(val);
+      }
+    },
+
+    menu: {
+      get () {
+        return this.$store.state.menuOpen;
+      },
+
+      set (val) {
+        this.$store.commit('menuOpenMutate', val);
       }
     },
 
@@ -666,12 +675,8 @@ export default {
       },
 
       set (val) {
-        this.$store.commit('menuFilterMutate', val);
+        this.menuFilterMutate(val);
       }
-    },
-
-    moneyLeft () {
-      return this.$store.state.moneyLeft;
     },
 
     options () {
@@ -698,10 +703,6 @@ export default {
       ]
     },
 
-    orderSuccess () {
-      return this.$store.state.orderSuccess;
-    },
-
     paginationMax () {
       return Math.ceil(this.orderSuccess.length / 5);
     },
@@ -711,8 +712,8 @@ export default {
         return this.$store.state.tab;
       },
 
-      set (value) {
-        this.$store.commit('tabMutate', value)
+      set (val) {
+        this.tabMutate(val);
       }
     },
 
@@ -722,12 +723,8 @@ export default {
       },
 
       set (value) {
-        this.$store.commit('seletedMutate', value);
+        this.seletedMutate(value);
       }
-    },
-
-    totalCost () {
-      return this.$store.getters.totalCost;
     },
 
     windowWith () {
@@ -753,15 +750,15 @@ export default {
     allSelect (val) {
       if (!val) {
         if (this.selected.length === this.cartItems.length) {
-          this.$store.commit('seletedMutate', []);
+          this.seletedMutate([]);
         }
       } else {
-        this.$store.commit('seletedMutate', []);
+        this.seletedMutate([]);
         let temp = [];
         for (let i of this.cartItems) {
           temp.push(i.itemID);
         }
-        this.$store.commit('seletedMutate', temp);
+        this.seletedMutate(temp);
       }
     },
 
@@ -791,7 +788,7 @@ export default {
 
     windowWith (val) {
       if (!val) {
-        this.$store.commit('menuFilterMutate', '');
+        this.menuFilterMutate('');
       }
     }
   }

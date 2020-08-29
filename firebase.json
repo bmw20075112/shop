@@ -1,8 +1,4 @@
 {
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
   "hosting": {
     "public": "dist/spa",
     "ignore": [
@@ -10,7 +6,6 @@
       "**/.*",
       "**/node_modules/**"
     ],
-
     "headers": [
       {
         "source": "**",
@@ -21,7 +16,6 @@
           }
         ]
       },
-
       {
         "source": "404.html",
         "headers": [
@@ -42,7 +36,6 @@
         ]
       }
     ],
-
     "rewrites": [
       {
         "source": "**",

@@ -231,6 +231,8 @@
 </template>
 
 <script>
+import firebase from 'firebase/app';
+import { auth, db } from '../api/firebase/firebase.js';
 import { mapGetters } from 'vuex';
 export default {
   data () {
@@ -255,6 +257,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      'accounts',
       'selectedContents',
       'totalCost'
     ]),
@@ -306,21 +309,24 @@ export default {
           this.$refs.expiryYear.hasError || this.$refs.ccv.hasError) {
         this.formHasError = true;
       } else {
-        let timeStamp = Date.now();
-        this.$store.commit('orderSuccessSend', {
-          packageID: this.selectedContents[0].id + timeStamp,
-          products: this.selectedContents,
-          totalCost: this.totalCost,
-          timeStamp
-        });
         this.loading = true;
         this.percentage = 0;
         this.interval = setInterval(() => {
+          let timeStamp = Date.now();
+          const orderSuccess = {
+            packageID: this.selectedContents[0].id + timeStamp,
+            products: this.selectedContents,
+            totalCost: this.totalCost,
+            timeStamp
+          }
           this.percentage += Math.floor(Math.random() * 20) + 10;
           if (this.percentage >= 100) {
             clearInterval(this.interval);
             this.loading = false;
-            this.$store.commit('moneyLeftMutate', -1 * this.totalCost);
+            db.collection('users').doc(auth.currentUser.uid).update({
+              accounts: this.accounts - this.totalCost,
+              history: firebase.firestore.FieldValue.arrayUnion(orderSuccess)
+            });
             this.$store.commit('cartMutate', { type: 'remove', value: this.selected });
             this.$store.commit('drawerMutate', false);
             this.$store.commit('seletedMutate', []);

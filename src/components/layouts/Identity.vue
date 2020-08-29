@@ -22,13 +22,12 @@
 
     <!-- card body -->
     <q-card-section
-      style="max-height:50vh"
       class="scroll"
       :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
+      :style="$q.screen.height>=1024?'min-height:45vh':'max-height:50vh'"
     >
       <q-tab-panels
         v-model="mode"
-        animated
         infinite
         swipeable
       >
@@ -70,6 +69,7 @@
             <q-input
               filled
               lazy-rules
+              autocomplete="current-password"
               ref="passwordLogin"
               :color="$q.dark.isActive? 'orange': 'primary'"
               :label="$t('password')"
@@ -78,6 +78,7 @@
               ]"
               :type="visibleLogin?'text':'password'"
               v-model="passwordLogin"
+              @keyup.enter.prevent="submit()"
             >
               <template v-slot:prepend>
                 <q-icon name="vpn_key" />
@@ -171,6 +172,7 @@
             <q-input
               filled
               lazy-rules
+              autocomplete="new-password"
               ref="passwordSignUp"
               :color="$q.dark.isActive? 'orange': 'primary'"
               :label="$t('password')"
@@ -201,6 +203,7 @@
             <q-input
               filled
               lazy-rules
+              autocomplete="new-password"
               ref="passwordRe"
               :color="$q.dark.isActive? 'orange': 'primary'"
               :type="visibleLogin?'text':'password'"
@@ -209,6 +212,7 @@
                 val=> val===passwordSignUp || $t('password2Alert')
               ]"
               v-model="passwordRe"
+              @keyup.enter.prevent="submit()"
             >
               <template v-slot:prepend>
                 <q-icon name="vpn_key" />
@@ -260,8 +264,7 @@
 </template>
 
 <script>
-import firebase from 'firebase/app';
-import db from '../../api/firebase/firebase';
+import { auth, db } from '../../api/firebase/firebase.js';
 export default {
   data () {
     return {
@@ -280,19 +283,13 @@ export default {
     }
   },
 
-  computed: {
-    moneyLeft () {
-      return this.$store.state.moneyLeft;
-    }
-  },
-
   methods: {
     checkEmailUnique (val) {
       return new Promise((resolve, reject) => {
         if (val.length === 0) {
           resolve(true);
         } else {
-          firebase.auth().fetchSignInMethodsForEmail(this.emailSignUp)
+          auth.fetchSignInMethodsForEmail(this.emailSignUp)
             .then(data => {
               if (data.length === 0) {
                 resolve(true);
@@ -321,14 +318,25 @@ export default {
             message: this.$t('agreeAlert')
           })
         } else {
-          firebase.auth().createUserWithEmailAndPassword(this.emailSignUp, this.passwordRe)
+          auth.createUserWithEmailAndPassword(this.emailSignUp, this.passwordRe)
             .then(cred => {
               db.collection('users').doc(cred.user.uid).set({
                 name: this.userName,
-                account: this.moneyLeft,
+                accounts: 2000,
                 history: []
               })
-                .then(() => this.$store.commit('identityMutate', false))
+                .then(() => {
+                  this.$store.commit('userGet', {
+                    name: this.userName,
+                    accounts: 2000,
+                    history: []
+                  });
+                  this.$store.commit('menuOpenMutate', false);
+                  this.$store.commit('identityMutate', false);
+                  setTimeout(() => {
+                    this.$store.commit('menuOpenMutate', true);
+                  }, 800)
+                })
             })
             .catch(err => {
               this.$q.notify({
@@ -343,9 +351,14 @@ export default {
         if (this.$refs.emailLogin.hasError || this.$refs.passwordLogin.hasError) {
           this.formHasError = true;
         } else {
-          firebase.auth().signInWithEmailAndPassword(this.emailLogin, this.passwordLogin)
+          auth.signInWithEmailAndPassword(this.emailLogin, this.passwordLogin)
             .then(cred => {
+              this.$store.dispatch('userGet');
+              this.$store.commit('menuOpenMutate', false);
               this.$store.commit('identityMutate', false);
+              setTimeout(() => {
+                this.$store.commit('menuOpenMutate', true);
+              }, 800)
             })
             .catch(err => {
               this.$q.notify({
@@ -355,13 +368,6 @@ export default {
             })
         }
       }
-    }
-  },
-
-  beforeDestroy () {
-    if (this.timer !== undefined) {
-      clearTimeout(this.timer);
-      this.$q.loading.hide();
     }
   }
 }

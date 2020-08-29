@@ -20,17 +20,11 @@
 
         <q-btn
           flat
-          icon="warning"
-          @click="identityDialog=true"
-        />
-
-        <q-btn
-          flat
           icon="account_box"
           :label="$q.screen.lt.md? '' : $t('user') "
           class="q-py-sm"
         >
-          <q-menu>
+          <q-menu v-model="menu">
             <Menu />
           </q-menu>
         </q-btn>
@@ -39,9 +33,6 @@
 
     <q-page-container>
       <router-view />
-      <q-dialog v-model="identityDialog">
-        <Identity />
-      </q-dialog>
     </q-page-container>
 
     <q-footer>
@@ -52,29 +43,26 @@
 
 <script>
 import Footer from '../components/layouts/Footer.vue';
-import Identity from '../components/layouts/Identity.vue';
 import Menu from '../components/layouts/Menu.vue';
 export default {
   components: {
     Footer,
-    Identity,
     Menu
   },
   data () {
     return {
-      identity: false,
       right: false
     }
   },
 
   computed: {
-    identityDialog: {
+    menu: {
       get () {
-        return this.$store.state.identityDialog;
+        return this.$store.state.menuOpen;
       },
 
       set (val) {
-        this.$store.commit('identityMutate', val);
+        this.$store.commit('menuOpenMutate', val);
       }
     }
   },

@@ -1,6 +1,7 @@
+import { auth, db } from '../api/firebase/firebase.js';
+import menu from './menu'
 import Vue from 'vue'
 import Vuex from 'vuex'
-import menu from './menu'
 
 // import example from './module-example'
 
@@ -27,16 +28,26 @@ export default function (/* { ssrContext } */) {
       currentPagination: 1, // 已完成訂單目前查看分頁
       drawer: false, // drawer是否打開,
       history: false, // drawer目前是否顯示為歷史紀錄
-      identityDialog: false,
+      identityDialog: false, // 是否打開登入/註冊表單
+      isLogin: false, // 目前是否登入
+      menuOpen: false, // user表單是否打開
       menuFilter: '', // mobile專用篩選菜單細項
-      moneyLeft: 2000, // 使用者餘額
       orderSuccess: [], // 已完成付費的訂單
       selected: [], // 未付費的已選取訂單
       sortWay: 'sortTimeDesc',
-      tab: 'east' // 目前的菜單類別
+      tab: 'east', // 目前的菜單類別,
+      userInfo: {}
     },
 
     getters: {
+      accounts (state) {
+        if (state.isLogin) {
+          return state.userInfo.accounts;
+        } else {
+          return 0;
+        }
+      },
+
       selectedContents (state) {
         const temp = [];
         const res = {};
@@ -100,16 +111,16 @@ export default function (/* { ssrContext } */) {
         state.identityDialog = payload;
       },
 
+      isLoginMutate (state, payload) {
+        state.isLogin = payload;
+      },
+
+      menuOpenMutate (state, payload) {
+        state.menuOpen = payload;
+      },
+
       menuFilterMutate (state, payload) {
         state.menuFilter = payload;
-      },
-
-      moneyLeftMutate (state, payload) {
-        state.moneyLeft += payload;
-      },
-
-      orderSuccessSend (state, payload) {
-        state.orderSuccess.push(payload);
       },
 
       paginationNext (state, payload) {
@@ -126,6 +137,21 @@ export default function (/* { ssrContext } */) {
 
       tabMutate (state, payload) {
         state.tab = payload;
+      },
+
+      userGet (state, payload) {
+        state.userInfo = payload;
+      }
+    },
+
+    actions: {
+      userGet ({ commit }) {
+        if (auth.currentUser) {
+          db.collection('users').doc(auth.currentUser.uid).get()
+            .then(snapshot => {
+              commit('userGet', snapshot.data());
+            })
+        }
       }
     },
 

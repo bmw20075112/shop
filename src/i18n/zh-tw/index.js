@@ -1,6 +1,7 @@
 export default {
   lorem: '三來開先色研人字輪備他招說始出了可是簡安包價級行香法。',
   cancel: '取消',
+  fakeName: '王小明',
   logout: '登出',
   dark: '暗黑模式',
   user: '用戶設定',

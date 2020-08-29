@@ -2,13 +2,14 @@
 // so you can safely delete all default props below
 
 export default {
-  lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-  cancel: 'Cancel',
-  logout: 'Logout',
-  dark: 'Dark Mode',
   accounts: 'Accounts',
-  user: 'User',
+  cancel: 'Cancel',
+  dark: 'Dark Mode',
+  fakeName: 'John Doe',
+  logout: 'Logout',
+  lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
   settings: 'Settings',
+  user: 'User',
 
   // Home
   drinksHome: 'Drinks',
