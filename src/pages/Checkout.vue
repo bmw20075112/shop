@@ -85,6 +85,10 @@
             v-model="email"
             type="email"
             :label="$t('email')"
+            :rules="[
+              val => val && val.length > 0 || $t('emailNo'),
+              val => /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/.test(val) || $t('emailAlert')
+            ]"
             outlined
           />
         </q-form>
@@ -233,7 +237,7 @@
 <script>
 import firebase from 'firebase/app';
 import { auth, db } from '../api/firebase/firebase.js';
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 export default {
   data () {
     return {
@@ -256,15 +260,16 @@ export default {
   },
 
   computed: {
+    ...mapState([
+      'selected',
+      'userInfo'
+    ]),
+
     ...mapGetters([
       'accounts',
       'selectedContents',
       'totalCost'
     ]),
-
-    selected () {
-      return this.$store.state.selected;
-    },
 
     iconWidth () {
       if (this.$q.screen.lt.md) {
@@ -280,10 +285,6 @@ export default {
       } else {
         return 'min-width:90vw';
       }
-    },
-
-    orderSuccess () {
-      return this.$store.state.orderSuccess;
     }
   },
 
@@ -353,6 +354,11 @@ export default {
         this.$refs.stepper.next();
       }
     }
+  },
+
+  created () {
+    this.name = this.userInfo.name;
+    this.email = auth.currentUser.email;
   },
 
   beforeDestroy () {

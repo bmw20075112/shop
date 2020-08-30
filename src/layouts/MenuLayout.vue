@@ -286,6 +286,7 @@
 
         <!-- drawer bottom-->
 
+        <!-- pagination -->
         <div
           class="z-top fixed-bottom flex-center flex q-pa-sm text-white drawer-bottom"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
@@ -301,6 +302,8 @@
             v-model="currentPagination"
           />
         </div>
+
+        <!-- cart footer -->
 
         <div
           class="z-top fixed-bottom q-pa-sm text-white"
@@ -351,6 +354,12 @@
         </div>
       </div>
     </q-drawer>
+
+    <!-- Identity Dialog -->
+
+    <q-dialog v-model="identityDialog">
+      <Identity />
+    </q-dialog>
 
     <!-- Add Money System-->
 
@@ -487,14 +496,15 @@
 <script>
 import { auth, db } from '../api/firebase/firebase.js';
 import { mapGetters, mapMutations, mapState } from 'vuex';
-import firebase from 'firebase/app';
 import Footer from '../components/layouts/Footer.vue';
 import HistoryDrawer from '../components/layouts/HistoryDrawer.vue';
+import Identity from '../components/layouts/Identity.vue';
 import Menu from '../components/layouts/Menu.vue';
 export default {
   components: {
     Footer,
     HistoryDrawer,
+    Identity,
     Menu
   },
 
@@ -511,6 +521,7 @@ export default {
       'cartMutate',
       'drawerMutate',
       'historyMutate',
+      'identityMutate',
       'menuFilterMutate',
       'paginationNext',
       'seletedMutate',
@@ -536,12 +547,16 @@ export default {
     },
 
     checkout () {
-      if (this.accounts < this.totalCost) {
-        this.money = 1000;
-        this.addMoney = true;
+      if (this.isLogin) {
+        if (this.accounts < this.totalCost) {
+          this.money = 1000;
+          this.addMoney = true;
+        } else {
+          this.seletedMutate(this.selected);
+          this.$router.push({ name: 'Checkout' });
+        }
       } else {
-        this.seletedMutate(this.selected);
-        this.$router.push({ name: 'Checkout' });
+        this.identityDialog = true;
       }
     },
 
@@ -581,6 +596,7 @@ export default {
 
     ...mapState([
       'cartItems',
+      'isLogin',
       'orderSuccess'
     ]),
 
@@ -656,6 +672,16 @@ export default {
 
       set (val) {
         this.historyMutate(val);
+      }
+    },
+
+    identityDialog: {
+      get () {
+        return this.$store.state.identityDialog;
+      },
+
+      set (val) {
+        this.identityMutate(val);
       }
     },
 

@@ -64,6 +64,10 @@ export default function (/* { ssrContext } */) {
             res[i.id] = { ...i, totalNumber: i.number };
           }
         }
+
+        for (let i in res) {
+          delete res[i].number;
+        }
         return [...Object.values(res)];
       },
 
@@ -141,17 +145,21 @@ export default function (/* { ssrContext } */) {
 
       userGet (state, payload) {
         state.userInfo = payload;
+      },
+
+      orderSuccessGet (state, payload) {
+        state.orderSuccess = payload;
       }
     },
 
     actions: {
       userGet ({ commit }) {
-        if (auth.currentUser) {
-          db.collection('users').doc(auth.currentUser.uid).get()
-            .then(snapshot => {
-              commit('userGet', snapshot.data());
-            })
-        }
+        db.collection('users').doc(auth.currentUser.uid)
+          .onSnapshot(snapshot => {
+            let { history, ...userInfo } = snapshot.data();
+            commit('userGet', userInfo);
+            commit('orderSuccessGet', history);
+          });
       }
     },
 

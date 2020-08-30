@@ -93,7 +93,7 @@ export default {
   name: '姓名*',
   phone: '手機號碼*',
   address: '住址*',
-  email: '電子郵件',
+  email: '電子郵件*',
   nameAlert: '姓名為必填項目',
   phoneAlert: '手機前2碼須為09',
   addressAlert: '住址為必填項目',

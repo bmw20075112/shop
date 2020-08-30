@@ -95,7 +95,7 @@ export default {
   name: 'Name*',
   phone: 'Phone*',
   address: 'Address*',
-  email: 'Email',
+  email: 'Email*',
   nameAlert: 'Please type your name',
   phoneAlert: 'Start with 09',
   addressAlert: 'Please type your address',

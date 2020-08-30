@@ -103,12 +103,16 @@ export default {
 
     sortOrder () {
       if (this.sortWay === 'sortTimeDesc') {
+        this.$store.commit('paginationNext', 1);
         return [...this.orderSuccess].sort((a, b) => b.timeStamp - a.timeStamp);
       } else if (this.sortWay === 'sortTimeAsc') {
+        this.$store.commit('paginationNext', 1);
         return [...this.orderSuccess].sort((a, b) => a.timeStamp - b.timeStamp);
       } else if (this.sortWay === 'sortCostDesc') {
+        this.$store.commit('paginationNext', 1);
         return [...this.orderSuccess].sort((a, b) => b.totalCost - a.totalCost);
       } else if (this.sortWay === 'sortCostAsc') {
+        this.$store.commit('paginationNext', 1);
         return [...this.orderSuccess].sort((a, b) => a.totalCost - b.totalCost);
       }
       return this.orderSuccess;

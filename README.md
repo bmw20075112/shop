@@ -1,16 +1,14 @@
 # Quasar App (shop)
 
 ## 工作紀錄
-1. MENU PAGE 準備整合 USER SYSTEM
-2. 想辦法tree shake firebase(太肥)
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
 
 ## 預定開發
-1. 成交訂單紀錄上傳DB、管理者介面(?)
-2. 語言自動偵測
-3. 考慮是否導入SSR
+1. 語言自動偵測
+2. 想辦法tree shake firebase(太肥)
+3. 管理者介面(?)
 
 ## 已解決Bug
 1. 購物車刪除選項無法控制數量
@@ -37,6 +35,8 @@
 15. 確認EMAIL是否被註冊過
 16. 登入註冊Panel完成
 17. 登入結合VUEX Action
+18. 成交訂單紀錄上傳DB
+19. 及時監聽DB
 
 ## Install the dependencies
 ```bash

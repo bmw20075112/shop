@@ -255,8 +255,9 @@
         v-close-popup
       />
       <q-btn
-        :color="$q.dark.isActive?'orange':'primary'"
+        :color="$q.dark.isActive?'primary':'primary'"
         :label="mode==='login'?$t('login'):$t('signUp')"
+        :loading="loading"
         @click="submit()"
       />
     </q-card-actions>
@@ -318,6 +319,7 @@ export default {
             message: this.$t('agreeAlert')
           })
         } else {
+          this.loading = true;
           auth.createUserWithEmailAndPassword(this.emailSignUp, this.passwordRe)
             .then(cred => {
               db.collection('users').doc(cred.user.uid).set({
@@ -331,6 +333,7 @@ export default {
                     accounts: 2000,
                     history: []
                   });
+                  this.loading = false;
                   this.$store.commit('menuOpenMutate', false);
                   this.$store.commit('identityMutate', false);
                   setTimeout(() => {
@@ -339,6 +342,7 @@ export default {
                 })
             })
             .catch(err => {
+              this.loading = false;
               this.$q.notify({
                 color: 'negative',
                 message: err.message
@@ -351,16 +355,18 @@ export default {
         if (this.$refs.emailLogin.hasError || this.$refs.passwordLogin.hasError) {
           this.formHasError = true;
         } else {
+          this.loading = true;
           auth.signInWithEmailAndPassword(this.emailLogin, this.passwordLogin)
             .then(cred => {
-              this.$store.dispatch('userGet');
               this.$store.commit('menuOpenMutate', false);
               this.$store.commit('identityMutate', false);
+              this.loading = false;
               setTimeout(() => {
                 this.$store.commit('menuOpenMutate', true);
               }, 800)
             })
             .catch(err => {
+              this.loading = false;
               this.$q.notify({
                 color: 'negative',
                 message: err.message

@@ -143,10 +143,17 @@ export default {
 
     logout () {
       this.$store.commit('menuOpenMutate', false);
+      this.$store.commit('orderSuccessGet', []);
+      this.$store.commit('historyMutate', false);
       auth.signOut();
-      setTimeout(() => {
-        this.$store.commit('menuOpenMutate', true);
-      }, 1000)
+      this.$store.commit('userGet', {});
+      if (this.$route.name === 'Checkout') {
+        this.$router.push({ name: 'Menu' });
+      } else {
+        setTimeout(() => {
+          this.$store.commit('menuOpenMutate', true);
+        }, 1000)
+      }
     }
   }
 }
