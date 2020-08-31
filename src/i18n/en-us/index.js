@@ -61,6 +61,7 @@ export default {
   deposit: 'Deposit',
   depositAlert: 'Deposit or delete some orders',
   depositSuccess: 'Deposit Success',
+  depositRes: 'You have {accounts} dollars in your accounts',
   descendentCost: 'In descendent order',
   descendentTime: 'From new to old',
   insufficient: 'Insufficient Balance',

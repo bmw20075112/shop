@@ -59,6 +59,7 @@ export default {
   deposit: '儲值金額',
   depositAlert: '請儲值或刪除部分訂單',
   depositSuccess: '儲值成功',
+  depositRes: '目前帳戶有 {accounts} 元',
   descendentCost: '由大到小',
   descendentTime: '由新到舊',
   insufficient: '餘額不足',

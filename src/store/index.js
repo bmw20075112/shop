@@ -26,6 +26,7 @@ export default function (/* { ssrContext } */) {
       allSelect: false, // drawer是否選取全部訂單
       cartItems: [], // 購物車裡的所有訂單(不管有無選取)
       currentPagination: 1, // 已完成訂單目前查看分頁
+      depositOpen: false, // 儲值系統是否打開
       drawer: false, // drawer是否打開,
       history: false, // drawer目前是否顯示為歷史紀錄
       identityDialog: false, // 是否打開登入/註冊表單
@@ -34,9 +35,9 @@ export default function (/* { ssrContext } */) {
       menuFilter: '', // mobile專用篩選菜單細項
       orderSuccess: [], // 已完成付費的訂單
       selected: [], // 未付費的已選取訂單
-      sortWay: 'sortTimeDesc',
+      sortWay: 'sortTimeDesc', // 已完成付費訂單的排序方法
       tab: 'east', // 目前的菜單類別,
-      userInfo: {}
+      userInfo: {} // 從firebase接下來的個人資料(姓名、餘額)
     },
 
     getters: {
@@ -101,6 +102,10 @@ export default function (/* { ssrContext } */) {
             state.cartItems.splice(index, 1);
           }
         }
+      },
+
+      depositOpenMutate (state, payload) {
+        state.depositOpen = payload;
       },
 
       drawerMutate (state, payload) {
