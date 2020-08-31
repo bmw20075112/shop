@@ -10,6 +10,24 @@ export default {
   name: 'App',
   created () {
     this.$q.screen.setSizes({ sm: 481, md: 769, lg: 1025, xl: 1921 });
+
+    if (this.$q.cookies.has('isTranslate')) {
+      this.$i18n.locale = 'en-us';
+    } else {
+      if (navigator.language === 'zh-TW') {
+        this.$i18n.locale = 'zh-tw';
+      } else {
+        this.$i18n.locale = 'en-us';
+        this.$q.cookies.set('isTranslate', true, { expires: 30, sameSite: 'Lax' });
+      }
+    }
+
+    if (this.$q.cookies.has('isDark')) {
+      this.$q.dark.set(true);
+    } else {
+      this.$q.dark.set(false);
+    }
+
     auth.onAuthStateChanged(user => {
       if (user) {
         this.$store.dispatch('userGet');

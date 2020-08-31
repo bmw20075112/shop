@@ -251,7 +251,7 @@ export default {
       nameOnCard: '',
       months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
       monthSelect: '',
-      years: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027'],
+      years: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029'],
       yearSelect: '',
       cvv: null,
       loading: false,
@@ -329,13 +329,13 @@ export default {
               history: firebase.firestore.FieldValue.arrayUnion(orderSuccess)
             });
             this.$store.commit('cartMutate', { type: 'remove', value: this.selected });
-            this.$store.commit('drawerMutate', false);
             this.$store.commit('seletedMutate', []);
             this.$store.commit('allSelectMutate', false);
             this.$q.dialog({
               title: this.$t('successTitle'),
               message: this.$t('successMessage')
             }).onOk(() => {
+              this.$store.commit('historyMutate', true);
               this.$router.push({ name: 'Menu' });
             })
           }

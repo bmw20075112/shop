@@ -123,6 +123,6 @@ export default {
 
 <style>
 .historyList:last-child{
-  margin-bottom: 55px;
+  margin-bottom: 50px;
 }
 </style>

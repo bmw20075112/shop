@@ -1,14 +1,16 @@
 # Quasar App (shop)
 
 ## 工作紀錄
+1. firebase tree shake版本製作中(https://github.com/firebase/firebase-js-sdk/issues/2241)
 
 ## bug
 1. q-interesection 和 GRID系統衝突而無作用
 
 ## 預定開發
-1. 語言自動偵測
-2. 想辦法tree shake firebase(太肥)
-3. 管理者介面(?)
+1. menuLayout 太長，要分成幾個component
+2. CODE REVIEW
+3. 管理者介面
+4. 餐點評論
 
 ## 已解決Bug
 1. 購物車刪除選項無法控制數量
@@ -37,6 +39,10 @@
 17. 登入結合VUEX Action
 18. 成交訂單紀錄上傳DB
 19. 及時監聽DB
+20. 語言、暗黑模式自動偵測
+21. i18n校閱
+22. DB 讀取、寫入規則加入
+23. 裁減Checkout Layout，合併至mainLayout
 
 ## Install the dependencies
 ```bash

@@ -20,9 +20,11 @@ export default {
     lang (lang) {
       this.$i18n.locale = lang;
       if (lang === 'zh-tw') {
+        this.$i18n.locale = 'zh-tw';
         this.$q.cookies.remove('isTranslate');
       } else if (lang === 'en-us') {
-        this.$q.cookies.set('isTranslate', true, { expires: 7, sameSite: 'Lax' });
+        this.$i18n.locale = 'en-us';
+        this.$q.cookies.set('isTranslate', true, { expires: 30, sameSite: 'Lax' });
       }
     }
   }

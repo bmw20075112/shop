@@ -18,7 +18,7 @@ export default {
     dark (val) {
       if (val) {
         this.$q.dark.set(true);
-        this.$q.cookies.set('isDark', true, { expires: 7, sameSite: 'Lax' });
+        this.$q.cookies.set('isDark', true, { expires: 30, sameSite: 'Lax' });
       } else {
         this.$q.dark.set(false);
         this.$q.cookies.remove('isDark');

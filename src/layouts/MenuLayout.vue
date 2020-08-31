@@ -15,7 +15,7 @@
             >
           </q-avatar>
           <span
-            class="cursor-pointer q-pl-sm"
+            class="cursor-pointer text-bold q-pl-sm"
             @click="$router.push('/')"
           >PandaEat</span>
         </q-toolbar-title>
@@ -230,7 +230,7 @@
               v-if="cartItems.length===0"
               class="flex flex-center"
             >
-              No order
+              {{ $t('noOrder') }}
             </h6>
 
             <div v-else>
@@ -288,12 +288,13 @@
 
         <!-- pagination -->
         <div
-          class="z-top fixed-bottom flex-center flex q-pa-sm text-white drawer-bottom"
+          class="z-top fixed-bottom flex-center flex text-white"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
           :style="$q.dark.isActive? 'border-top: 1px solid grey;': 'border-top: 1px solid lightgrey;'"
           v-show="history"
         >
           <q-pagination
+            style="height:50px"
             :color="$q.dark.isActive? 'orange': 'primary'"
             :boundary-numbers="false"
             :input="true"
@@ -531,12 +532,14 @@ export default {
 
     deleteItem () {
       this.$q.dialog({
-        title: 'Delete Order',
-        message: 'Would you like to delete?',
+        title: this.$t('deleteOrder'),
+        message: this.$t('deleteQuestion'),
         ok: {
+          label: this.$t('delete'),
           color: 'red'
         },
         cancel: {
+          label: this.$t('cancel'),
           color: 'grey',
           flat: true
         }
@@ -574,8 +577,8 @@ export default {
         });
         this.addMoney = false;
         this.$q.dialog({
-          title: 'Deposit Success',
-          message: `$${this.accounts} in your accounts now`,
+          title: this.$t('depositSuccess'),
+          message: this.depositMessage,
           ok: {
             color: 'primary'
           }
@@ -617,6 +620,16 @@ export default {
 
       set (val) {
         this.paginationNext(val);
+      }
+    },
+
+    depositMessage () {
+      if (this.$i18n.locale === 'en-us') {
+        return `You have $${this.accounts} in your accounts now`;
+      } else if (this.$i18n.locale === 'zh-tw') {
+        return `目前帳戶有 ${this.accounts} 元`;
+      } else {
+        return null;
       }
     },
 
@@ -755,20 +768,6 @@ export default {
 
     windowWith () {
       return this.$q.screen.lt.sm;
-    }
-  },
-
-  created () {
-    if (this.$q.cookies.has('isDark')) {
-      this.$q.dark.set(true);
-    } else {
-      this.$q.dark.set(false);
-    }
-
-    if (this.$q.cookies.has('isTranslate')) {
-      this.$i18n.locale = 'en-us';
-    } else {
-      this.$i18n.locale = 'zh-tw';
     }
   },
 

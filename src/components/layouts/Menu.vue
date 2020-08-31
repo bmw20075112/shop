@@ -18,7 +18,7 @@
           v-else
           size="96px"
         >
-          <img src="https://cdn.quasar.dev/img/avatar4.jpg">
+          <img src="https://res.cloudinary.com/barney4760/image/upload/v1598855232/Home/avatar_v9hmip.jpg">
         </q-avatar>
 
         <div
