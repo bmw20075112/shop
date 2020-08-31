@@ -21,7 +21,7 @@ node_modules
 /src-bex/js/core
 
 # Key
-/src/api
+/src/api/googleKey.js
 
 # Log files
 npm-debug.log*
@@ -36,3 +36,4 @@ yarn-error.log*
 *.sln
 
 /src/api/firebase/firebaseKey.js
+/src/api/googleKey.js
