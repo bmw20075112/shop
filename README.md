@@ -7,10 +7,8 @@
 1. q-interesection 和 GRID系統衝突而無作用
 
 ## 預定開發
-1. menuLayout 太長，要分成幾個component
-2. CODE REVIEW
-3. 管理者介面
-4. 餐點評論
+1. 管理者介面
+2. 餐點評論
 
 ## 已解決Bug
 1. 購物車刪除選項無法控制數量

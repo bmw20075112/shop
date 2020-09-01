@@ -2,10 +2,10 @@
   <q-page>
     <div ref="top" />
     <q-tab-panels
-      v-model="tab"
       animated
       transition-prev='fade'
       transition-next='fade'
+      v-model="tab"
     >
       <q-tab-panel name="east">
         <TabPanelPage />
@@ -20,14 +20,14 @@
 
     <q-page-scroller
       position="bottom-right"
-      :scroll-offset="200"
       :offset="[15, 15]"
+      :scroll-offset="200"
     >
       <q-btn
         fab
         glossy
-        icon="keyboard_arrow_up"
         color="orange"
+        icon="keyboard_arrow_up"
         @click="scrollTop()"
       />
     </q-page-scroller>
@@ -42,6 +42,10 @@ export default {
   },
 
   computed: {
+    menuFilter () {
+      return this.$store.state.menuFilter;
+    },
+
     tab: {
       get () {
         return this.$store.state.tab;
@@ -50,10 +54,6 @@ export default {
       set (value) {
         this.$store.commit('tabMutate', value)
       }
-    },
-
-    menuFilter () {
-      return this.$store.state.menuFilter;
     }
   },
 
@@ -80,7 +80,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

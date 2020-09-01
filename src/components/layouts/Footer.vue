@@ -5,9 +5,3 @@
     </q-toolbar-title>
   </q-toolbar>
 </template>
-
-<script>
-export default {
-
-}
-</script>

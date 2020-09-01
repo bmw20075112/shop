@@ -1,237 +1,142 @@
 <template>
   <q-page class="justify-center">
-    <div ref="top">
-      <transition
-        name='test'
-        appear
-      >
-        <div
-          style="flex-basis:100%"
-          class="text-center"
-        >
-          <q-skeleton
-            type="rect"
-            width="1024px"
-            height="70vh"
-            style="margin:0 auto"
-            v-show="skeletonShow"
-          />
-
-          <q-img
-            src="https://res.cloudinary.com/barney4760/image/upload/v1596681194/Home/deliver_md_ro6c2n.jpg"
-            srcset="https://res.cloudinary.com/barney4760/image/upload/v1596681194/Home/deliver_sm_qv63pi.jpg 640w,
-              https://res.cloudinary.com/barney4760/image/upload/v1596681194/Home/deliver_md_ro6c2n.jpg 1280w,
-              https://res.cloudinary.com/barney4760/image/upload/v1596681195/Home/deliver_lg_gphtcb.jpg 1920w"
-            spinner-color="primary"
-            spinner-size="82px"
-            :style="coverWidth"
-            :height="coverHeight"
-            :position="coverPosition"
-            class="relative"
-            v-show="isLoad"
-            @load="isLoad = true; skeletonShow=false"
-          >
-            <transition
-              name="caption"
-              appear
-            >
-              <span
-                class="cover-caption caption1"
-                v-show="isLoad"
-              >
-                你想吃的
-              </span>
-            </transition>
-
-            <transition
-              name="caption2"
-              appear
-            >
-              <span
-                class="cover-caption caption2"
-                v-show="caption2Animate"
-              >
-                我們都有
-              </span>
-            </transition>
-          </q-img>
-        </div>
-      </transition>
-
-      <div class="flex justify-center q-pa-sm">
-        <div
-          class="row q-py-sm q-col-gutter-lg"
-          style="width:100%; max-width:1048px"
-        >
-          <div
-            class="col-md-4 col-sm-12 col-xs-12"
-            v-for="(item, index) in menu"
-            @mouseover="$set(hover,index,true)"
-            @mouseleave="$set(hover,index,false)"
-            :key="item.id"
-          >
-            <q-card
-              class="card cursor-pointer"
-              @click="toMenu(item.id)"
-            >
-              <q-img
-                :src="item.url"
-                :ratio="16/9"
-              >
-                <div
-                  class="absolute-full text-bold flex flex-center hover-info"
-                  :class="hover[index]?'text-h4':'text-h5'"
-                >
-                  {{ item.title }}
-                </div>
-              </q-img>
-            </q-card>
-          </div>
-        </div>
-      </div>
-
-      <!-- <q-carousel
-        animated
-        arrows
-        infinite
-        swipeable
-        style="max-width:1024px; margin: 0 auto;"
-        transition-prev="slide-right"
-        transition-next="slide-left"
-        :autoplay="autoplay"
-        @mouseenter="autoplay = false"
-        @mouseleave="autoplay = true"
-        v-model="slide"
-      >
-        <q-carousel-slide
-          :name="1"
-          img-src="https://res.cloudinary.com/barney4760/image/upload/v1598067329/Home/taiwan_at94c1.jpg"
-        >
-          <div
-            class="custom-caption"
-            :class="$q.screen.lt.md?'absolute-top':'absolute-bottom'"
-          >
-            <div class="text-h2 text-bold">
-              {{ $t('setA') }}
-            </div>
-            <div class="text-subtitle1 q-mt-xs">
-              {{ $t('xiaoLongBao') }}+{{ $t('baboTea') }}
-            </div>
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide
-          :name="2"
-          img-src="https://res.cloudinary.com/barney4760/image/upload/v1598069187/Home/sushi_ofrp14.jpg"
-          style="background-position: 40% 100%"
-        >
-          <div
-            class="custom-caption"
-            :class="$q.screen.lt.md?'absolute-top':'absolute-bottom'"
-          >
-            <div class="text-h2 text-bold">
-              {{ $t('setB') }}
-            </div>
-            <div class="text-subtitle1 q-mt-xs">
-              {{ $t('sushi') }}+{{ $t('matcha') }}
-            </div>
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide
-          :name="3"
-          img-src="https://res.cloudinary.com/barney4760/image/upload/v1598067905/Home/fast-food_gsdxrz.jpg"
-          style="background-position: 10% 100%"
-        >
-          <div
-            class="custom-caption"
-            :class="$q.screen.lt.md?'absolute-top':'absolute-bottom'"
-          >
-            <div class="text-h2 text-bold">
-              {{ $t('setC') }}
-            </div>
-            <div class="text-subtitle1 q-mt-xs">
-              {{ $t('hamburger') }}+{{ $t('frenchFries') }}+{{ $t('coke') }}
-            </div>
-          </div>
-        </q-carousel-slide>
-      </q-carousel> -->
-
-      <!-- <div
+    <div ref="top" />
+    <transition
+      name='fade'
+      appear
+    >
+      <div
         style="flex-basis:100%"
         class="text-center"
-        v-show="!carouselLoad"
       >
         <q-skeleton
+          height="70vh"
+          style="margin:0 auto"
           type="rect"
           width="1024px"
-          height="350px"
-          style="display:inline-block"
+          v-show="skeletonShow"
         />
-      </div> -->
 
-      <!-- <div class="flex justify-center q-px-lg q-pb-lg q-mt-md">
-        <div
-          class="text-h5 text-bold q-mt-none q-pb-sm text-center"
-          style="flex-basis:100%"
+        <q-img
+          class="relative"
+          src="https://res.cloudinary.com/barney4760/image/upload/v1596681194/Home/deliver_md_ro6c2n.jpg"
+          srcset="https://res.cloudinary.com/barney4760/image/upload/v1596681194/Home/deliver_sm_qv63pi.jpg 640w,
+              https://res.cloudinary.com/barney4760/image/upload/v1596681194/Home/deliver_md_ro6c2n.jpg 1280w,
+              https://res.cloudinary.com/barney4760/image/upload/v1596681195/Home/deliver_lg_gphtcb.jpg 1920w"
+          spinner-color="primary"
+          spinner-size="82px"
+          :height="coverHeight"
+          :position="coverPosition"
+          :style="coverWidth"
+          v-show="isLoad"
+          @load="isLoad = true; skeletonShow=false"
         >
-          {{ $t('shopAddress') }}
-        </div>
+          <!-- text animation 1 -->
+          <transition
+            name="caption"
+            appear
+          >
+            <span
+              class="cover-caption caption1"
+              v-show="isLoad"
+            >
+              你想吃的
+            </span>
+          </transition>
 
-        <iframe
-          width="100%"
-          height="450"
-          frameborder="0"
-          :src="mapLink"
-          allowfullscreen
-          style="max-width:1024px; border:0"
-        />
-      </div> -->
+          <!-- text animation 2 -->
+          <transition
+            name="caption2"
+            appear
+          >
+            <span
+              class="cover-caption caption2"
+              v-show="caption2Animate"
+            >
+              我們都有
+            </span>
+          </transition>
+        </q-img>
+      </div>
+    </transition>
 
-      <q-page-scroller
-        position="bottom-right"
-        :scroll-offset="200"
-        :offset="[15, 15]"
+    <!-- Menu card -->
+    <div class="flex justify-center q-pa-sm">
+      <div
+        class="row q-py-sm q-col-gutter-lg"
+        style="width:100%; max-width:1048px"
       >
-        <q-btn
-          fab
-          glossy
-          icon="keyboard_arrow_up"
-          color="primary"
-          @click="scrollTop()"
-        />
-      </q-page-scroller>
+        <div
+          class="col-md-4 col-sm-12 col-xs-12"
+          :key="item.id"
+          v-for="(item, index) in menu"
+          @mouseover="$set(hover,index,true)"
+          @mouseleave="$set(hover,index,false)"
+        >
+          <q-card
+            class="card cursor-pointer"
+            @click="toMenu(item.id)"
+          >
+            <q-img
+              :ratio="16/9"
+              :src="item.url"
+            >
+              <div
+                class="absolute-full text-bold flex flex-center hover-info"
+                :class="hover[index]?'text-h4':'text-h5'"
+              >
+                {{ item.title }}
+              </div>
+            </q-img>
+          </q-card>
+        </div>
+      </div>
     </div>
+
+    <!-- Page scroller -->
+    <q-page-scroller
+      position="bottom-right"
+      :offset="[15, 15]"
+      :scroll-offset="200"
+    >
+      <q-btn
+        glossy
+        fab
+        color="primary"
+        icon="keyboard_arrow_up"
+        @click="scrollTop()"
+      />
+    </q-page-scroller>
   </q-page>
 </template>
 
 <script>
-// import key from '../api/googleKey';
 export default {
   data () {
     return {
+      autoplay: true,
       caption2Animate: false,
       hover: [false, false, false],
       isLoad: false,
-      // key,
-      // mapLink: `https://www.google.com/maps/embed/v1/place?key=${key}&q=place_id:ChIJraeA2rarQjQRPBBjyR3RxKw`,
       skeletonShow: true,
-      slide: 1,
-      autoplay: true
+      slide: 1
     }
   },
-  computed: {
-    coverPosition () {
-      if (this.$q.screen.lt.lg) {
-        return '60% 0%';
-      } else {
-        return '50% 0%';
-      }
-    },
 
+  computed: {
     coverHeight () {
       if (this.$q.screen.lt.lg) {
         return '75vh';
       } else {
         return '70vh';
+      }
+    },
+
+    coverPosition () {
+      if (this.$q.screen.lt.lg) {
+        return '60% 0%';
+      } else {
+        return '50% 0%';
       }
     },
 
@@ -265,17 +170,17 @@ export default {
   },
 
   methods: {
-    toMenu (id) {
-      this.$store.commit('tabMutate', id);
-      this.$router.push({ name: 'Menu' });
-    },
-
     scrollTop (smooth = true) {
       if (smooth) {
         this.$refs.top.scrollIntoView({ behavior: 'smooth', block: 'end' })
       } else {
         this.$refs.top.scrollIntoView({ block: 'end' })
       }
+    },
+
+    toMenu (id) {
+      this.$store.commit('tabMutate', id);
+      this.$router.push({ name: 'Menu' });
     }
   },
 
@@ -292,7 +197,7 @@ export default {
 </script>
 
 <style lang="scss">
-.test-enter-active{
+.fade-enter-active{
   animation: fadeIn 1.5s forwards;
 }
 

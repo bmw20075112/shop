@@ -6,7 +6,7 @@
       :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-white'"
     >
       <div
-        class="row justify-center items-center no-wrap"
+        class="row items-center justify-center no-wrap"
       >
         <q-icon
           color="grey"
@@ -79,6 +79,7 @@
 
 <script>
 import { auth } from '../../api/firebase/firebase.js';
+import { mapState } from 'vuex';
 import Identity from './Identity.vue';
 import DarkMode from './DarkMode.vue';
 import Language from './Language.vue';
@@ -89,13 +90,12 @@ export default {
     Language
   },
 
-  data () {
-    return {
-      currentUser: auth.currentUser
-    }
-  },
-
   computed: {
+    ...mapState([
+      'isLogin',
+      'userInfo'
+    ]),
+
     accounts () {
       return this.$store.getters.accounts;
     },
@@ -110,48 +110,32 @@ export default {
       }
     },
 
-    isLogin () {
-      return this.$store.state.isLogin;
-    },
-
-    isLoginName () {
+    isLoginName () { // 沒登入時放假資料
       if (this.isLogin) {
         return this.userInfo.name;
       } else {
         return this.$t('fakeName')
       }
-    },
-
-    userInfo () {
-      return this.$store.state.userInfo;
     }
   },
 
   methods: {
-    identityChange () {
-      if (this.isLogin) {
-        auth.signOut();
-        this.$router.go();
-      } else {
-        this.identityDialog = true;
-      }
-    },
-
     login () {
       this.identityDialog = true;
     },
 
     logout () {
-      this.$store.commit('menuOpenMutate', false);
+      this.$store.commit('userSettingMutate', false);
       this.$store.commit('orderSuccessGet', []);
       this.$store.commit('historyMutate', false);
+      this.$store.commit('unsubscribe');
       auth.signOut();
       this.$store.commit('userGet', {});
       if (this.$route.name === 'Checkout') {
         this.$router.push({ name: 'Menu' });
       } else {
         setTimeout(() => {
-          this.$store.commit('menuOpenMutate', true);
+          this.$store.commit('userSettingMutate', true);
         }, 1000)
       }
     }

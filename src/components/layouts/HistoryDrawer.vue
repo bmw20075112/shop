@@ -4,13 +4,14 @@
       bordered
       class="historyList"
       :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-white'"
-      v-for="(order, index) in currentList"
       :key="order.timeStamp"
+      v-for="(order, index) in currentList"
     >
+      <!-- List item header -->
       <q-badge
-        :label="(currentPagination-1)*5+index+1"
         class="absolute q-ml-sm q-mt-sm"
         color="orange"
+        :label="(currentPagination-1)*5+index+1"
         :text-color="$q.dark.isActive?'black':'white'"
       />
 
@@ -22,18 +23,19 @@
         {{ orderTimeTranslate[index] }}
       </q-item-label>
 
+      <!-- List item body -->
       <q-item
+        class="q-pb-xs"
         v-for="product in order.products"
         :key="product.order"
-        class="q-pb-xs"
       >
         <q-item-section
           thumbnail
           :style="badgeAlign"
         >
           <img
-            :src="product.url"
             alt="avatar"
+            :src="product.url"
           >
         </q-item-section>
 
@@ -45,8 +47,8 @@
         </q-item-section>
 
         <q-item-section
-          side
           center
+          side
         >
           <q-item-label
             class="text-bold text-h6"
@@ -56,6 +58,7 @@
         </q-item-section>
       </q-item>
 
+      <!-- Use Fake avatar to align totalCost -->
       <q-item class="q-pt-none">
         <q-item-section avatar />
         <q-item-section />
@@ -65,7 +68,7 @@
           center
         >
           <q-item-label
-            class="text-subtitle1 text-bold text-orange text-bold q-mt-md"
+            class="q-mt-md text-subtitle1 text-bold text-orange text-bold"
           >
             {{ $t('totalCost') }}&ensp;
             ${{ order.totalCost }}
@@ -79,7 +82,7 @@
 <script>
 import { date } from 'quasar';
 import { mapState } from 'vuex'
-// const { formatDate } = date;
+const { formatDate } = date;
 export default {
   data () {
     return {
@@ -93,15 +96,15 @@ export default {
       'sortWay'
     ]),
 
-    orderTimeTranslate () {
-      return this.sortOrder.map(el => date.formatDate(el.timeStamp, 'YYYY/MM/DD HH:mm:ss'));
+    orderTimeTranslate () { // Timestamp translate to real time
+      return this.sortOrder.map(el => formatDate(el.timeStamp, 'YYYY/MM/DD HH:mm:ss'));
     },
 
-    currentList () {
+    currentList () { // According to currentPagination, show only 5 data each page
       return this.sortOrder.slice(this.currentPagination * 5 - 5, this.currentPagination * 5);
     },
 
-    sortOrder () {
+    sortOrder () { // Decide which sort res to return
       if (this.sortWay === 'sortTimeDesc') {
         this.$store.commit('paginationNext', 1);
         return [...this.orderSuccess].sort((a, b) => b.timeStamp - a.timeStamp);

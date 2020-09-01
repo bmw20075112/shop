@@ -31,13 +31,14 @@ export default function (/* { ssrContext } */) {
       history: false, // drawer目前是否顯示為歷史紀錄
       identityDialog: false, // 是否打開登入/註冊表單
       isLogin: false, // 目前是否登入
-      menuOpen: false, // user表單是否打開
       menuFilter: '', // mobile專用篩選菜單細項
       orderSuccess: [], // 已完成付費的訂單
       selected: [], // 未付費的已選取訂單
       sortWay: 'sortTimeDesc', // 已完成付費訂單的排序方法
       tab: 'east', // 目前的菜單類別,
-      userInfo: {} // 從firebase接下來的個人資料(姓名、餘額)
+      unsubscribe: null, // 解除onsnapshot的監聽
+      userInfo: {}, // 從firebase接下來的個人資料(姓名、餘額)
+      userSetting: false // userSetting表單是否打開
     },
 
     getters: {
@@ -124,10 +125,6 @@ export default function (/* { ssrContext } */) {
         state.isLogin = payload;
       },
 
-      menuOpenMutate (state, payload) {
-        state.menuOpen = payload;
-      },
-
       menuFilterMutate (state, payload) {
         state.menuFilter = payload;
       },
@@ -152,19 +149,32 @@ export default function (/* { ssrContext } */) {
         state.userInfo = payload;
       },
 
+      userSettingMutate (state, payload) {
+        state.userSetting = payload;
+      },
+
       orderSuccessGet (state, payload) {
         state.orderSuccess = payload;
+      },
+
+      unsubscribe (state, payload) {
+        if (payload) {
+          state.unsubscribe = payload;
+        } else {
+          state.unsubscribe();
+        }
       }
     },
 
     actions: {
-      userGet ({ commit }) {
-        db.collection('users').doc(auth.currentUser.uid)
+      userGet ({ commit }) { // 監聽DB資料
+        let unsubscribe = db.collection('users').doc(auth.currentUser.uid)
           .onSnapshot(snapshot => {
             let { history, ...userInfo } = snapshot.data();
             commit('userGet', userInfo);
             commit('orderSuccessGet', history);
           });
+        commit('unsubscribe', unsubscribe);
       }
     },
 

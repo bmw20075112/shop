@@ -1,10 +1,10 @@
 <template>
   <q-toggle
-    v-model="lang"
-    label="English"
     icon="translate"
-    true-value="en-us"
     false-value="zh-tw"
+    label="English"
+    true-value="en-us"
+    v-model="lang"
   />
 </template>
 

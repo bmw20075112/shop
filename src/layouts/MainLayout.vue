@@ -1,17 +1,16 @@
 <template>
-  <q-layout
-    view="hHh lpr fff"
-  >
+  <q-layout view="hHh lpr fff">
     <q-header>
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar @click="routeCheckout?$router.push('/'):$router.go()">
             <img
-              src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"
-              class="cursor-pointer"
               alt="logo"
+              class="cursor-pointer"
+              src="~assets/logo.svg"
             >
           </q-avatar>
+
           <span
             class="cursor-pointer text-bold q-pl-sm"
             @click="routeCheckout?$router.push('/'):$router.go()"
@@ -20,12 +19,12 @@
 
         <q-btn
           flat
+          class="q-py-sm"
           icon="account_box"
           :label="$q.screen.lt.md? '' : $t('user') "
-          class="q-py-sm"
         >
-          <q-menu v-model="menu">
-            <Menu />
+          <q-menu v-model="userSetting">
+            <UserSetting />
           </q-menu>
         </q-btn>
       </q-toolbar>
@@ -43,11 +42,11 @@
 
 <script>
 import Footer from '../components/layouts/Footer.vue';
-import Menu from '../components/layouts/Menu.vue';
+import UserSetting from '../components/layouts/UserSetting.vue';
 export default {
   components: {
     Footer,
-    Menu
+    UserSetting
   },
   data () {
     return {
@@ -56,13 +55,13 @@ export default {
   },
 
   computed: {
-    menu: {
+    userSetting: {
       get () {
-        return this.$store.state.menuOpen;
+        return this.$store.state.userSetting;
       },
 
       set (val) {
-        this.$store.commit('menuOpenMutate', val);
+        this.$store.commit('userSettingMutate', val);
       }
     },
 

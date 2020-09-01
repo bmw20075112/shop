@@ -1,19 +1,20 @@
 <template>
   <q-layout :view="$q.screen.width<=768?'hHh lpR fFr':'hHh lpR ffr'">
     <q-header
-      :reveal='$q.screen.lt.sm'
-      :elevated="$q.dark.isActive?false:true"
       :bordered="$q.dark.isActive?true:false"
+      :elevated="$q.dark.isActive?false:true"
+      :reveal='$q.screen.lt.sm'
     >
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar @click="$router.push('/')">
             <img
-              src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"
+              src="~assets/logo.svg"
               class="cursor-pointer"
               alt="logo"
             >
           </q-avatar>
+
           <span
             class="cursor-pointer text-bold q-pl-sm"
             @click="$router.push('/')"
@@ -22,12 +23,12 @@
 
         <q-btn
           flat
+          class="q-py-sm"
           icon="account_box"
           :label="$q.screen.lt.md? '' : $t('user') "
-          class="q-py-sm"
         >
-          <q-menu v-model="menuOpen">
-            <Menu />
+          <q-menu v-model="userSetting">
+            <UserSetting />
           </q-menu>
         </q-btn>
 
@@ -37,17 +38,17 @@
           @click="drawer = !drawer"
         >
           <q-badge
+            floating
             color="orange"
             text-color="black"
             :label="cartItems.length"
-            floating
           />
         </q-btn>
       </q-toolbar>
 
       <q-tabs
-        :align="$q.screen.lt.lg?'center':'left'"
         class="gt-sm"
+        :align="$q.screen.lt.lg?'center':'left'"
         :breakpoint="1024"
         v-model="tab"
       >
@@ -68,29 +69,29 @@
       </q-tabs>
 
       <q-select
-        v-model="menuFilter"
-        :options="filterOptions"
-        :label="$t('filter')"
+        dense
+        filled
         bg-color="primary"
-        label-color="amber"
         class="lt-sm customTextColor"
         color="primary"
-        filled
-        dense
+        label-color="amber"
+        :label="$t('filter')"
+        :options="filterOptions"
+        v-model="menuFilter"
       >
         <template v-slot:prepend>
           <q-icon
-            name="filter_alt"
             color="white"
+            name="filter_alt"
           />
         </template>
 
         <template v-slot:append>
           <q-icon
-            name="close"
-            @click.stop="menuFilter = ''"
             class="cursor-pointer"
             color="white"
+            name="close"
+            @click.stop="menuFilter = ''"
           />
         </template>
       </q-select>
@@ -110,19 +111,19 @@
 
     <q-footer
       elevated
-      :reveal='$q.screen.lt.sm'
       class="bg-grey"
+      :reveal='$q.screen.lt.sm'
     >
       <q-toolbar class="gt-sm">
         <Footer />
       </q-toolbar>
 
       <q-tabs
+        switch-indicator
         align="center"
         class="lt-md bg-primary"
         :breakpoint="1024"
         v-model="tab"
-        switch-indicator
         @click="menuFilterMutate('')"
       >
         <q-tab
@@ -145,13 +146,13 @@
 <script>
 import { mapMutations } from 'vuex';
 import Footer from '../components/layouts/Footer.vue';
-import Menu from '../components/layouts/Menu.vue';
 import MenuLayoutDrawer from '../components/layouts/MenuLayoutDrawer.vue';
+import UserSetting from '../components/layouts/UserSetting.vue';
 export default {
   components: {
     Footer,
-    Menu,
-    MenuLayoutDrawer
+    MenuLayoutDrawer,
+    UserSetting
   },
 
   methods: {
@@ -198,13 +199,13 @@ export default {
       }
     },
 
-    menuOpen: {
+    userSetting: {
       get () {
-        return this.$store.state.menuOpen;
+        return this.$store.state.userSetting;
       },
 
       set (val) {
-        this.$store.commit('menuOpenMutate', val);
+        this.$store.commit('userSettingMutate', val);
       }
     },
 

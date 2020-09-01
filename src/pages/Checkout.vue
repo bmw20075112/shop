@@ -1,20 +1,21 @@
 <template>
   <q-page class="flex flex-center q-pa-md">
     <q-stepper
-      v-model="step"
-      ref="stepper"
-      :active-color="$q.dark.isActive? 'white': ''"
-      :done-color="$q.dark.isActive? 'grey': ''"
       animated
-      :vertical='$q.screen.lt.md?true:false'
+      ref="stepper"
       transition-next="slide-left"
       transition-prev="slide-right"
+      :active-color="$q.dark.isActive? 'white': ''"
+      :done-color="$q.dark.isActive? 'grey': ''"
+      :vertical='$q.screen.lt.md?true:false'
+      v-model="step"
     >
+      <!-- Step 1 -->
       <q-step
-        :name="1"
-        :title="$t('warning')"
         icon="shopping_cart"
         :done="step > 1"
+        :name="1"
+        :title="$t('warning')"
         :style="formLayout"
       >
         <div
@@ -31,171 +32,176 @@
         </div>
       </q-step>
 
+      <!-- Step 2 -->
+
       <q-step
-        :name="2"
-        :title="$t('deliverInfo')"
         icon="navigation"
         :done="step > 2"
+        :name="2"
         :style="formLayout"
+        :title="$t('deliverInfo')"
       >
         <q-form
           class="q-gutter-sm"
           ref="deliver"
         >
           <q-input
+            lazy-rules
+            outlined
             autocomplete="username"
-            v-model="name"
+            maxlength="30"
+            placeholder='王小明'
             ref="name"
             type="text"
             :label="$t('name')"
-            placeholder='王小明'
-            lazy-rules
-            outlined
-            maxlength="30"
             :rules="[ val => val && val.length > 0 || $t('nameAlert')]"
+            v-model="name"
           />
 
           <q-input
+            lazy-rules
+            outlined
             autocomplete="tel"
-            v-model="phone"
+            mask="####-###-###"
+            maxlength="12"
+            placeholder="0912-345-678"
             ref="phone"
             type="tel"
             :label="$t('phone')"
-            maxlength="12"
-            mask="####-###-###"
-            lazy-rules
-            outlined
-            placeholder="0912-345-678"
             :rules="[val=>/^09\d{2}-\d{3}-\d{3}/.test(val) || $t('phoneAlert')]"
+            v-model="phone"
           />
 
           <q-input
+            outlined
+            lazy-rules
             autocomplete="street-address"
-            v-model="address"
             ref="address"
             type="text"
             :label="$t('address')"
-            outlined
-            lazy-rules
             :rules="[val => val && val.length > 0 || $t('addressAlert')]"
+            v-model="address"
           />
 
           <q-input
+            outlined
             autocomplete="email"
-            v-model="email"
             type="email"
             :label="$t('email')"
             :rules="[
               val => val && val.length > 0 || $t('emailNo'),
               val => /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/.test(val) || $t('emailAlert')
             ]"
-            outlined
+            v-model="email"
           />
         </q-form>
       </q-step>
 
+      <!-- Step 3 -->
+
       <q-step
-        :name="3"
-        :title="$t('payment')"
         icon="credit_card"
         :done="step > 3"
+        :name="3"
         :style="formLayout"
+        :title="$t('payment')"
       >
         <div class="row justify-end items-center q-pb-md">
           <div class="row q-gutter-x-md no-padding no-margin">
             <q-img
+              spinner-color="primary"
+              spinner-size="32px"
               src="https://res.cloudinary.com/barney4760/image/upload/v1598517519/checkout/visa_zsxc0m.png"
-              spinner-color="primary"
-              spinner-size="32px"
               :width="iconWidth"
             />
 
             <q-img
+              spinner-color="primary"
+              spinner-size="32px"
               src="https://res.cloudinary.com/barney4760/image/upload/v1598517517/checkout/mastercard_wdtiys.png"
-              spinner-color="primary"
-              spinner-size="32px"
               :width="iconWidth"
             />
 
             <q-img
-              src="https://res.cloudinary.com/barney4760/image/upload/v1598517515/checkout/jcb_bonqhq.png"
               spinner-color="primary"
               spinner-size="32px"
+              src="https://res.cloudinary.com/barney4760/image/upload/v1598517515/checkout/jcb_bonqhq.png"
               :width="iconWidth"
             />
           </div>
         </div>
 
         <q-form
-          ref="payment"
           class="column q-gutter-y-md"
+          ref="payment"
         >
           <q-input
-            v-model="cardNumber"
-            autocomplete="cc-number"
-            ref="ccNumber"
-            :label="$t('cardNumber')"
-            maxlength=20
-            mask="####-####-####-####"
+            hide-bottom-space
             lazy-rules
             outlined
-            hide-bottom-space
+            autocomplete="cc-number"
+            maxlength=20
+            mask="####-####-####-####"
             placeholder="0123-4567-8901-2345"
+            ref="ccNumber"
+            :label="$t('cardNumber')"
             :rules="[val=>/^\d{4}-\d{4}-\d{4}-\d{4}/.test(val)]"
+            v-model="cardNumber"
           />
 
           <q-input
-            v-model="nameOnCard"
-            autocomplete="cc-name"
-            type="text"
-            ref="ccName"
-            :label="$t('cardName')"
-            placeholder="王小明"
+            hide-bottom-space
             lazy-rules
             outlined
-            hide-bottom-space
+            autocomplete="cc-name"
             maxlength="30"
+            placeholder="王小明"
+            ref="ccName"
+            type="text"
+            :label="$t('cardName')"
             :rules="[val => val && val.length > 0]"
+            v-model="nameOnCard"
           />
 
           <div class="row q-pb-sm q-col-gutter-x-sm q-col-gutter-y-lg q-py-md">
             <q-select
-              :label="$t('expiryMonth')"
-              ref="expiryMonth"
+              hide-bottom-space
+              outlined
               class="col-12 col-md-4 col-sm-6"
-              v-model="monthSelect"
+              ref="expiryMonth"
+              :label="$t('expiryMonth')"
               :options="months"
               :rules="[val => val.length > 0]"
-              outlined
-              hide-bottom-space
+              v-model="monthSelect"
             />
 
             <q-select
-              :label="$t('expiryYear')"
-              ref="expiryYear"
+              hide-bottom-space
+              outlined
               class="col-12 col-md-4 col-sm-6"
-              v-model="yearSelect"
+              ref="expiryYear"
+              :label="$t('expiryYear')"
               :options="years"
               :rules="[val => val.length > 0]"
-              outlined
-              hide-bottom-space
+              v-model="yearSelect"
             />
 
             <q-input
-              v-model="cvv"
-              type="tel"
-              ref="ccv"
-              :label="$t('ccv')"
-              placeholder="123"
-              maxlength="3"
-              class="col-12 col-md-4 col-sm-12"
+              hide-bottom-space
               lazy-rules
               outlined
-              hide-bottom-space
+              class="col-12 col-md-4 col-sm-12"
+              maxlength="3"
+              placeholder="123"
+              ref="ccv"
+              type="tel"
+              :label="$t('ccv')"
               :rules="[val => typeof(val)!==undefined && /\d{3}/.test(`${val}`)]"
+              v-model="cvv"
             />
           </div>
         </q-form>
+
         <div class="text-subtitle1 float-right">
           {{ $t('totalCost') }}：
           <span
@@ -207,22 +213,24 @@
         </div>
       </q-step>
 
+      <!-- Control area -->
+
       <template v-slot:navigation>
         <q-stepper-navigation class="float-right">
           <q-btn
             flat
-            @click="back"
-            :label="$t('back')"
             class="q-ml-sm"
             :color="$q.dark.isActive?'white':'primary'"
+            :label="$t('back')"
+            @click="back"
           />
 
           <q-btn
-            @click="next"
             color="primary"
+            :label="step === 3 ? $t('pay') : $t('continue')"
             :loading="loading"
             :percentage="percentage"
-            :label="step === 3 ? $t('pay') : $t('continue')"
+            @click="next"
           >
             <template v-slot:loading>
               <q-spinner-gears class="on-center" />
@@ -235,27 +243,27 @@
 </template>
 
 <script>
-import firebase from 'firebase/app';
 import { auth, db } from '../api/firebase/firebase.js';
 import { mapState, mapGetters } from 'vuex';
+import firebase from 'firebase/app';
 export default {
   data () {
     return {
-      step: 1,
-      name: '',
-      phone: '',
       address: '',
-      email: '',
-      deliverPass: false,
       cardNumber: null,
-      nameOnCard: '',
+      cvv: null,
+      deliverPass: false,
+      email: '',
+      loading: false,
       months: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
       monthSelect: '',
+      name: '',
+      nameOnCard: '',
+      percentage: 0,
+      phone: '',
+      step: 1,
       years: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029'],
-      yearSelect: '',
-      cvv: null,
-      loading: false,
-      percentage: 0
+      yearSelect: ''
     }
   },
 
@@ -271,7 +279,7 @@ export default {
       'totalCost'
     ]),
 
-    iconWidth () {
+    iconWidth () { // Credit card icon width
       if (this.$q.screen.lt.md) {
         return '32px';
       } else {
@@ -279,7 +287,7 @@ export default {
       }
     },
 
-    formLayout () {
+    formLayout () { // 表單長寬限制
       if (this.$q.screen.gt.sm) {
         return 'min-height:40vh; min-width:65vw';
       } else {
@@ -297,7 +305,7 @@ export default {
       }
     },
 
-    deliverSubmit () {
+    deliverSubmit () { // Step 2 validate
       if (this.$refs.name.hasError || this.$refs.phone.hasError || this.$refs.address.hasError) {
         this.formHasError = true;
       } else {
@@ -305,7 +313,7 @@ export default {
       }
     },
 
-    paymentSubmit () {
+    paymentSubmit () { // Step 3 validate
       if (this.$refs.ccName.hasError || this.$refs.ccNumber.hasError || this.$refs.expiryMonth.hasError ||
           this.$refs.expiryYear.hasError || this.$refs.ccv.hasError) {
         this.formHasError = true;
@@ -321,6 +329,7 @@ export default {
             timeStamp
           }
           this.percentage += Math.floor(Math.random() * 20) + 10;
+
           if (this.percentage >= 100) {
             clearInterval(this.interval);
             this.loading = false;
@@ -328,9 +337,11 @@ export default {
               accounts: this.accounts - this.totalCost,
               history: firebase.firestore.FieldValue.arrayUnion(orderSuccess)
             });
+
             this.$store.commit('cartMutate', { type: 'remove', value: this.selected });
             this.$store.commit('seletedMutate', []);
             this.$store.commit('allSelectMutate', false);
+
             this.$q.dialog({
               title: this.$t('successTitle'),
               message: this.$t('successMessage')

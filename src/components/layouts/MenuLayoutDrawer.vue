@@ -432,18 +432,18 @@ export default {
       }
     },
 
-    menu: {
+    paginationMax () {
+      return Math.ceil(this.orderSuccess.length / 5);
+    },
+
+    userSetting: {
       get () {
-        return this.$store.state.menuOpen;
+        return this.$store.state.userSetting;
       },
 
       set (val) {
-        this.$store.commit('menuOpenMutate', val);
+        this.$store.commit('userSettingMutate', val);
       }
-    },
-
-    paginationMax () {
-      return Math.ceil(this.orderSuccess.length / 5);
     },
 
     selected: {

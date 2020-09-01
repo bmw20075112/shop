@@ -1,8 +1,8 @@
 <template>
   <q-toggle
-    v-model="dark"
-    :label="$t('dark')"
     :icon="$q.dark.isActive? 'nights_stay' : 'wb_sunny'"
+    :label="$t('dark')"
+    v-model="dark"
   />
 </template>
 
@@ -27,7 +27,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

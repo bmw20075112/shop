@@ -2,20 +2,20 @@
   <q-card>
     <!-- card header -->
     <q-tabs
-      v-model="mode"
       :active-color="$q.dark.isActive? 'white': 'primary'"
       :active-bg-color="$q.dark.isActive? 'blue-grey-9': 'grey-3'"
       :class="$q.dark.isActive? 'bg-blue-grey-9': 'bg-grey-3'"
       :indicator-color="$q.dark.isActive? 'white': 'primary'"
+      v-model="mode"
     >
       <q-tab
-        name="login"
         icon="login"
+        name="login"
         :label="$t('login')"
       />
       <q-tab
-        name="signUp"
         icon="account_circle"
+        name="signUp"
         :label="$t('signUp')"
       />
     </q-tabs>
@@ -27,9 +27,9 @@
       :style="$q.screen.height>=1024?'min-height:45vh':'max-height:50vh'"
     >
       <q-tab-panels
-        v-model="mode"
         infinite
         swipeable
+        v-model="mode"
       >
         <!-- login panel -->
         <q-tab-panel
@@ -39,9 +39,9 @@
           <q-form class="q-gutter-md">
             <!-- login email input -->
             <q-input
-              autocomplete="email"
               filled
               lazy-rules
+              autocomplete="email"
               ref="emailLogin"
               type="email"
               :color="$q.dark.isActive? 'orange': 'primary'"
@@ -233,9 +233,9 @@
             <!-- checkbox -->
             <q-checkbox
               class="no-margin"
-              :label="$t('license')"
               ref="agreeLicense"
               :color="$q.dark.isActive? 'orange': 'primary'"
+              :label="$t('license')"
               v-model="agree"
             />
           </q-form>
@@ -270,14 +270,13 @@ export default {
   data () {
     return {
       agree: false,
-      mode: 'login',
       emailLogin: '',
       emailSignUp: '',
       loading: false,
+      mode: 'login',
       passwordSignUp: '',
       passwordLogin: '',
       passwordRe: '',
-      res: 0,
       userName: '',
       visibleLogin: false,
       visibleSignUp: false
@@ -285,12 +284,12 @@ export default {
   },
 
   methods: {
-    checkEmailUnique (val) {
+    checkEmailUnique (val) { // Check if email duplicate
       return new Promise((resolve, reject) => {
         if (val.length === 0) {
           resolve(true);
         } else {
-          auth.fetchSignInMethodsForEmail(this.emailSignUp)
+          auth.fetchSignInMethodsForEmail(this.emailSignUp) // if length>0 means email already registered
             .then(data => {
               if (data.length === 0) {
                 resolve(true);
@@ -302,7 +301,7 @@ export default {
       })
     },
 
-    submit () {
+    submit () { // Validate login and signUp input
       if (this.mode === 'signUp') {
         this.$refs.userNameSignUp.validate();
         this.$refs.emailSignUp.validate();
@@ -313,13 +312,14 @@ export default {
             this.$refs.passwordSignUp.hasError ||
             this.$refs.passwordRe.hasError) {
           this.formHasError = true;
-        } else if (!this.agree) {
+        } else if (!this.agree) { // Forget agree
           this.$q.notify({
             color: 'negative',
             message: this.$t('agreeAlert')
           })
         } else {
           this.loading = true;
+          this.$store.commit('userSettingMutate', false);
           auth.createUserWithEmailAndPassword(this.emailSignUp, this.passwordRe)
             .then(cred => {
               db.collection('users').doc(cred.user.uid).set({
@@ -328,20 +328,19 @@ export default {
                 history: []
               })
                 .then(() => {
-                  this.$store.commit('userGet', {
+                  this.$store.commit('userGet', { // Pass user info to vuex
                     name: this.userName,
                     accounts: 2000,
                     history: []
                   });
-                  this.loading = false;
-                  this.$store.commit('menuOpenMutate', false);
                   this.$store.commit('identityMutate', false);
-                  setTimeout(() => {
-                    this.$store.commit('menuOpenMutate', true);
+                  this.loading = false;
+                  setTimeout(() => { // Open userSetting again to refresh container's width
+                    this.$store.commit('userSettingMutate', true);
                   }, 800)
                 })
             })
-            .catch(err => {
+            .catch(err => { // Other error message comes from Auth (No i18n)
               this.loading = false;
               this.$q.notify({
                 color: 'negative',
@@ -358,14 +357,14 @@ export default {
           this.loading = true;
           auth.signInWithEmailAndPassword(this.emailLogin, this.passwordLogin)
             .then(cred => {
-              this.$store.commit('menuOpenMutate', false);
+              this.$store.commit('userSettingMutate', false);
               this.$store.commit('identityMutate', false);
               this.loading = false;
-              setTimeout(() => {
-                this.$store.commit('menuOpenMutate', true);
+              setTimeout(() => { // Open userSetting again to refresh container's width
+                this.$store.commit('userSettingMutate', true);
               }, 800)
             })
-            .catch(err => {
+            .catch(err => { // Other error message comes from Auth (No i18n)
               this.loading = false;
               this.$q.notify({
                 color: 'negative',
@@ -378,7 +377,3 @@ export default {
   }
 }
 </script>
-
-<style lang='scss'>
-
-</style>
