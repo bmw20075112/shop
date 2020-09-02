@@ -24,7 +24,7 @@
     <q-card-section
       class="scroll"
       :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
-      :style="$q.screen.height>=1024?'min-height:45vh':'max-height:50vh'"
+      :style="cardBodyHeight"
     >
       <q-tab-panels
         infinite
@@ -36,7 +36,7 @@
           name="login"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
         >
-          <q-form class="q-gutter-md">
+          <q-form :class="$q.screen.height>1024?'q-gutter-md':'q-gutter-xs'">
             <!-- login email input -->
             <span ref="emailLoginTo" />
             <q-input
@@ -99,6 +99,14 @@
                 </q-avatar>
               </template>
             </q-input>
+
+            <!-- Remember me -->
+            <q-checkbox
+              class="no-margin"
+              :color="$q.dark.isActive? 'orange': 'primary'"
+              :label="$t('rememberMe')"
+              v-model="rememberMe"
+            />
           </q-form>
         </q-tab-panel>
 
@@ -107,7 +115,7 @@
           name="signUp"
           :class="$q.dark.isActive? 'bg-blue-grey-10': 'bg-white'"
         >
-          <q-form class="q-gutter-sm">
+          <q-form :class="$q.screen.height>1024?'q-gutter-md':'q-gutter-xs'">
             <!-- username input -->
             <span ref="userNameSignUpTo" />
             <q-input
@@ -277,6 +285,7 @@
 </template>
 
 <script>
+import firebase from 'firebase/app';
 import { auth, db } from '../../api/firebase/firebase.js';
 export default {
   data () {
@@ -289,9 +298,22 @@ export default {
       passwordSignUp: '',
       passwordLogin: '',
       passwordRe: '',
+      rememberMe: false,
       userName: '',
       visibleLogin: false,
       visibleSignUp: false
+    }
+  },
+
+  computed: {
+    cardBodyHeight () {
+      if (this.$q.screen.height > 1024) {
+        return 'min-height:50vh';
+      } else if (this.$q.screen.height <= 1024 && this.$q.screen.height > 812) {
+        return 'min-height:60vh';
+      } else {
+        return 'max-height:55vh';
+      }
     }
   },
 
@@ -300,6 +322,14 @@ export default {
       console.log(this.$refs[target + 'To']);
       // window.HTMLElement[target].scrollIntoView({ block: 'end' });
       this.$refs[target + 'To'].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    },
+
+    catchError (err) {
+      this.loading = false;
+      this.$q.notify({
+        color: 'negative',
+        message: err.message
+      })
     },
 
     checkEmailUnique (val) { // Check if email duplicate
@@ -317,6 +347,25 @@ export default {
             });
         }
       })
+    },
+
+    login () {
+      auth.signInWithEmailAndPassword(this.emailLogin, this.passwordLogin)
+        .then(cred => {
+          this.$store.commit('userSettingMutate', false);
+          this.$store.commit('identityMutate', false);
+          this.loading = false;
+          setTimeout(() => { // Open userSetting again to refresh container's width
+            this.$store.commit('userSettingMutate', true);
+          }, 800)
+        })
+        .catch(err => { // Other error message comes from Auth (No i18n)
+          this.loading = false;
+          this.$q.notify({
+            color: 'negative',
+            message: err.message
+          })
+        })
     },
 
     submit () { // Validate login and signUp input
@@ -338,32 +387,32 @@ export default {
         } else {
           this.loading = true;
           this.$store.commit('userSettingMutate', false);
-          auth.createUserWithEmailAndPassword(this.emailSignUp, this.passwordRe)
-            .then(cred => {
-              db.collection('users').doc(cred.user.uid).set({
-                name: this.userName,
-                accounts: 2000,
-                history: []
-              })
-                .then(() => {
-                  this.$store.commit('userGet', { // Pass user info to vuex
+          auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+              return auth.createUserWithEmailAndPassword(this.emailSignUp, this.passwordRe)
+                .then(cred => {
+                  db.collection('users').doc(cred.user.uid).set({
                     name: this.userName,
                     accounts: 2000,
                     history: []
-                  });
-                  this.$store.commit('identityMutate', false);
-                  this.loading = false;
-                  setTimeout(() => { // Open userSetting again to refresh container's width
-                    this.$store.commit('userSettingMutate', true);
-                  }, 800)
+                  })
+                    .then(() => {
+                      this.$store.commit('userGet', { // Pass user info to vuex
+                        name: this.userName,
+                        accounts: 2000,
+                        history: []
+                      });
+                      this.$store.commit('identityMutate', false);
+                      this.loading = false;
+                      setTimeout(() => { // Open userSetting again to refresh container's width
+                        this.$store.commit('userSettingMutate', true);
+                      }, 800)
+                    })
                 })
-            })
-            .catch(err => { // Other error message comes from Auth (No i18n)
-              this.loading = false;
-              this.$q.notify({
-                color: 'negative',
-                message: err.message
-              })
+                .catch(err => { // Other error message comes from Auth (No i18n)
+                  this.loading = false;
+                  this.catchError(err);
+                })
             })
         }
       } else if (this.mode === 'login') {
@@ -373,22 +422,15 @@ export default {
           this.formHasError = true;
         } else {
           this.loading = true;
-          auth.signInWithEmailAndPassword(this.emailLogin, this.passwordLogin)
-            .then(cred => {
-              this.$store.commit('userSettingMutate', false);
-              this.$store.commit('identityMutate', false);
-              this.loading = false;
-              setTimeout(() => { // Open userSetting again to refresh container's width
-                this.$store.commit('userSettingMutate', true);
-              }, 800)
-            })
-            .catch(err => { // Other error message comes from Auth (No i18n)
-              this.loading = false;
-              this.$q.notify({
-                color: 'negative',
-                message: err.message
-              })
-            })
+          if (!this.rememberMe) {
+            auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+              .then(() => this.login())
+              .catch(err => this.catchError(err));
+          } else {
+            auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+              .then(() => this.login())
+              .catch(err => this.catchError(err));
+          }
         }
       }
     }

@@ -34,6 +34,7 @@ export default {
   passwordMix: '必須為數字和英文混合',
   passwordAlert: '8~30個字元，須為英文及數字混合',
   password2Alert: '輸入和第一次密碼不相同',
+  rememberMe: '在此裝置上記住我',
   signUp: '註冊',
   userLength: '最長12個字',
   userName: '用戶名',

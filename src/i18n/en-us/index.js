@@ -36,6 +36,7 @@ export default {
   passwordLength: 'Length should be between 8~30',
   passwordMix: 'Mix with numbers and letters',
   password2Alert: 'It\'s not equal to first password',
+  rememberMe: 'Remember me',
   signUp: 'Sign up',
   userLength: 'Length up to 12',
   userName: 'User Name',
