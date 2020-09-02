@@ -38,6 +38,7 @@
         >
           <q-form class="q-gutter-md">
             <!-- login email input -->
+            <span ref="emailLoginTo" />
             <q-input
               filled
               lazy-rules
@@ -48,6 +49,7 @@
               :label="$t('email')"
               :rules="[val => val && val.length>0]"
               v-model="emailLogin"
+              @focus="mobileToTop('emailLogin')"
             >
               <template v-slot:prepend>
                 <q-icon name="mail" />
@@ -66,6 +68,7 @@
             </q-input>
 
             <!-- login password input -->
+            <span ref="passwordLoginTo" />
             <q-input
               filled
               lazy-rules
@@ -78,6 +81,7 @@
               ]"
               :type="visibleLogin?'text':'password'"
               v-model="passwordLogin"
+              @focus="mobileToTop('passwordLogin')"
               @keyup.enter.prevent="submit()"
             >
               <template v-slot:prepend>
@@ -105,6 +109,7 @@
         >
           <q-form class="q-gutter-sm">
             <!-- username input -->
+            <span ref="userNameSignUpTo" />
             <q-input
               filled
               lazy-rules
@@ -118,6 +123,7 @@
                 val => val.length<=12 || $t('userLength')
               ]"
               v-model="userName"
+              @focus="mobileToTop('userNameSignUp')"
             >
               <template v-slot:prepend>
                 <q-icon name="account_box" />
@@ -136,6 +142,7 @@
             </q-input>
 
             <!-- signup email input -->
+            <span ref="emailSignUpTo" />
             <q-input
               filled
               lazy-rules
@@ -151,6 +158,7 @@
                 checkEmailUnique
               ]"
               v-model="emailSignUp"
+              @focus="mobileToTop('emailSignUp')"
             >
               <template v-slot:prepend>
                 <q-icon name="mail" />
@@ -169,6 +177,7 @@
             </q-input>
 
             <!-- signup password input -->
+            <span ref="passwordSignUpTo" />
             <q-input
               filled
               lazy-rules
@@ -182,6 +191,7 @@
               ]"
               :type="visibleLogin?'text':'password'"
               v-model="passwordSignUp"
+              @focus="mobileToTop('passwordSignUp')"
             >
               <template v-slot:prepend>
                 <q-icon name="vpn_key" />
@@ -200,6 +210,7 @@
             </q-input>
 
             <!-- passwordRepeat input -->
+            <span ref="passwordReTo" />
             <q-input
               filled
               lazy-rules
@@ -212,6 +223,7 @@
                 val=> val===passwordSignUp || $t('password2Alert')
               ]"
               v-model="passwordRe"
+              @focus="mobileToTop('passwordRe')"
               @keyup.enter.prevent="submit()"
             >
               <template v-slot:prepend>
@@ -284,6 +296,12 @@ export default {
   },
 
   methods: {
+    mobileToTop (target) {
+      console.log(this.$refs[target + 'To']);
+      // window.HTMLElement[target].scrollIntoView({ block: 'end' });
+      this.$refs[target + 'To'].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    },
+
     checkEmailUnique (val) { // Check if email duplicate
       return new Promise((resolve, reject) => {
         if (val.length === 0) {

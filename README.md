@@ -4,6 +4,7 @@
 1. firebase tree shake版本製作中(https://github.com/firebase/firebase-js-sdk/issues/2241)
 
 ## bug
+1. mobile keyboard 在input focus時會壓縮大量空間 
 1. q-interesection 和 GRID系統衝突而無作用
 
 ## 預定開發
