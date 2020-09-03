@@ -12,6 +12,7 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
+    "bl": "4.0.3",
     "core-js": "^3.6.5",
     "firebase": "^7.19.1",
     "quasar": "^1.0.0",

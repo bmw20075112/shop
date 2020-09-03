@@ -102,7 +102,6 @@
 
             <!-- Remember me -->
             <q-checkbox
-              class="no-margin"
               :color="$q.dark.isActive? 'orange': 'primary'"
               :label="$t('rememberMe')"
               v-model="rememberMe"
@@ -252,7 +251,6 @@
 
             <!-- checkbox -->
             <q-checkbox
-              class="no-margin"
               ref="agreeLicense"
               :color="$q.dark.isActive? 'orange': 'primary'"
               :label="$t('license')"
