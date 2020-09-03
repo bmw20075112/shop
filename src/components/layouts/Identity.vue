@@ -307,20 +307,22 @@ export default {
 
   computed: {
     cardBodyHeight () {
-      if (this.$q.screen.height > 1024) {
-        return 'min-height:50vh';
-      } else if (this.$q.screen.height <= 1024 && this.$q.screen.height > 812) {
-        return 'min-height:60vh';
-      } else {
+      if (this.$q.platform.is.mobile) {
         return 'max-height:55vh';
+      } else {
+        if (this.$q.screen.height > 1024) {
+          return 'min-height:50vh';
+        } else if (this.$q.screen.height <= 1024 && this.$q.screen.height > 812) {
+          return 'min-height:60vh';
+        } else {
+          return 'max-height:55vh';
+        }
       }
     }
   },
 
   methods: {
     mobileToTop (target) {
-      console.log(this.$refs[target + 'To']);
-      // window.HTMLElement[target].scrollIntoView({ block: 'end' });
       this.$refs[target + 'To'].scrollIntoView({ behavior: 'smooth', block: 'start' });
     },
 

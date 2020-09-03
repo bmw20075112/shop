@@ -92,16 +92,18 @@
             class="q-gutter-md"
             @submit="onSubmit"
           >
+            <span ref="numberTo" />
             <q-input
               class="q-mb-xl"
-              type="number"
               ref="number"
+              type="number"
               :label="$t('number')"
               :rules="[val=>Number.isInteger(val) || $t('inputInterger'),
                        val=>val>0 || $t('inputInterger'),
                        val=>val<=100 || $t('inputLower100')
               ]"
               v-model.number="number"
+              @focus="mobileToTop('number')"
             >
               <template v-slot:prepend>
                 <q-btn
@@ -175,6 +177,10 @@ export default {
   methods: {
     count (num) { // 計算購買數量
       this.number = Number(this.number) + num;
+    },
+
+    mobileToTop (target) {
+      this.$refs[target + 'To'].scrollIntoView({ behavior: 'smooth', block: 'start' });
     },
 
     onSubmit (id) {

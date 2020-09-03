@@ -39,15 +39,18 @@
         class="q-gutter-md"
         @submit="onSubmit"
       >
+        <span ref="moneyTo" />
         <q-input
-          v-model.number="money"
           class="q-mb-xl"
-          type="number"
           ref="money"
+          type="number"
           :label="$t('deposit')"
           :rules="[val=>Number.isInteger(val) || $t('inputInterger'),
                    val=>val>0 || $t('inputInterger'),
-                   val=>val+accounts<=20000 || $t('inputLower20000')]"
+                   val=>val+accounts<=20000 || $t('inputLower20000')
+          ]"
+          v-model.number="money"
+          @focus="mobileToTop('money')"
         >
           <!-- Minus button -->
           <template v-slot:prepend>
@@ -118,6 +121,10 @@ export default {
   methods: {
     count (money) { // Decide how much money deposit
       this.money = Number(this.money) + money;
+    },
+
+    mobileToTop (target) {
+      this.$refs[target + 'To'].scrollIntoView({ behavior: 'smooth', block: 'start' });
     },
 
     onSubmit () { // Validate form and update data in DB
