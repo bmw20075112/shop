@@ -258,7 +258,21 @@ export default {
     }
   },
 
+  created () {
+    if (!this.$q.localStorage.isEmpty()) {
+      const cartCache = this.$q.localStorage.getAll();
+      for (let i of cartCache.cache) {
+        this.cartMutate({ type: 'add', value: i });
+      }
+    }
+  },
+
   watch: {
+    cartItems (val) {
+      this.$q.localStorage.clear();
+      this.$q.localStorage.set('cache', val);
+    },
+
     windowWith (val) {
       if (!val) {
         this.menuFilterMutate('');

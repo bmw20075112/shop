@@ -128,7 +128,11 @@ export default {
       if (this.$q.screen.lt.lg) {
         return '75vh';
       } else {
-        return '70vh';
+        if (this.$q.screen.height > 800) {
+          return '70vh';
+        } else {
+          return '650px'
+        }
       }
     },
 
